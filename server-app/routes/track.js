@@ -1,9 +1,13 @@
 const express = require('express');
 const router = express.Router();
 
-const tracks = require('../tracks.json');
+const tracks = require('../tracks.js');
 
-router.get('/(:track_id)?', (req, res) => {
+router.get('/', (req, res) => {
+  res.send(tracks);
+});
+
+router.get('/:track_id', (req, res) => {
   const id = req.params.track_id;
   if (id) {
     const track = tracks[id];

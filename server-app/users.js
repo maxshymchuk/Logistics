@@ -1,23 +1,20 @@
-{
+module.exports = {
   "1": {
     "name": "Gleb Glebov",
     "login": "gleboff",
-    "country": "Belarus",
-    "city": "Minsk",
+    "country": "Belarus, Minsk",
     "tracks": [1]
   },
   "2": {
     "name": "Till Lindemann",
     "login": "rammm",
-    "country": "Germany",
-    "city": "Dusseldorf",
+    "location": "Germany, Dusseldorf",
     "tracks": [2]
   },
   "3": {
     "name": "Max Shymchuk",
     "login": "octorix",
-    "country": "Belarus",
-    "city": "Minsk",
+    "location": "Belarus, Minsk",
     "tracks": [3, 4]
   }
 }

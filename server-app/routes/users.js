@@ -1,17 +1,17 @@
 const express = require('express');
 const router = express.Router();
 
-const users = require('../users.json');
-const tracks = require('../tracks.json');
+const users = require('../users.js');
+const tracks = require('../tracks.js');
 
-router.get('/(:user_id(\\d+))?', (req, res, next) => {
+router.get('/', (req, res, next) => {
+  res.send(users);
+});
+
+router.get('/:user_id(\\d+)', (req, res, next) => {
   const id = req.params.user_id;
-  if (id) {
-    const user = users[id];
-    user ? res.send(user) : res.send('User not found');
-  } else {
-    res.send(users);
-  }
+  const user = users[id];
+  user ? res.send(user) : res.send('Id not number');
 });
 
 router.get('/:user_id(\\d+)/tracks', (req, res, next) => {
@@ -24,13 +24,21 @@ router.get('/:user_id(\\d+)/tracks', (req, res, next) => {
   res.send(trackList);
 });
 
-router.post('/new&:name([a-zA-Z_]+)', (req, res) => {
-  const name = req.params.name;
-  res.send(`POST request, name = ${name}`);
+router.post('/', (req, res) => {
+  const { login, name, location } = req.body;
+  const user = {
+    name: name,
+    login: login,
+    location: location,
+    tracks: []
+  }
+  users[++Object.entries(users).length] = user;
+  res.send(req.body.user);
 });
 
 router.delete('/:user_id(\\d+)', (req, res) => {
-  res.send('DELETE request');
+  delete users['' + req.params.user_id];
+  res.send(users);
 });
 
 router.put('/', (req, res) => {

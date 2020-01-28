@@ -1,4 +1,4 @@
-{
+module.exports = {
   "1": {
     "description": "Description 1",
     "currentLocation": "Moscow",

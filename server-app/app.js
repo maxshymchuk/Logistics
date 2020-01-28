@@ -4,9 +4,6 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
-const tracks = require('./tracks.json');
-const users = require('./users.json');
-
 const indexRouter = require('./routes/index');
 const trackRouter = require('./routes/track');
 const usersRouter = require('./routes/users');
