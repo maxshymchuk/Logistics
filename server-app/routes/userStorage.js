@@ -20,12 +20,12 @@ module.exports = {
     return users;
   },
   getUserById(id) {
-    const check = checkUserById(id);
-    return check ? check : findUserById(id);
+    const failed = checkUserById(id);
+    return failed ? failed : findUserById(id);
   },
   getUserTracks(id) {
-    const check = checkUserById(id);
-    return check ? check : findUserById(id).tracks.map(i => trackStorage.getTrackById(i));
+    const failed = checkUserById(id);
+    return failed ? failed : findUserById(id).tracks.map(i => trackStorage.getTrackById(i));
   },
   postUser(body) {
     const user = {
@@ -35,5 +35,22 @@ module.exports = {
       tracks: body.tracks
     }
     return user;
+  },
+  deleteUserById(id) {
+    const failed = checkUserById(id);
+    return failed ? failed : users.splice(users.findIndex(user => user.id == id), 1), users;
+  },
+  updateUser(body) {
+    const id = body.id;
+    const failed = checkUserById(id);
+    if (!failed) {
+      const user = findUserById(id);
+      for (let i in body) {
+        user[i] = body[i];
+      }
+      return users;
+    } else {
+      return failed;
+    }
   }
 }

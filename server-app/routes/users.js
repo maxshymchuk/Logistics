@@ -22,11 +22,12 @@ router.post('/', (req, res) => {
 });
 
 router.delete('/:user_id', (req, res) => {
-  res.send(userStorage);
+  const id = req.params.user_id;
+  res.send(userStorage.deleteUserById(id));
 });
 
 router.put('/', (req, res) => {
-  res.send('PUT request')
+  res.send(userStorage.updateUser(req.body));
 });
 
 module.exports = router;
