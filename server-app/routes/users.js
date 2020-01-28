@@ -1,28 +1,28 @@
 const express = require('express');
 const router = express.Router();
 
-const users = require('./userStorage.js');
+const userStorage = require('./userStorage.js');
 
 router.get('/', (req, res) => {
-  res.send(users.getUsers());
+  res.send(userStorage.getUsers());
 });
 
 router.get('/:user_id', (req, res) => {
   const id = req.params.user_id;
-  res.send(users.getUserById(id));
+  res.send(userStorage.getUserById(id));
 });
 
 router.get('/:user_id/tracks', (req, res) => {
   const id = req.params.user_id;
-  res.send(users.getUserTracks(id));
+  res.send(userStorage.getUserTracks(id));
 });
 
 router.post('/', (req, res) => {
-  res.send(users.postUser(req.body));
+  res.send(userStorage.postUser(req.body));
 });
 
 router.delete('/:user_id', (req, res) => {
-  res.send(users);
+  res.send(userStorage);
 });
 
 router.put('/', (req, res) => {
