@@ -20,11 +20,11 @@ module.exports = {
     return tracks;
   },
   getTrackById(id) {
-    const check = checkTrackId(id);
-    return check ? check : findTrackById(id);
+    const failed = checkTrackId(id);
+    return failed ? failed : findTrackById(id);
   },
   getTrackUser(id) {
-    const check = checkTrackId(id);
-    return check ? check : userStorage.getUsers().find(user => user.tracks.includes(+id));
+    const failed = checkTrackId(id);
+    return failed ? failed : userStorage.getUsers().find(user => user.tracks.includes(+id));
   }
 }
