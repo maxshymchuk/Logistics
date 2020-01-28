@@ -1,14 +1,18 @@
 const users = require('../users.js');
-const tracks = require('../tracks.js');
+
+const trackStorage = require('./trackStorage.js');
+
+function findUserById(id) {
+  return users.find(i => i.id == id);
+}
 
 function checkUserById(id) {
   if (isNaN(id)) {
-    return ['Id is not a number', false];
+    return 'Id is not a number';
   }
-  if (!users[id]) {
-    return ['User not found', false];
+  if (!findUserById(id)) {
+    return 'User not found';
   }
-  return [users[id], true];
 }
 
 module.exports = {
@@ -17,11 +21,11 @@ module.exports = {
   },
   getUserById(id) {
     const check = checkUserById(id);
-    return check[0];
+    return check ? check : findUserById(id);
   },
   getUserTracks(id) {
     const check = checkUserById(id);
-    return check[1] ? check[0].tracks.map(i => tracks[i]) : check[0];
+    return check ? check : findUserById(id).tracks.map(i => trackStorage.getTrackById(i));
   },
   postUser(body) {
     const user = {
