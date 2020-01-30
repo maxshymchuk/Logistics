@@ -3,31 +3,34 @@ const router = express.Router();
 
 const userStorage = require('./userStorage.js');
 
-router.get('/', (req, res) => {
-  res.send(userStorage.getUsers());
+router.get('/', async (req, res) => {
+  const result = await userStorage.getUsers();
+  res.status(result.code).send(result.content);
 });
 
-router.get('/:user_id', (req, res) => {
-  const id = req.params.user_id;
-  res.send(userStorage.getUserById(id));
+router.get('/:user_id', async (req, res) => {
+  const result = await userStorage.getUserById(req.params.user_id);
+  res.status(result.code).send(result.content);
 });
 
-router.get('/:user_id/tracks', (req, res) => {
-  const id = req.params.user_id;
-  res.send(userStorage.getUserTracks(id));
+router.get('/:user_id/tracks', async (req, res) => {
+  const result = await userStorage.getUserTracksId(req.params.user_id);
+  res.status(result.code).send(result.content);
 });
 
-router.post('/', (req, res) => {
-  res.send(userStorage.postUser(req.body));
+router.post('/', async (req, res) => {
+  const result = await userStorage.addUser(req.body);
+  res.status(result.code).send(result.content);
 });
 
-router.delete('/:user_id', (req, res) => {
-  const id = req.params.user_id;
-  res.send(userStorage.deleteUserById(id));
+router.delete('/:user_id', async (req, res) => {
+  const result = await userStorage.deleteUserById(req.params.user_id);
+  res.status(result.code).send(result.content);
 });
 
-router.put('/', (req, res) => {
-  res.send(userStorage.updateUser(req.body));
+router.put('/', async (req, res) => {
+  const result = await userStorage.updateUser();
+  res.status(result.code).send(result.content);
 });
 
 module.exports = router;

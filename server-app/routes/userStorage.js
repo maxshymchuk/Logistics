@@ -1,56 +1,93 @@
-const users = require('../users.js');
+const users = require('../userlist.js');
 
 const trackStorage = require('./trackStorage.js');
 
-function findUserById(id) {
-  return users.find(i => i.id == id);
+async function findUserById(id) {
+  return new Promise((resolve) => {
+    const user = users.find(i => i.id == id);
+    resolve(user);
+  });
 }
 
-function checkUserById(id) {
+async function isValidUserId(id) {
   if (isNaN(id)) {
-    return 'Id is not a number';
+    return {
+      status: {
+        content: 'Id is not a number',
+        code: 400,
+      },
+      isFound: false
+    };
   }
-  if (!findUserById(id)) {
-    return 'User not found';
+  if (!(await findUserById(id))) {
+    return {
+      status: {
+        content: 'User not found',
+        code: 404,
+      },
+      isFound: false
+    };
+  }
+  return {
+    status: {
+      content: 'Ok',
+      code: 200,
+    },
+    isFound: true
   }
 }
 
 module.exports = {
-  getUsers() {
-    return users;
+  async getUsers() {
+    return {
+      content: users,
+      code: 200
+    }
   },
-  getUserById(id) {
-    const failed = checkUserById(id);
-    return failed ? failed : findUserById(id);
+  async getUserById(id) {
+    const isValid = await isValidUserId(id);
+    return !isValid.isFound ? isValid.status : {
+      content: await findUserById(id),
+      code: 200
+    }
   },
-  getUserTracks(id) {
-    const failed = checkUserById(id);
-    return failed ? failed : findUserById(id).tracks.map(i => trackStorage.getTrackById(i));
+  async getUserTracksId(id) {
+    const isValid = await isValidUserId(id);
+    return !isValid.isFound ? isValid.status : {
+      content: (await findUserById(id)).tracks,
+      code: 200
+    }
   },
-  postUser(body) {
+  async addUser(body) {
     const user = {
+      id: body.id,
       name: body.name,
       login: body.login,
+      location: body.location,
       country: body.country,
       tracks: body.tracks
     }
-    return user;
-  },
-  deleteUserById(id) {
-    const failed = checkUserById(id);
-    return failed ? failed : users.splice(users.findIndex(user => user.id == id), 1), users;
-  },
-  updateUser(body) {
-    const id = body.id;
-    const failed = checkUserById(id);
-    if (!failed) {
-      const user = findUserById(id);
-      for (let i in body) {
-        user[i] = body[i];
-      }
-      return users;
-    } else {
-      return failed;
+    users.push(user);
+    return {
+      content: users,
+      code: 201
     }
+  },
+  async deleteUserById(id) {
+    const isValid = await isValidUserId(id);
+    return !isValid.isFound ? isValid.status : {
+      content: (users.splice(users.findIndex(user => user.id == id), 1), users),
+      code: 200
+    }
+  },
+  async updateUser(user) {
+    // const id = user.id;
+    // const isValid = await isValidUserId(id);
+    // if (isValid.status) {
+    //   Object.assign(await findUserById(id), user);
+    //   return users;
+    // } else {
+    //   return isValid.error;
+    // }
   }
 }
