@@ -1,4 +1,6 @@
-export type User = {
+import * as mongoose from 'mongoose';
+
+export interface User extends mongoose.Document {
   name: string,
   surname: string,
   birthday: Date,

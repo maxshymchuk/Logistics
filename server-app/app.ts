@@ -1,5 +1,6 @@
 import * as express from 'express';
 import * as http from 'http';
+import * as mongoose from 'mongoose';
 
 const createError = require('http-errors');
 const path = require('path');
@@ -13,6 +14,8 @@ import * as user from './src/users/user.routes';
 
 export const app = express();
 
+mongoose.connect('mongodb://127.0.0.1:27017/Logistics', {useNewUrlParser: true});
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -20,7 +23,7 @@ app.use(cookieParser());
 
 app.use('/', index.router);
 app.use('/users', user.router);
-app.use('/tracks', track.router);
+app.use('/orders', track.router);
 
 // catch 404 and forward to error handler
 // app.use(function(req, res, next) {
