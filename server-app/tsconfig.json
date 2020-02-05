@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "outDir": "./build/",
+    "target": "ES5",
+    "sourceMap": false,
+    "inlineSourceMap": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "experimentalDecorators": true,
+    "strictNullChecks": false,
+    "strict": false,
+  },
+  "include": [
+    "src/**/*",
+    "./app.ts"
+  ]
+}
