@@ -2,7 +2,7 @@ import * as mongoose from 'mongoose';
 
 import { CustomResponse } from '../models';
 import { User } from './users.models';
-import { userSchema } from './userSchemas';
+import { userSchema } from './users.schemas';
 
 const userModel = mongoose.model<User>('users', userSchema);
 

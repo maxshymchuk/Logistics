@@ -4,8 +4,8 @@ import * as mongoose from 'mongoose';
 export const locationSchema = new mongoose.Schema({
   name: String,
   coordinates: {
-    north: Number,
-    east: Number
+    lat: Number,
+    lon: Number
   }
 })
 
