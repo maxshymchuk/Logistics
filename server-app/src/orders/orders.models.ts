@@ -9,12 +9,24 @@ export enum TrackStatus {
 }
 
 export enum VehicleType {
-  Plain = 'plain',
-  Car = 'car',
-  Train = 'train'
+  Plane = 'Plane',
+  Car = 'Car',
+  Train = 'Train'
 }
 
-export type Vehicle = {
+export enum VehiclePriceRatio {
+  Plane = 5,
+  Car = 1.2,
+  Train = 1
+}
+
+export enum VehicleSpeed {
+  Plane = 900, // km/h
+  Car = 80,
+  Train = 120
+}
+
+export interface Vehicle extends mongoose.Document {
   destination: Location,
   date: Date,
   type: VehicleType

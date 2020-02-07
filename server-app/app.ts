@@ -10,7 +10,7 @@ const debug = require('debug')('server-app:server');
 
 import * as index from './src/index/index.routes';
 import * as track from './src/orders/orders.routes';
-import * as user from './src/users/user.routes';
+import * as user from './src/users/users.routes';
 
 export const app = express();
 

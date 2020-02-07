@@ -1,3 +1,5 @@
+import * as mongoose from 'mongoose';
+
 export type CustomResponse = {
   status: {
     content: any,
@@ -6,10 +8,12 @@ export type CustomResponse = {
   isFound: boolean
 }
 
-export type Location = {
+export interface Location extends Partial<mongoose.Document> {
   name: string,
-  coordinates: {
-    north: number,
-    east: number
-  }
+  coordinates: Coordinate
+}
+
+export type Coordinate = {
+  lat: number,
+  lon: number
 }
