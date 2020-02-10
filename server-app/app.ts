@@ -9,8 +9,10 @@ const logger = require('morgan');
 const debug = require('debug')('server-app:server');
 
 import * as index from './src/index/index.routes';
-import * as track from './src/orders/orders.routes';
+import * as order from './src/orders/orders.routes';
 import * as user from './src/users/users.routes';
+import * as location from './src/locations/locations.routes';
+import * as vehicle from './src/vehicles/vehicles.routes';
 
 export const app = express();
 
@@ -23,7 +25,9 @@ app.use(cookieParser());
 
 app.use('/', index.router);
 app.use('/users', user.router);
-app.use('/orders', track.router);
+app.use('/orders', order.router);
+app.use('/locations', location.router);
+app.use('/vehicles', vehicle.router);
 
 // catch 404 and forward to error handler
 // app.use(function(req, res, next) {

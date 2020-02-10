@@ -6,9 +6,9 @@ import { userSchema } from './users.schemas';
 const userModel = mongoose.model<UserMongo>('users', userSchema);
 
 async function findUserById(id: string): Promise<User> {
-  let result: Promise<User>;
+  let result: User;
   try {
-    result = userModel.findOne({ _id: id, isAdmin: false }).exec();
+    result = await userModel.findOne({ _id: id, isAdmin: false });
   } catch (e) {
     console.log('Invalid id');
   }
@@ -21,7 +21,8 @@ async function isValidId(id: string): Promise<boolean> {
 }
 
 export async function getUsers(): Promise<User[]> {
-  return userModel.find({ isAdmin: false }).exec();
+  const users = await userModel.find({ isAdmin: false });
+  return users;
 }
 
 export async function getUserById(id: string): Promise<User | string> {
@@ -29,7 +30,7 @@ export async function getUserById(id: string): Promise<User | string> {
     const result = await findUserById(id);
     return result;
   } else {
-    return 'User not found by this ID';
+    return 'User ID is not valid';
   }
 }
   
@@ -44,7 +45,7 @@ export async function addUser(user: User): Promise<string> {
 }
 
 export async function authorizeUser(user: Autorization): Promise<void> {
-  // const foundedUser: User = await userModel.findOne({ login: user.login }).exec();
+  // const foundedUser: User = await userModel.findOne({ login: user.login });
   // return (foundedUser.password === user.password) ? 
   //   /* auth, */ {
   //     content: 'User login',
@@ -57,18 +58,18 @@ export async function authorizeUser(user: Autorization): Promise<void> {
 
 export async function deleteUserById(id: string): Promise<string> {
   if (isValidId(id)) {
-    userModel.deleteOne({ _id: id }).exec();
+    await userModel.deleteOne({ _id: id });
     return `User ${id} deleted`;
   } else {
-    return 'User not found by this ID';
+    return 'User ID is not valid';
   }
 }
   
 export async function updateUser(user: UserMongo): Promise<string> {
   if (isValidId(user._id)) {
-    userModel.updateOne({ _id: user._id }, user).exec();
+    await userModel.updateOne({ _id: user._id }, user);
     return `User ${user._id} updated`;
   } else {
-    return 'User not found by this ID';
+    return 'User ID is not valid';
   }
 }

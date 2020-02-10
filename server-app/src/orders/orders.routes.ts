@@ -1,7 +1,6 @@
 import * as orderController from "./orders.service";
 import * as qs from 'qs';
 
-import { VehicleType } from "../vehicles/vehicles.models";
 import { Router, Request, Response } from "express";
 import { UserOrderInput } from "./orders.models";
 import { config } from "../config";
