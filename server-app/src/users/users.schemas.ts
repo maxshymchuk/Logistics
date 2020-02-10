@@ -9,4 +9,5 @@ export const userSchema = new mongoose.Schema({
   phone: String,
   login: String,
   password: String,
+  isAdmin: Boolean
 })

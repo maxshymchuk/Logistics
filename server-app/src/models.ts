@@ -1,19 +1,24 @@
-import * as mongoose from 'mongoose';
+import { Vehicle } from './vehicles/vehicles.models';
+import { Location } from './locations/locations.models';
 
-export type CustomResponse = {
-  status: {
-    content: any,
-    code: number,
-  },
-  isFound: boolean
+export type Route ={
+  startLocation: Location,
+  endLocation: Location,
+  cargos: string[],
+  departureDate: Date,
+  vehicle: Vehicle
 }
 
-export interface Location extends Partial<mongoose.Document> {
-  name: string,
-  coordinates: Coordinate
+export enum TrackStatus {
+  Pending = 'pending', 
+  Transit = 'transit', 
+  Completed = 'completed'
 }
 
-export type Coordinate = {
-  lat: number,
-  lon: number
+// history or current way, can be changeble
+export type Track = {
+  route: Route,
+  status: TrackStatus,
+  departureDate: Date,
+  arrivalDate: Date
 }

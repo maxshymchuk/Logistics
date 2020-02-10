@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 
-export interface User extends mongoose.Document {
+export type User = {
   name: string,
   surname: string,
   birthday: Date,
@@ -8,4 +8,12 @@ export interface User extends mongoose.Document {
   phone: string,
   login: string,
   password: string,
+  isAdmin: boolean
+}
+
+export interface UserMongo extends mongoose.Document, User {}
+
+export interface Autorization {
+  login: string,
+  password: string
 }

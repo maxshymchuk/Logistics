@@ -24,7 +24,7 @@ function rand(a,b) {
 for (let i = 0; i < 10; i++) {
   for (let j = 0; j < 10; j++) {
     obj.push({
-      destination: dests[i],
+      destination: dests[rand(0, 9)],
       date: '' + Date.parse(new Date(2020, rand(0, 11), rand(1, 30))),
       type: vehicleType[rand(0,2)]
     })

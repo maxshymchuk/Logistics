@@ -1,20 +1,6 @@
 import * as mongoose from 'mongoose';
-
-// Location Model
-export const locationSchema = new mongoose.Schema({
-  name: String,
-  coordinates: {
-    lat: Number,
-    lon: Number
-  }
-})
-
-// Vehicle Model
-export const vehicleSchema = new mongoose.Schema({
-  destination: locationSchema,
-  date: Date,
-  type: String
-})
+import { vehicleSchema } from './vehicles/vehicles.schemas';
+import { locationSchema } from './locations/locations.schemas';
 
 // Route Model
 export const routeSchema = new mongoose.Schema({
