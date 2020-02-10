@@ -34,9 +34,9 @@ function getArrivalDate(current: Date, hours: number) {
 }
 
 async function findOrderById(id: string): Promise<Order> {
-  let result: Promise<Order>;
+  let result: Order;
   try {
-    result = orderModel.findOne({ _id: id }).exec();
+    result = await orderModel.findOne({ _id: id });
   } catch (e) {
     console.log('Invalid id');
   }
@@ -49,13 +49,16 @@ async function isValidId(id: string): Promise<boolean> {
 }
 
 export async function getOrders(): Promise<Order[]> {
-  return orderModel.find().exec();
+  const orders = await orderModel.find();
+  return orders;
 }
 
-export async function getOrderById(id: string): Promise<Order | void> {
+export async function getOrderById(id: string): Promise<Order | string> {
   if (isValidId(id)) {
     const order = await findOrderById(id);
     return order;
+  } else {
+    return 'Order ID is not valid'
   }
 }
 
@@ -63,6 +66,8 @@ export async function getOrderUserId(id: string): Promise<string | void> {
   if (isValidId(id)) {
     const userId = (await findOrderById(id)).userLogin;
     return userId;
+  } else {
+    return 'Order ID is not valid'
   }
 }
 
@@ -108,7 +113,9 @@ export async function addOrder(userOrderInput: UserOrderInput): Promise<string |
 
 export async function updateOrder(order: OrderMongo): Promise<string | void> {
   if (isValidId(order._id)) {
-    orderModel.updateOne({ _id: order._id }, order).exec();
+    await orderModel.updateOne({ _id: order._id }, order);
     return 'Order has been updated';
+  } else {
+    return 'Order ID is not valid'
   }
 }
