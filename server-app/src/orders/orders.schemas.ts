@@ -1,11 +1,12 @@
 import * as mongoose from 'mongoose';
 
 import { routeSchema } from '../schemas';
-import { TrackStatus } from './orders.models';
+import { TrackStatus } from '../models';
+import { OrderStatus } from './orders.models';
 
 // Order Model
 export const orderSchema = new mongoose.Schema({
-  description: String,
+  message: String,
   tracks: [{
     route: routeSchema,
     status: {
@@ -15,11 +16,11 @@ export const orderSchema = new mongoose.Schema({
     departureDate: Date,
     arrivalDate: Date
   }],
-  userId: String,
+  userLogin: String,
   price: Number,
   status: {
-    type: Boolean,
-    default: false
+    type: String,
+    default: OrderStatus.Taken
   },
   routes: [routeSchema]
 })
