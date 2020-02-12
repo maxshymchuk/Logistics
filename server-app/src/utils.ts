@@ -1,6 +1,4 @@
 import { Coordinate } from "./locations/locations.models";
-import { VehicleType } from "./vehicles/vehicles.models";
-import { getVehiclePriceRatio } from "./vehicles/vehicles.service";
 
 export function cap(str: string) {
   str = str.toLowerCase();
@@ -20,8 +18,4 @@ export function getDistanceBetween(point1: Coordinate, point2: Coordinate): numb
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   const distance = earthRadius * c;
   return distance;
-}
-
-export function computePrice(distance: number, vehicle: VehicleType): number {
-  return distance * getVehiclePriceRatio(vehicle);
 }

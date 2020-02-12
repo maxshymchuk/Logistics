@@ -4,8 +4,8 @@ import * as qs from 'qs';
 import { Order, UserOrder, OrderMongo, UserOrderInput, OrderStatus } from "./orders.models";
 import { orderSchema } from './orders.schemas';
 import { getNearestVehicle, getVehiclePriceRatio } from '../vehicles/vehicles.service';
-import { Vehicle, VehicleSpeed } from '../vehicles/vehicles.models';
-import { getDistanceBetween, computePrice, cap } from '../functions';
+import { Vehicle, VehicleSpeed, VehicleType } from '../vehicles/vehicles.models';
+import { getDistanceBetween, cap } from '../utils';
 import { locationSchema } from '../locations/locations.schemas';
 import { LocationMongo, Location } from '../locations/locations.models';
 
@@ -29,6 +29,10 @@ async function getUserOrderFromInput(userOrderInput: UserOrderInput): Promise<Us
   }
 }
 
+function getTrackNumber(): string {
+  return 'xxxx-xxxx'.replace(/[x]/g, () => (Math.random() * 36 | 0).toString(36));
+}
+
 function getArrivalDate(current: Date, hours: number) {
   return new Date(current.getTime() + hours * 3600000);
 }
@@ -41,6 +45,10 @@ async function findOrderById(id: string): Promise<Order> {
     console.log('Invalid id');
   }
   return result;
+}
+
+function computePrice(distance: number, vehicle: VehicleType): number {
+  return distance * getVehiclePriceRatio(vehicle);
 }
 
 async function isValidId(id: string): Promise<boolean> {
@@ -62,10 +70,10 @@ export async function getOrderById(id: string): Promise<Order | string> {
   }
 }
 
-export async function getOrderUserId(id: string): Promise<string | void> {
+export async function getOrderUserLogin(id: string): Promise<string> {
   if (isValidId(id)) {
-    const userId = (await findOrderById(id)).userLogin;
-    return userId;
+    const userLogin = (await findOrderById(id)).userLogin;
+    return userLogin;
   } else {
     return 'Order ID is not valid'
   }
@@ -79,7 +87,7 @@ export async function getOrderPrice(orderParams: string): Promise<string> {
   return price.toString();
 }
 
-export async function addOrder(userOrderInput: UserOrderInput): Promise<string | void> {
+export async function addOrder(userOrderInput: UserOrderInput): Promise<string> {
   const userOrder = await getUserOrderFromInput(userOrderInput);
   const distance = getDistanceBetween(userOrder.from.coordinates, userOrder.to.coordinates);
   const price = computePrice(distance, userOrder.vehicle);
@@ -105,7 +113,8 @@ export async function addOrder(userOrderInput: UserOrderInput): Promise<string |
         departureDate: departureDate,
         vehicle: vehicle
       }
-    ]
+    ],
+    trackNumber: getTrackNumber()
   }
   await orderModel.create(order, (err: Error) => err && console.log(err));
   return 'Order has been added';

@@ -15,7 +15,8 @@ export interface Order {
   userLogin: string,
   price: number,
   status: OrderStatus,
-  routes: Route[]
+  routes: Route[],
+  trackNumber: string
 }
 
 export interface OrderMongo extends mongoose.Document, Order {} 

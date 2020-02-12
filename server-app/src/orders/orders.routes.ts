@@ -19,7 +19,7 @@ router.get(`/:order_id{${config.idLength}}`, async (req: Request, res: Response)
 });
 
 router.get(`/:order_id{${config.idLength}}/user`, async (req: Request, res: Response) => {
-  const result = await orderController.getOrderUserId(req.params.order_id);
+  const result = await orderController.getOrderUserLogin(req.params.order_id);
   res.status(result ? 200 : 404).send(result);
 });
 
@@ -36,7 +36,8 @@ router.get('/price/:order_params', async (req: Request, res: Response) => {
     cargos: ['Tablet', 'Mango'],
     message: 'Be careful!'
   }
-  const result = await orderController.getOrderPrice(qs.stringify(orderParams));
+  const params = qs.stringify(orderParams);
+  const result = await orderController.getOrderPrice(params);
   res.status(200).send(result);
 });
 

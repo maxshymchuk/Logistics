@@ -9,7 +9,8 @@ const vehicleModel = mongoose.model<VehicleMongo>('vehicles', vehicleSchema);
 const orderModel = mongoose.model<OrderMongo>('orders', orderSchema);
 
 function moveDate(current: Date, hours: number): Date {
-  return new Date(current.getTime() + hours * 3600000);
+  const hourMillisec = 60 * 60 * 1000;
+  return new Date(current.getTime() + hours * hourMillisec);
 }
 
 export async function moveTimeOn(days: number): Promise<string> {

@@ -3,7 +3,7 @@ import * as mongoose from 'mongoose';
 import { Vehicle, VehicleSpeed, VehicleType, VehiclePriceRatio, VehicleMongo } from './vehicles.models';
 import { Location } from '../locations/locations.models';
 import { vehicleSchema } from './vehicles.schemas';
-import { cap } from '../functions';
+import { cap } from '../utils';
 
 const vehicleModel = mongoose.model<VehicleMongo>('vehicles', vehicleSchema);
 
@@ -14,7 +14,6 @@ export async function getVehicles(): Promise<Vehicle[]> {
 
 export async function getNearestVehicle(location: Location, vehicleType: VehicleType): Promise<Vehicle> {
   const vehicles = (await vehicleModel.find({ type: vehicleType, 'destination.name': location.name }).sort('date'));
-  console.log(vehicles)
   return vehicles[0];
 }
 

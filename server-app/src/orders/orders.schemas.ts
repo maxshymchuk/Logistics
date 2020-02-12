@@ -22,5 +22,6 @@ export const orderSchema = new mongoose.Schema({
     type: String,
     default: OrderStatus.Taken
   },
-  routes: [routeSchema]
+  routes: [routeSchema],
+  trackNumber: String
 })
