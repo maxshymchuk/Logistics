@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import './createOrder.scss';
+import './orders.scss';
 import { LocationProps } from '../models';
 
 class OrderOption extends Component<LocationProps> {

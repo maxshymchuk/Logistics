@@ -2,24 +2,29 @@ import React, { Component } from 'react';
 import VehicleItem from './VehicleItem';
 import { Vehicle } from './vehicles.models';
 import { getVehiclesData } from './vehicles.service';
+import Loader, { LoaderType } from '../Loader';
 
-class VehicleList extends Component<{}, { vehicles: Vehicle[] }> {
+class VehicleList extends Component<{}, { vehicles: Vehicle[]; loaded: boolean }> {
   state = {
-    vehicles: []
+    vehicles: [],
+    loaded: false
   };
 
   async componentDidMount() {
     const vehicles: Vehicle[] = await getVehiclesData();
-    this.setState({ vehicles });
+    this.setState({ vehicles, loaded: true });
   }
 
   render() {
     return (
-      <section className='vehicles'>
-        {this.state.vehicles.map((vehicle: Vehicle) => {
-          return <VehicleItem vehicle={vehicle} key={vehicle._id} />;
-        })}
-      </section>
+      <React.Fragment>
+        {!this.state.loaded && <Loader loaderType={LoaderType.Circle} />}
+        <section className='vehicles'>
+          {this.state.vehicles.map((vehicle: Vehicle) => {
+            return <VehicleItem vehicle={vehicle} key={vehicle._id} />;
+          })}
+        </section>
+      </React.Fragment>
     );
   }
 }

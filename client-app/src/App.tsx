@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import axios from 'axios';
 import VehicleList from './Vehicles/VehicleList';
 import UserList from './Users/UserList';
-import CreateOrder from './CreateOrder/CreateOrder';
+import CreateOrder from './Orders/Order';
 import './app.scss';
 
 axios.defaults.baseURL = 'http://localhost:3000';
@@ -14,26 +14,26 @@ class App extends Component {
       <section className='wrapper'>
         <Router>
           <section className='menu'>
-            <Link to='/'>
-              <button className='button_home'>Home</button>
+            <Link className='menu__button' to='/'>
+              Home
             </Link>
-            <Link to='/vehicles'>
-              <button className='button_vehicles'>Vehicles</button>
+            <Link className='menu__button' to='/vehicles'>
+              Vehicles
             </Link>
-            <Link to='/users'>
-              <button className='button_users'>Users</button>
+            <Link className='menu__button' to='/users'>
+              Users
             </Link>
-            <Link to='/locations'>
-              <button className='button_locations'>Locations</button>
+            <Link className='menu__button' to='/locations'>
+              Locations
             </Link>
-            <Link to='/orders'>
-              <button className='button_orders'>Orders</button>
+            <Link className='menu__button' to='/orders'>
+              Orders
             </Link>
-            <Link to='/create'>
-              <button className='button_createOrder'>Create order page</button>
+            <Link className='menu__button' to='/create'>
+              Create order page
             </Link>
-            <Link to='/track'>
-              <button className='button_trackOrder'>Track order page</button>
+            <Link className='menu__button' to='/track'>
+              Track order page
             </Link>
           </section>
           <Switch>
