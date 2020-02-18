@@ -1,0 +1,21 @@
+@import './variables.scss';
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: 'Consolas', monospace;
+}
+
+.wrapper {
+  max-width: $containerWidth;
+  margin: 0 auto;
+}
+
+.menu {
+  margin: 40px 0;
+}

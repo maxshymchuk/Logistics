@@ -1,0 +1,13 @@
+@import '../variables.scss';
+
+.users {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 20px;
+  &__item {
+    border-radius: $borderRadius;
+    box-shadow: 0 2px 5px 0 #999;
+    padding: $itemGap / 2;
+    position: relative;
+  }
+}
