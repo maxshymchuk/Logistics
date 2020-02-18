@@ -16,7 +16,9 @@ import * as vehicle from './src/vehicles/vehicles.routes';
 
 export const app = express();
 
-mongoose.connect('mongodb://127.0.0.1:27017/Logistics', {useNewUrlParser: true});
+mongoose.connect('mongodb://127.0.0.1:27017/Logistics', {
+  useNewUrlParser: true
+});
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -31,7 +33,7 @@ app.use('/vehicles', vehicle.router);
 
 // catch 404 and forward to error handler
 // app.use(function(req, res, next) {
-  // next(createError(404));
+// next(createError(404));
 // });
 
 app.use(function(err: any, req: express.Request, res: express.Response) {
@@ -56,9 +58,7 @@ function onError(error: any) {
   if (error.syscall !== 'listen') {
     throw error;
   }
-  const bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+  const bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
   switch (error.code) {
     case 'EACCES':
       console.error(bind + ' requires elevated privileges');
@@ -73,9 +73,7 @@ function onError(error: any) {
 
 function onListening() {
   const addr = server.address();
-  const bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
+  const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
 
