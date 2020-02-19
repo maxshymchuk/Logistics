@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './orders.scss';
-import { OrderProps } from './orders.models';
-import { getOrderPrice } from './orders.service';
-import Loader, { LoaderType } from '../Loader';
+import { OrderProps } from '../../models/orders.models';
+import { getOrderPrice } from '../../services/orders.service';
+import Loader, { LoaderType } from '../../components/Loader/Loader';
 
 const modalStyle: React.CSSProperties = {
   position: 'absolute',
@@ -12,7 +12,8 @@ const modalStyle: React.CSSProperties = {
   bottom: '0',
   display: 'flex',
   justifyContent: 'center',
-  alignItems: 'center'
+  alignItems: 'center',
+  backgroundColor: '#FFFFFF99'
 };
 
 class OrderPriceModal extends Component<OrderProps> {
@@ -29,14 +30,11 @@ class OrderPriceModal extends Component<OrderProps> {
   render() {
     return (
       <div style={modalStyle}>
-        {!this.state.loaded ? (
-          <Loader loaderType={LoaderType.Circle} />
-        ) : (
-          <div style={{ background: 'yellow' }}>
-            <article>Price</article>
-            <p>{this.state.price}</p>
-          </div>
-        )}
+        <div className='order-modal'>
+          <article className='title'>Price</article>
+          {!this.state.loaded ? <Loader loaderType={LoaderType.Linear} /> : <p className='price'>{this.state.price}</p>}
+          <button className='submitButton'>Ok</button>
+        </div>
       </div>
     );
   }

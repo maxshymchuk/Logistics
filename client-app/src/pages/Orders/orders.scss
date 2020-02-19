@@ -1,4 +1,4 @@
-@import '../variables.scss';
+@import '../../styles/variables.scss';
 
 .order {
   width: 400px;
@@ -11,15 +11,7 @@
     grid-template-rows: repeat(2, 1fr);
     grid-template-columns: repeat(2, 1fr);
     grid-gap: $itemGap / 2;
-    span {
-      display: block;
-    }
-    input,
-    select {
-      width: 100%;
-      height: $itemHeight;
-      box-sizing: border-box;
-    }
+    align-items: end;
   }
   &-message {
     grid-column: 1 / 3;
@@ -30,5 +22,18 @@
       resize: vertical;
       min-height: 40px;
     }
+  }
+}
+
+.order-modal {
+  box-shadow: $boxShadow;
+  border-radius: $borderRadius;
+  padding: $itemGap / 2;
+  .title {
+    font-weight: bold;
+    font-size: 26px;
+  }
+  .price:after {
+    content: '$';
   }
 }

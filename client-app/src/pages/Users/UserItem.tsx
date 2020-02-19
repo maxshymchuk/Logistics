@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { UserProps } from './users.models';
+import { UserProps } from '../../models/users.models';
 import './users.scss';
 
 class UserItem extends Component<UserProps> {

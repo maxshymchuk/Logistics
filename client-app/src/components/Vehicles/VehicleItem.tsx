@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { VehicleProps } from './vehicles.models';
+import { VehicleProps } from '../../models/vehicles.models';
 import './vehicles.scss';
 
 class VehicleItem extends Component<VehicleProps> {

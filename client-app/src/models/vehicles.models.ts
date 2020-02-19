@@ -1,4 +1,4 @@
-import { Location } from '../models';
+import { Location } from './locations.models';
 
 export type VehicleProps = {
   vehicle: Vehicle;

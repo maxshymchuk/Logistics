@@ -1,0 +1,13 @@
+@import '../../styles/variables.scss';
+
+.menu {
+  margin: 40px auto;
+  &__button {
+    display: inline-block;
+    margin-right: $itemGap;
+    padding: 2px 10px;
+    text-decoration: none;
+    border-radius: $borderRadius;
+    box-shadow: $boxShadow;
+  }
+}

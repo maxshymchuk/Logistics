@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as qs from 'qs';
-import { InputState } from './Order';
+import { InputState } from '../pages/Orders/Order';
 
 export async function getOrderPrice(order: InputState) {
   const params = qs.stringify(order);

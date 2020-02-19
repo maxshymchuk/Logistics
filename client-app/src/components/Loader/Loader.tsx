@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import './loader.scss';
+
 export enum LoaderType {
   Circle,
   Linear

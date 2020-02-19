@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import VehicleItem from './VehicleItem';
-import { Vehicle } from './vehicles.models';
-import { getVehiclesData } from './vehicles.service';
-import Loader, { LoaderType } from '../Loader';
+import { Vehicle } from '../../models/vehicles.models';
+import { getVehiclesData } from '../../services/vehicles.service';
+import Loader, { LoaderType } from '../Loader/Loader';
 
 class VehicleList extends Component<{}, { vehicles: Vehicle[]; loaded: boolean }> {
   state = {

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import UserItem from './UserItem';
-import { User } from './users.models';
-import { getUsersData } from './users.service';
-import Loader, { LoaderType } from '../Loader';
+import { User } from '../../models/users.models';
+import { getUsersData } from '../../services/users.service';
+import Loader, { LoaderType } from '../../components/Loader/Loader';
 
 class UsersList extends Component<{}, { users: User[]; loaded: boolean }> {
   state = {

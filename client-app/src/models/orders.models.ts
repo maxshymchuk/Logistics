@@ -1,4 +1,4 @@
-import { InputState } from './Order';
+import { InputState } from '../pages/Orders/Order';
 
 export type OrderProps = {
   order: InputState;
