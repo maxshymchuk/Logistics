@@ -39,24 +39,15 @@ router.get('/price', (req: Request, res: Response) => {
 router.get('/price/:order_params', async (req: Request, res: Response) => {
   console.log(req.params.order_params);
   const result = await orderController.getOrderPrice(req.params.order_params);
-  res
-    .header('Access-Control-Allow-Origin', '*')
-    .status(200)
-    .send(result);
+  res.status(200).send(result);
 });
 
 router.post('/', async (req: Request, res: Response) => {
   const result = await orderController.addOrder(req.body);
-  res
-    .header('Access-Control-Allow-Origin', '*')
-    .status(result ? 201 : 404)
-    .send(result);
+  res.status(result ? 201 : 404).send(result);
 });
 
 router.put(`/:order_id{${config.idLength}}`, async (req: Request, res: Response) => {
   const result = await orderController.updateOrder(req.body);
-  res
-    .header('Access-Control-Allow-Origin', '*')
-    .status(result ? 200 : 404)
-    .send(result);
+  res.status(result ? 200 : 404).send(result);
 });

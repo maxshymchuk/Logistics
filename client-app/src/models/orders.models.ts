@@ -1,9 +1,3 @@
-import { InputState } from './Order';
-
-export type OrderProps = {
-  order: InputState;
-};
-
 export type Order = {
   from: string;
   to: string;

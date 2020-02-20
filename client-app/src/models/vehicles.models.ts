@@ -1,8 +1,4 @@
-import { Location } from '../models';
-
-export type VehicleProps = {
-  vehicle: Vehicle;
-};
+import { Location } from './locations.models';
 
 export enum VehicleType {
   Plane = 'Plane',

@@ -1,13 +1,13 @@
-@import '../variables.scss';
+@import '../../styles/variables.scss';
 
 .users {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-gap: 20px;
+  grid-gap: $item-gap;
   &__item {
-    border-radius: $borderRadius;
+    border-radius: $border-radius;
     box-shadow: 0 2px 5px 0 #999;
-    padding: $itemGap / 2;
+    padding: $item-gap / 2;
     position: relative;
   }
 }
