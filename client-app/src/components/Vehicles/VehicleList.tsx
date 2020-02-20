@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import VehicleItem from './VehicleItem';
 import { Vehicle } from '../../models/vehicles.models';
 import { getVehiclesData } from '../../services/vehicles.service';
-import Loader, { LoaderType } from '../Loader/Loader';
+import { CircularProgress } from '@material-ui/core';
 
 class VehicleList extends Component<{}, { vehicles: Vehicle[]; loaded: boolean }> {
   state = {
@@ -18,7 +18,7 @@ class VehicleList extends Component<{}, { vehicles: Vehicle[]; loaded: boolean }
   render() {
     return (
       <React.Fragment>
-        {!this.state.loaded && <Loader loaderType={LoaderType.Circle} />}
+        {!this.state.loaded && <CircularProgress />}
         <section className='vehicles'>
           {this.state.vehicles.map((vehicle: Vehicle) => {
             return <VehicleItem vehicle={vehicle} key={vehicle._id} />;

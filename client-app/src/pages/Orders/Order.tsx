@@ -1,12 +1,14 @@
-import React, { Component, FormEvent } from 'react';
+import React, { Component } from 'react';
 import { Location } from '../../models/locations.models';
 import { getLocationsData } from '../../services/locations.service';
-import OrderPriceModal from './OrderPriceModal';
-import Loader, { LoaderType } from '../../components/Loader/Loader';
+import { createOrder } from '../../services/orders.service';
+import OrderPrice from './OrderPrice';
 
 import './orders.scss';
-import FormSelect from '../../components/Form/FormSelect/FormSelect';
-import FormInput from '../../components/Form/FormInput/FormInput';
+import { Button, Card, TextField, CircularProgress, Box, Divider } from '@material-ui/core';
+import ControlsSelect from '../../components/Controls/ControlsSelect';
+import { VehicleType } from '../../models/vehicles.models';
+import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
 
 export type InputState = {
   from: string;
@@ -18,16 +20,22 @@ export type InputState = {
 
 type State = {
   locations: Location[];
+  trackNumber: string;
   isLoaded: boolean;
-  isChecked: boolean;
+  isPriceChecked: boolean;
+  isOrderCreated: boolean;
+  isError: boolean;
   input: InputState;
 };
 
 class Order extends Component<{}, State> {
   state = {
     locations: [],
+    trackNumber: '',
     isLoaded: false,
-    isChecked: false,
+    isPriceChecked: false,
+    isOrderCreated: false,
+    isError: false,
 
     input: {
       from: '',
@@ -44,82 +52,136 @@ class Order extends Component<{}, State> {
   }
 
   handleChange = (event: any) => {
-    console.log(event.currentTarget);
-    // switch (event.currentTarget.parentElement?.className) {
-    //   case 'order-from': {
-    //     const element = event.currentTarget as HTMLSelectElement;
-    //     this.setState(state => ({
-    //       input: { ...state.input, from: element.value }
-    //     }));
-    //     break;
-    //   }
-    //   case 'order-to': {
-    //     const element = event.currentTarget as HTMLSelectElement;
-    //     this.setState(state => ({
-    //       input: { ...state.input, ['to']: element.value }
-    //     }));
-    //     break;
-    //   }
-    //   case 'order-vehicle': {
-    //     const element = event.currentTarget as HTMLSelectElement;
-    //     this.setState(state => ({
-    //       input: { ...state.input, ['vehicle']: element.value }
-    //     }));
-    //     break;
-    //   }
-    //   case 'order-cargos': {
-    //     const element = event.currentTarget as HTMLInputElement;
-    //     this.setState(state => ({
-    //       input: { ...state.input, ['cargos']: element.value }
-    //     }));
-    //     break;
-    //   }
-    //   case 'order-message': {
-    //     const element = event.currentTarget as HTMLTextAreaElement;
-    //     this.setState(state => ({
-    //       input: { ...state.input, ['message']: element.value }
-    //     }));
-    //     break;
-    //   }
-    // }
+    const value = event.target.value;
+    const property: 'from' | 'to' | 'vehicle' | 'cargos' | 'message' = event.target.name;
+    this.setState(state => ({
+      input: { ...state.input, [property]: value },
+      isError: false,
+      isPriceChecked: false
+    }));
   };
 
-  handleSubmit(event: FormEvent) {
-    event.preventDefault();
-  }
+  showPrice = () => {
+    if (this.state.input.from && this.state.input.to && this.state.input.vehicle) {
+      this.setState(state => ({
+        isPriceChecked: true,
+        isError: false
+      }));
+    } else {
+      this.setState(state => ({
+        isError: true
+      }));
+    }
+  };
 
-  showPrice() {
-    this.setState({ isChecked: true });
-  }
+  createOrder = async () => {
+    const trackNumber = await createOrder(this.state.input);
+    this.setState(state => ({
+      isOrderCreated: true,
+      trackNumber: trackNumber
+    }));
+  };
 
   render() {
+    const vehicleList = Object.keys(VehicleType).map(i => {
+      return { name: i };
+    });
     return (
-      <React.Fragment>
-        {this.state.isChecked && <OrderPriceModal order={this.state.input} />}
-        <form className='order' onSubmit={this.handleSubmit}>
-          <section className='order-inputs'>
-            {!this.state.isLoaded ? (
-              <Loader loaderType={LoaderType.Linear} />
-            ) : (
-              <FormSelect label='From' options={this.state.locations} />
-            )}
-            {!this.state.isLoaded ? (
-              <Loader loaderType={LoaderType.Linear} />
-            ) : (
-              <FormSelect label='To' options={this.state.locations} />
-            )}
-            <FormSelect label='Vehicle' options={['Car', 'Plane', 'Train']} />
-            <label className='order-cargos'>
-              <FormInput label='Cargos' />
-            </label>
-            <label className='order-message'>
-              <span>Message</span>
-              <textarea onChange={this.handleChange} />
-            </label>
+      <Card className='order'>
+        {!this.state.isOrderCreated ? (
+          <form>
+            <section className='order-inputs'>
+              <div className='order-from'>
+                {!this.state.isLoaded ? (
+                  <Box className='progress-bar'>
+                    <CircularProgress />
+                  </Box>
+                ) : (
+                  <ControlsSelect
+                    isError={this.state.isError}
+                    label='From'
+                    options={this.state.locations}
+                    valueProp='_id'
+                    textProp='name'
+                    onChange={this.handleChange}
+                  />
+                )}
+              </div>
+              <div className='order-to'>
+                {!this.state.isLoaded ? (
+                  <Box className='progress-bar'>
+                    <CircularProgress />
+                  </Box>
+                ) : (
+                  <ControlsSelect
+                    isError={this.state.isError}
+                    label='To'
+                    options={this.state.locations}
+                    valueProp='_id'
+                    textProp='name'
+                    onChange={this.handleChange}
+                  />
+                )}
+              </div>
+              <div className='order-vehicle'>
+                <ControlsSelect
+                  isError={this.state.isError}
+                  label='Vehicle'
+                  options={vehicleList}
+                  valueProp='name'
+                  textProp='name'
+                  onChange={this.handleChange}
+                />
+              </div>
+              <div className='order-cargos'>
+                <TextField name='cargos' label='Cargos' onChange={this.handleChange} fullWidth />
+              </div>
+              <div className='order-message'>
+                <TextField
+                  name='message'
+                  label='Message'
+                  variant='outlined'
+                  onChange={this.handleChange}
+                  multiline
+                  fullWidth
+                />
+              </div>
+              {!this.state.isPriceChecked && (
+                <div className='order-button-check'>
+                  <Button variant='outlined' color='primary' onClick={this.showPrice} fullWidth>
+                    Check price
+                  </Button>
+                </div>
+              )}
+              {this.state.isPriceChecked && (
+                <React.Fragment>
+                  <div className='order-price'>
+                    <OrderPrice order={this.state.input} />
+                  </div>
+                  <div className='order-button-confirm'>
+                    <Button variant='contained' color='primary' onClick={this.createOrder} fullWidth>
+                      Create order
+                    </Button>
+                  </div>
+                </React.Fragment>
+              )}
+            </section>
+          </form>
+        ) : (
+          <section className='order-created'>
+            <div className='order-congrats'>
+              <CheckCircleOutlineOutlinedIcon style={{ fontSize: '5rem' }} />
+              <span className='title'>Order has been created</span>
+            </div>
+            <Divider className='order-divider' />
+            <div className='order-track'>
+              <article className='title'>Your track number</article>
+              <span className='track'>{this.state.trackNumber}</span>
+              <span className='help'>Use this code to track your parcels</span>
+            </div>
           </section>
-          <input type='submit' value='Check' onClick={() => this.showPrice()} />
-        </form>
-      </React.Fragment>
+        )}
+      </Card>
     );
   }
 }

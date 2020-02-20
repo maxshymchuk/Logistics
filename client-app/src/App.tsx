@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import axios from 'axios';
 import VehicleList from './components/Vehicles/VehicleList';
 import UserList from './pages/Users/UserList';
@@ -12,9 +12,9 @@ axios.defaults.baseURL = 'http://localhost:3000';
 class App extends Component {
   render() {
     return (
-      <section className='wrapper'>
-        <Router>
-          <Menu />
+      <Router>
+        <Menu />
+        <section className='wrapper'>
           <Switch>
             <Route exact path='/'></Route>
             <Route path='/vehicles' component={VehicleList} />
@@ -24,8 +24,8 @@ class App extends Component {
             <Route path='/create' component={CreateOrder} />
             <Route path='/track'>{/* <Dashboard /> */}</Route>
           </Switch>
-        </Router>
-      </section>
+        </section>
+      </Router>
     );
   }
 }

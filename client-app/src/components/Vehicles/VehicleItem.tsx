@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
-import { VehicleProps } from '../../models/vehicles.models';
 import './vehicles.scss';
+import { Vehicle } from '../../models/vehicles.models';
 
-class VehicleItem extends Component<VehicleProps> {
+type VehicleItemProps = {
+  vehicle: Vehicle;
+};
+
+class VehicleItem extends Component<VehicleItemProps> {
   render() {
     const { destination, type, date } = this.props.vehicle;
     return (

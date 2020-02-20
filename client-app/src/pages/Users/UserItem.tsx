@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
-import { UserProps } from '../../models/users.models';
 import './users.scss';
+import { User } from '../../models/users.models';
 
-class UserItem extends Component<UserProps> {
+type UserItemProps = {
+  user: User;
+};
+
+class UserItem extends Component<UserItemProps> {
   render() {
     const { name, surname, birthday, email, login, phone } = this.props.user;
     return (

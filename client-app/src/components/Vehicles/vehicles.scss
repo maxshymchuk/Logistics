@@ -3,11 +3,11 @@
 .vehicles {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-gap: $itemGap;
+  grid-gap: $item-gap;
   &__item {
     border-radius: 4px;
-    box-shadow: $boxShadow;
-    padding: $itemGap / 2;
+    box-shadow: $box-shadow;
+    padding: $item-gap / 2;
     position: relative;
   }
   .vehicle-image {

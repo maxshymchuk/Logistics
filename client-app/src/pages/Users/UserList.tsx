@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import UserItem from './UserItem';
 import { User } from '../../models/users.models';
 import { getUsersData } from '../../services/users.service';
-import Loader, { LoaderType } from '../../components/Loader/Loader';
+import { CircularProgress } from '@material-ui/core';
 
 class UsersList extends Component<{}, { users: User[]; loaded: boolean }> {
   state = {
@@ -18,7 +18,7 @@ class UsersList extends Component<{}, { users: User[]; loaded: boolean }> {
   render() {
     return (
       <React.Fragment>
-        {!this.state.loaded && <Loader loaderType={LoaderType.Circle} />}
+        {!this.state.loaded && <CircularProgress />}
         <section className='users'>
           {this.state.users.map((user: User) => {
             return <UserItem user={user} key={user._id} />;
