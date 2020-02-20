@@ -5,8 +5,5 @@ export const router = Router();
 
 router.get('/', async (req: Request, res: Response) => {
   const result = await vehicleController.getVehicles();
-  res
-    .header('Access-Control-Allow-Origin', '*')
-    .status(result ? 200 : 404)
-    .send(result);
+  res.status(result ? 200 : 404).send(result);
 });
