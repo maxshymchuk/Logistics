@@ -5,6 +5,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import './menu.scss';
+import { TextField } from '@material-ui/core';
+import TimeChanger from '../TimeChanger/TimeChanger';
 
 class Menu extends Component {
   render() {
@@ -36,6 +38,7 @@ class Menu extends Component {
             <Link to='/track'>
               <Button color='inherit'>Track order page</Button>
             </Link>
+            <TimeChanger />
           </Toolbar>
         </AppBar>
       </React.Fragment>
