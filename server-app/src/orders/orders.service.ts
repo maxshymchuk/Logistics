@@ -1,13 +1,13 @@
 import * as mongoose from 'mongoose';
 import * as qs from 'qs';
-
-import { Order, UserOrder, OrderMongo, UserOrderInput, OrderStatus } from './orders.models';
-import { orderSchema } from './orders.schemas';
+import { cap, getDistanceBetween } from '../utils';
+import { ErrorType } from '../models';
 import { getNearestVehicle, getVehiclePriceRatio } from '../vehicles/vehicles.service';
-import { Vehicle, VehicleSpeed, VehicleType } from '../vehicles/vehicles.models';
-import { getDistanceBetween, cap } from '../utils';
+import { Location, LocationMongo } from '../locations/locations.models';
 import { locationSchema } from '../locations/locations.schemas';
-import { LocationMongo, Location } from '../locations/locations.models';
+import { Order, OrderMongo, OrderStatus, UserOrder, UserOrderInput } from './orders.models';
+import { orderSchema } from './orders.schemas';
+import { Vehicle, VehicleSpeed, VehicleType } from '../vehicles/vehicles.models';
 
 const orderModel = mongoose.model<OrderMongo>('orders', orderSchema);
 const locationModel = mongoose.model<LocationMongo>('locations', locationSchema);
@@ -37,14 +37,9 @@ function getArrivalDate(current: Date, hours: number) {
   return new Date(current.getTime() + hours * 3600000);
 }
 
-async function findOrderById(id: string): Promise<Order> {
-  let result: Order;
-  try {
-    result = await orderModel.findOne({ _id: id });
-  } catch (e) {
-    console.log('Invalid id');
-  }
-  return result;
+async function findOrderById(_id: string) {
+  const order = await orderModel.findOne({ _id }).catch<Order>(e => console.log(e));
+  return order;
 }
 
 function computePrice(distance: number, vehicle: VehicleType): number {
@@ -52,32 +47,24 @@ function computePrice(distance: number, vehicle: VehicleType): number {
   return +((distance * getVehiclePriceRatio(vehicle)) / METERS_PER_KILOMETER).toFixed(2);
 }
 
-async function isValidId(id: string): Promise<boolean> {
-  const order = await findOrderById(id);
-  return !!order;
-}
-
-export async function getOrders(): Promise<Order[]> {
-  const orders = await orderModel.find();
+export async function getOrders() {
+  const orders = await orderModel.find().catch<Order[]>(e => console.log(e));
   return orders;
 }
 
-export async function getOrderById(id: string): Promise<Order | string> {
-  if (isValidId(id)) {
-    const order = await findOrderById(id);
-    return order;
-  } else {
-    return 'Order ID is not valid';
-  }
+export async function getOrderById(id: string) {
+  const order = await findOrderById(id);
+  return order;
 }
 
-export async function getOrderUserLogin(id: string): Promise<string> {
-  if (isValidId(id)) {
-    const userLogin = (await findOrderById(id)).userLogin;
-    return userLogin;
-  } else {
-    return 'Order ID is not valid';
-  }
+export async function getOrderByTrackNumber(trackNumber: string) {
+  const order = await orderModel.findOne({ trackNumber }).catch<Order>(e => console.log(e));
+  return order;
+}
+
+export async function getOrderUserLogin(id: string) {
+  const userLogin = (await findOrderById(id))?.userLogin;
+  return userLogin;
 }
 
 export async function getOrderPrice(orderParams: string): Promise<string> {
@@ -123,11 +110,22 @@ export async function addOrder(userOrderInput: UserOrderInput): Promise<string> 
   return trackNumber;
 }
 
-export async function updateOrder(order: OrderMongo): Promise<string | void> {
-  if (isValidId(order._id)) {
-    await orderModel.updateOne({ _id: order._id }, order);
-    return 'Order has been updated';
+export async function deleteOrderById(_id: string) {
+  const tempOrder = await findOrderById(_id);
+  if (tempOrder) {
+    await orderModel.deleteOne({ _id }).catch(e => console.log(e));
+    return `Order ${_id} deleted`;
   } else {
     return 'Order ID is not valid';
+  }
+}
+
+export async function updateOrder(order: OrderMongo) {
+  const tempOrder = await findOrderById(order._id);
+  if (tempOrder) {
+    await orderModel.updateOne({ _id: order._id }, order).catch(e => console.log(e));
+    return 'Order has been updated';
+  } else {
+    return 'Order not found';
   }
 }
