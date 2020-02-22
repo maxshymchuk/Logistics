@@ -24,7 +24,11 @@ type State = {
   isLoaded: boolean;
   isPriceChecked: boolean;
   isOrderCreated: boolean;
-  isError: boolean;
+  isError: {
+    from: boolean;
+    to: boolean;
+    vehicle: boolean;
+  };
   input: InputState;
 };
 
@@ -35,7 +39,11 @@ class Order extends Component<{}, State> {
     isLoaded: false,
     isPriceChecked: false,
     isOrderCreated: false,
-    isError: false,
+    isError: {
+      from: false,
+      to: false,
+      vehicle: false
+    },
 
     input: {
       from: '',
@@ -56,7 +64,7 @@ class Order extends Component<{}, State> {
     const property: 'from' | 'to' | 'vehicle' | 'cargos' | 'message' = event.target.name;
     this.setState(state => ({
       input: { ...state.input, [property]: value },
-      isError: false,
+      isError: { ...state.isError, [property]: false },
       isPriceChecked: false
     }));
   };
@@ -65,11 +73,19 @@ class Order extends Component<{}, State> {
     if (this.state.input.from && this.state.input.to && this.state.input.vehicle) {
       this.setState(state => ({
         isPriceChecked: true,
-        isError: false
+        isError: {
+          from: false,
+          to: false,
+          vehicle: false
+        }
       }));
     } else {
       this.setState(state => ({
-        isError: true
+        isError: {
+          from: !this.state.input.from,
+          to: !this.state.input.to,
+          vehicle: !this.state.input.vehicle
+        }
       }));
     }
   };
@@ -98,7 +114,7 @@ class Order extends Component<{}, State> {
                   </Box>
                 ) : (
                   <ControlsSelect
-                    isError={this.state.isError}
+                    isError={this.state.isError.from}
                     label='From'
                     options={this.state.locations}
                     valueProp='_id'
@@ -114,7 +130,7 @@ class Order extends Component<{}, State> {
                   </Box>
                 ) : (
                   <ControlsSelect
-                    isError={this.state.isError}
+                    isError={this.state.isError.to}
                     label='To'
                     options={this.state.locations}
                     valueProp='_id'
@@ -125,7 +141,7 @@ class Order extends Component<{}, State> {
               </div>
               <div className='order-vehicle'>
                 <ControlsSelect
-                  isError={this.state.isError}
+                  isError={this.state.isError.vehicle}
                   label='Vehicle'
                   options={vehicleList}
                   valueProp='name'

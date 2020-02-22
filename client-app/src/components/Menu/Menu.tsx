@@ -5,8 +5,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import './menu.scss';
-import { TextField } from '@material-ui/core';
-import TimeChanger from '../TimeChanger/TimeChanger';
+import TimeChanger from './components/TimeChanger/TimeChanger';
 
 class Menu extends Component {
   render() {

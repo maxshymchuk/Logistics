@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, TextField } from '@material-ui/core';
 import './timeChanger.scss';
-import { changeTime } from '../../services/timeChanger.service';
+import { changeTime } from '../../../../services/timeChanger.service';
 import cogoToast from 'cogo-toast';
 
 class TimeChanger extends Component {
