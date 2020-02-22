@@ -1,23 +1,16 @@
-import { Router, Request, Response } from 'express';
 import * as userController from './users.service';
-import { config } from '../config';
+import { Request, Response, Router } from 'express';
 
 export const router = Router();
 
 router.get('/', async (req: Request, res: Response) => {
   const result = await userController.getUsers();
-  res
-    .header('Access-Control-Allow-Origin', '*')
-    .status(result ? 200 : 404)
-    .send(result);
+  res.status(result ? 200 : 404).send(result);
 });
 
-router.get(`/:user_id{${config.idLength}}`, async (req: Request, res: Response) => {
+router.get('/:user_id', async (req: Request, res: Response) => {
   const result = await userController.getUserById(req.params.user_id);
-  res
-    .header('Access-Control-Allow-Origin', '*')
-    .status(result ? 200 : 404)
-    .send(result);
+  res.status(result ? 200 : 404).send(result);
 });
 
 router.post('/', async (req: Request, res: Response) => {
@@ -30,7 +23,7 @@ router.post('/signin', async (req: Request, res: Response) => {
   // res.status(result ? 200 : 404).send(result);
 });
 
-router.delete(`/:user_id{${config.idLength}}`, async (req: Request, res: Response) => {
+router.delete('/:user_id', async (req: Request, res: Response) => {
   const result = await userController.deleteUserById(req.params.user_id);
   res.status(result ? 200 : 403).send(result);
 });
