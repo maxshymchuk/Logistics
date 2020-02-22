@@ -1,39 +1,24 @@
 import * as mongoose from 'mongoose';
-
-import { User, Autorization, UserMongo } from './users.models';
+import { Autorization, User, UserMongo } from './users.models';
 import { userSchema } from './users.schemas';
 
 const userModel = mongoose.model<UserMongo>('users', userSchema);
 
-async function findUserById(id: string): Promise<User> {
-  let result: User;
-  try {
-    result = await userModel.findOne({ _id: id, isAdmin: false });
-  } catch (e) {
-    console.log('Invalid id');
-  }
-  return result;
+async function findUserById(_id: string) {
+  const order = await userModel.findOne({ _id }).catch<User>(e => console.log(e));
+  return order;
 }
 
-async function isValidId(id: string): Promise<boolean> {
-  const user = await findUserById(id);
-  return !!user;
-}
-
-export async function getUsers(): Promise<User[]> {
-  const users = await userModel.find({ isAdmin: false });
+export async function getUsers() {
+  const users = await userModel.find({ isAdmin: false }).catch<User[]>(e => console.log(e));
   return users;
 }
 
 export async function getUserById(id: string): Promise<User | string> {
-  if (isValidId(id)) {
-    const result = await findUserById(id);
-    return result;
-  } else {
-    return 'User ID is not valid';
-  }
+  const result = await findUserById(id);
+  return result;
 }
-  
+
 export async function addUser(user: User): Promise<string> {
   const foundUser = await userModel.findOne({ login: user.login });
   if (foundUser) {
@@ -46,7 +31,7 @@ export async function addUser(user: User): Promise<string> {
 
 export async function authorizeUser(user: Autorization): Promise<void> {
   // const foundedUser: User = await userModel.findOne({ login: user.login });
-  // return (foundedUser.password === user.password) ? 
+  // return (foundedUser.password === user.password) ?
   //   /* auth, */ {
   //     content: 'User login',
   //     code: 200
@@ -56,17 +41,19 @@ export async function authorizeUser(user: Autorization): Promise<void> {
   //   }
 }
 
-export async function deleteUserById(id: string): Promise<string> {
-  if (isValidId(id)) {
-    await userModel.deleteOne({ _id: id });
-    return `User ${id} deleted`;
+export async function deleteUserById(_id: string) {
+  const tempUser = await findUserById(_id);
+  if (tempUser) {
+    await userModel.deleteOne({ _id });
+    return `User ${_id} deleted`;
   } else {
     return 'User ID is not valid';
   }
 }
-  
-export async function updateUser(user: UserMongo): Promise<string> {
-  if (isValidId(user._id)) {
+
+export async function updateUser(user: UserMongo) {
+  const tempUser = await findUserById(user._id);
+  if (tempUser) {
     await userModel.updateOne({ _id: user._id }, user);
     return `User ${user._id} updated`;
   } else {

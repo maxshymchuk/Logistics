@@ -1,7 +1,10 @@
 import { Location } from './locations/locations.models';
 import { Vehicle } from './vehicles/vehicles.models';
 
-export type CallbackType<T> = (err: any, res: T) => void;
+export type ErrorType<T> = {
+  data?: T;
+  error?: string;
+};
 
 export type Route = {
   startLocation: Location;

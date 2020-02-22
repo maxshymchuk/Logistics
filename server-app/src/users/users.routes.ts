@@ -18,11 +18,6 @@ router.post('/', async (req: Request, res: Response) => {
   res.status(result ? 200 : 403).send(result);
 });
 
-router.post('/signin', async (req: Request, res: Response) => {
-  // const result = await userController.authorizeUser(req.body);
-  // res.status(result ? 200 : 404).send(result);
-});
-
 router.delete('/:user_id', async (req: Request, res: Response) => {
   const result = await userController.deleteUserById(req.params.user_id);
   res.status(result ? 200 : 403).send(result);
