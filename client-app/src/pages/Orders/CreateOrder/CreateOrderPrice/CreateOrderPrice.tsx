@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styles from './createOrderPrice.module.scss';
-import { Box, LinearProgress } from '@material-ui/core';
+import { LinearProgress } from '@material-ui/core';
 import { getOrderPrice } from '../../../../services/orders.service';
 import { OrderUserInput } from '../../../../models/orders.models';
 

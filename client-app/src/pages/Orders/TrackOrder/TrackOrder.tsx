@@ -37,11 +37,13 @@ class TrackOrder extends Component<{}, TrackOrderState> {
       this.setState(state => ({
         isTrackFound: true,
         isClicked: false,
-        order: res
+        order: res,
+        trackNumber: ''
       }));
     } else {
       this.setState(state => ({
-        isClicked: false
+        isClicked: false,
+        isTrackFound: false
       }));
       cogoToast.error(res, {
         hideAfter: 2

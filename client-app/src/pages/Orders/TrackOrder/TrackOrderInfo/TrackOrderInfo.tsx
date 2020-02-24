@@ -37,15 +37,14 @@ class TrackOrderInfo extends Component<TrackOrderInfoProps, TrackOrderInfoState>
   };
 
   handleClick = (listType: ListType) => {
-    switch (listType) {
-      case ListType.Routes:
-        this.setState(state => ({
-          isRoutesOpen: !this.state.isRoutesOpen
-        }));
-      case ListType.Tracks:
-        this.setState(state => ({
-          isTracksOpen: !this.state.isTracksOpen
-        }));
+    if (listType === ListType.Routes) {
+      this.setState(state => ({
+        isRoutesOpen: !state.isRoutesOpen
+      }));
+    } else {
+      this.setState(state => ({
+        isTracksOpen: !state.isTracksOpen
+      }));
     }
   };
 
@@ -53,7 +52,7 @@ class TrackOrderInfo extends Component<TrackOrderInfoProps, TrackOrderInfoState>
     const routePath = `${route.startLocation.name} -> ${route.endLocation.name}`;
     const date = new Date(route.departureDate).toLocaleString();
     return (
-      <ListItem button className={styles.nested}>
+      <ListItem key={route._id} button className={styles.nested}>
         <ListItemText primary={routePath} />
         <ListItemText primary={date} />
       </ListItem>
@@ -73,7 +72,6 @@ class TrackOrderInfo extends Component<TrackOrderInfoProps, TrackOrderInfoState>
   }
 
   render() {
-    console.log(this.props.order);
     const { message, tracks, price, status, routes, trackNumber } = this.props.order;
     return (
       <Card className={styles.order}>
