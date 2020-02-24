@@ -1,7 +1,6 @@
 import * as mongoose from 'mongoose';
 import * as qs from 'qs';
 import { cap, getDistanceBetween } from '../utils';
-import { ErrorType } from '../models';
 import { getNearestVehicle, getVehiclePriceRatio } from '../vehicles/vehicles.service';
 import { Location, LocationMongo } from '../locations/locations.models';
 import { locationSchema } from '../locations/locations.schemas';
