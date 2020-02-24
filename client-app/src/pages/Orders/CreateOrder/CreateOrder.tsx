@@ -74,9 +74,9 @@ class CreateOrder extends Component<{}, CreateOrderState> {
     } else {
       this.setState(state => ({
         isError: {
-          from: !this.state.input.from,
-          to: !this.state.input.to,
-          vehicle: !this.state.input.vehicle
+          from: !state.input.from,
+          to: !state.input.to,
+          vehicle: !state.input.vehicle
         }
       }));
     }
