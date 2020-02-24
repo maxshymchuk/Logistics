@@ -1,0 +1,41 @@
+@import '../../../../styles/variables.scss';
+@import '../../../../styles/mixins.scss';
+
+.order {
+  display: grid;
+  grid-gap: $item-gap;
+  width: $default-card-width;
+  margin: $item-gap auto;
+  padding: $item-gap;
+  .title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 2rem;
+  }
+}
+
+.track-number {
+  color: $accent-color;
+  font-family: $font-monospace;
+  &:before {
+    content: '#';
+    font-size: 1rem;
+  }
+}
+
+.row {
+  @include filled;
+  padding-left: $item-gap;
+  .nested {
+    padding-left: 2 * $item-gap;
+  }
+}
+
+.test {
+  padding-left: $item-gap;
+}
+
+.MenuItem {
+  background-color: red;
+}

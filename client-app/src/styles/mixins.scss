@@ -1,0 +1,5 @@
+@mixin filled {
+  border-radius: $border-radius;
+  background-color: $disabled-color;
+  padding: $item-gap / 2 $item-gap;
+}

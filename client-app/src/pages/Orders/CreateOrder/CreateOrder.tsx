@@ -1,24 +1,16 @@
-import React, { Component } from 'react';
-import { Location } from '../../models/locations.models';
-import { getLocationsData } from '../../services/locations.service';
-import { createOrder } from '../../services/orders.service';
-import OrderPrice from './OrderPrice';
-
-import './orders.scss';
-import { Button, Card, TextField, CircularProgress, Box, Divider } from '@material-ui/core';
-import ControlsSelect from '../../components/Controls/ControlsSelect';
-import { VehicleType } from '../../models/vehicles.models';
 import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
+import ControlsSelect from '../../../components/Controls/ControlsSelect';
+import OrderPrice from './CreateOrderPrice/CreateOrderPrice';
+import React, { Component } from 'react';
+import styles from './createOrder.module.scss';
+import { Box, Button, Card, CircularProgress, Divider, TextField } from '@material-ui/core';
+import { createOrder } from '../../../services/orders.service';
+import { getLocationsData } from '../../../services/locations.service';
+import { Location } from '../../../models/locations.models';
+import { OrderUserInput } from '../../../models/orders.models';
+import { VehicleType } from '../../../models/vehicles.models';
 
-export type InputState = {
-  from: string;
-  to: string;
-  vehicle: string;
-  cargos: string;
-  message: string;
-};
-
-type State = {
+type CreateOrderState = {
   locations: Location[];
   trackNumber: string;
   isLoaded: boolean;
@@ -29,10 +21,10 @@ type State = {
     to: boolean;
     vehicle: boolean;
   };
-  input: InputState;
+  input: OrderUserInput;
 };
 
-class Order extends Component<{}, State> {
+class CreateOrder extends Component<{}, CreateOrderState> {
   state = {
     locations: [],
     trackNumber: '',
@@ -103,11 +95,11 @@ class Order extends Component<{}, State> {
       return { name: i };
     });
     return (
-      <Card className='order'>
+      <Card className={styles.order}>
         {!this.state.isOrderCreated ? (
           <form>
-            <section className='order-inputs'>
-              <div className='order-from'>
+            <section className={styles.inputs}>
+              <div className={styles.from}>
                 {!this.state.isLoaded ? (
                   <Box className='progress-bar'>
                     <CircularProgress />
@@ -123,7 +115,7 @@ class Order extends Component<{}, State> {
                   />
                 )}
               </div>
-              <div className='order-to'>
+              <div className={styles.to}>
                 {!this.state.isLoaded ? (
                   <Box className='progress-bar'>
                     <CircularProgress />
@@ -139,7 +131,7 @@ class Order extends Component<{}, State> {
                   />
                 )}
               </div>
-              <div className='order-vehicle'>
+              <div className={styles.vehicle}>
                 <ControlsSelect
                   isError={this.state.isError.vehicle}
                   label='Vehicle'
@@ -149,10 +141,10 @@ class Order extends Component<{}, State> {
                   onChange={this.handleChange}
                 />
               </div>
-              <div className='order-cargos'>
+              <div className={styles.cargos}>
                 <TextField name='cargos' label='Cargos' onChange={this.handleChange} fullWidth />
               </div>
-              <div className='order-message'>
+              <div className={styles.message}>
                 <TextField
                   name='message'
                   label='Message'
@@ -163,7 +155,7 @@ class Order extends Component<{}, State> {
                 />
               </div>
               {!this.state.isPriceChecked && (
-                <div className='order-button-check'>
+                <div className={styles['button-check']}>
                   <Button variant='outlined' color='primary' onClick={this.showPrice} fullWidth>
                     Check price
                   </Button>
@@ -171,10 +163,10 @@ class Order extends Component<{}, State> {
               )}
               {this.state.isPriceChecked && (
                 <React.Fragment>
-                  <div className='order-price'>
+                  <div className={styles.price}>
                     <OrderPrice order={this.state.input} />
                   </div>
-                  <div className='order-button-confirm'>
+                  <div className={styles['button-confirm']}>
                     <Button variant='contained' color='primary' onClick={this.createOrder} fullWidth>
                       Create order
                     </Button>
@@ -184,22 +176,22 @@ class Order extends Component<{}, State> {
             </section>
           </form>
         ) : (
-          <section className='order-created'>
-            <div className='order-congrats'>
-              <CheckCircleOutlineOutlinedIcon style={{ fontSize: '5rem' }} />
-              <span className='title'>Order has been created</span>
-            </div>
-            <Divider className='order-divider' />
-            <div className='order-track'>
-              <article className='title'>Your track number</article>
-              <span className='track'>{this.state.trackNumber}</span>
-              <span className='help'>Use this code to track your parcels</span>
-            </div>
-          </section>
+          <React.Fragment>
+            <article className={styles.congrats}>
+              <CheckCircleOutlineOutlinedIcon className={styles.image} />
+              <span className={styles.title}>Order has been created</span>
+            </article>
+            <Divider className={styles.divider} />
+            <section className={styles.track}>
+              <article className={styles.title}>Your track number</article>
+              <span className={styles['track-number']}>{this.state.trackNumber}</span>
+              <span className={styles.help}>Use this code to track your parcels</span>
+            </section>
+          </React.Fragment>
         )}
       </Card>
     );
   }
 }
 
-export default Order;
+export default CreateOrder;

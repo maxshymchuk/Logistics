@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import axios from 'axios';
-import VehicleList from './components/Vehicles/VehicleList';
-import UserList from './pages/Users/UserList';
-import CreateOrder from './pages/Orders/Order';
-import './app.scss';
+import CreateOrder from './pages/Orders/CreateOrder/CreateOrder';
 import Menu from './components/Menu/Menu';
+import React, { Component } from 'react';
+import TrackOrder from './pages/Orders/TrackOrder/TrackOrder';
+import UserList from './pages/Users/UserList';
+import VehicleList from './components/Vehicles/VehicleList';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import './app.scss';
 
 axios.defaults.baseURL = 'http://localhost:3000';
 
@@ -22,7 +23,7 @@ class App extends Component {
             <Route path='/locations'>{/* <Dashboard /> */}</Route>
             <Route path='/orders'>{/* <Dashboard /> */}</Route>
             <Route path='/create' component={CreateOrder} />
-            <Route path='/track'>{/* <Dashboard /> */}</Route>
+            <Route path='/track' component={TrackOrder} />
           </Switch>
         </section>
       </Router>

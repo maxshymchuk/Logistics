@@ -1,11 +1,6 @@
 import { Location } from './locations/locations.models';
 import { Vehicle } from './vehicles/vehicles.models';
 
-export type ErrorType<T> = {
-  data?: T;
-  error?: string;
-};
-
 export type Route = {
   startLocation: Location;
   endLocation: Location;
