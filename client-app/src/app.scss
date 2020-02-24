@@ -7,14 +7,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: 'Consolas', monospace;
-}
-
 .progress-bar {
   display: flex;
   justify-content: center;
-  flex-direction: column;
 }
 
 .wrapper {

@@ -1,0 +1,9 @@
+@import '../../../styles/variables.scss';
+
+.track {
+  display: grid;
+  grid-gap: $item-gap;
+  width: $default-card-width;
+  margin: 0 auto;
+  padding: $item-gap;
+}

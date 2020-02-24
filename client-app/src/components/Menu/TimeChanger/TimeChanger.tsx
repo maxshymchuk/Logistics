@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
-import { Button, TextField } from '@material-ui/core';
-import './timeChanger.scss';
-import { changeTime } from '../../../../services/timeChanger.service';
+import AddIcon from '@material-ui/icons/Add';
 import cogoToast from 'cogo-toast';
+import React, { Component } from 'react';
+import RemoveIcon from '@material-ui/icons/Remove';
+import { changeTime } from '../../../services/timeChanger.service';
+import { IconButton, TextField } from '@material-ui/core';
+import './timeChanger.scss';
 
 class TimeChanger extends Component {
   state = {
@@ -34,9 +36,9 @@ class TimeChanger extends Component {
   render() {
     return (
       <section className='changer'>
-        <Button color='inherit' onClick={() => this.handleChange('Minus')}>
-          Minus
-        </Button>
+        <IconButton onClick={() => this.handleChange('Minus')}>
+          <RemoveIcon className='changer-icons' fontSize='small' />
+        </IconButton>
         <TextField
           size='small'
           className='changer-days'
@@ -45,9 +47,9 @@ class TimeChanger extends Component {
           onChange={this.handleInput}
           variant='outlined'
         />
-        <Button color='inherit' onClick={() => this.handleChange('Plus')}>
-          Plus
-        </Button>
+        <IconButton onClick={() => this.handleChange('Plus')}>
+          <AddIcon className='changer-icons' fontSize='small' />
+        </IconButton>
       </section>
     );
   }

@@ -1,16 +1,24 @@
-import axios from 'axios';
 import * as qs from 'qs';
-import { InputState } from '../pages/Orders/Order';
-import { Order } from '../models/orders.models';
+import axios from 'axios';
+import { OrderUser, OrderUserInput } from '../models/orders.models';
 
-export async function getOrderPrice(order: InputState) {
+export async function getOrderPrice(order: OrderUserInput) {
   const params = qs.stringify(order);
   const price = (await axios.get(`orders/price/${params}`)).data;
   return price;
 }
 
-export async function createOrder(order: InputState): Promise<string> {
-  const params: Order = {
+export async function getOrderByTrackNumber(trackNumber: string) {
+  const order = (
+    await axios.get(`orders/track/${trackNumber}`).catch<any>(() => {
+      return { data: 'Track not found' };
+    })
+  ).data;
+  return order;
+}
+
+export async function createOrder(order: OrderUserInput): Promise<string> {
+  const params: OrderUser = {
     from: order.from,
     to: order.to,
     vehicle: order.vehicle,
