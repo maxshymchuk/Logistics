@@ -32,10 +32,11 @@ function genLocations() {
 
 function genVehicles(amount = 100) {
   let list = '';
+  const today = new Date();
   for (let i = 0; i < amount; i++) {
     list += `${JSON.stringify({
       destination: locations[rand(0, locations.length - 1)],
-      date: +(new Date(2020, rand(0, 11), rand(1, 30))),
+      arrivalDate: +(new Date(today.getFullYear(), rand(today.getMonth(), 11), rand(today.getDate(), 30))),
       type: vehicleType[rand(0,2)]
     })}\n`
   }
@@ -50,8 +51,7 @@ switch (args[0]) {
     });
     break;
   case 'locations':
-
-  fs.writeFile('locations.json', genLocations(), function (err) {
+    fs.writeFile('locations.json', genLocations(), function (err) {
       if (err) throw err;
       console.log('Saved!');
     });

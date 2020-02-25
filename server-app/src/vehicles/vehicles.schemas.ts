@@ -4,6 +4,6 @@ import { locationSchema } from '../locations/locations.schemas';
 // Vehicle Model
 export const vehicleSchema = new mongoose.Schema({
   destination: locationSchema,
-  date: Date,
+  arrivalDate: Date,
   type: String
 })

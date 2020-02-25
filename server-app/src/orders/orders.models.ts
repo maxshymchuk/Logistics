@@ -1,7 +1,27 @@
 import * as mongoose from 'mongoose';
-import { Track, Route } from '../models';
 import { Location } from '../locations/locations.models';
-import { VehicleType } from '../vehicles/vehicles.models';
+import { VehicleType, Vehicle } from '../vehicles/vehicles.models';
+
+export type Route = {
+  startLocation: Location;
+  endLocation: Location;
+  cargos: string[];
+  departureDate: Date;
+  vehicle: Vehicle;
+};
+
+export enum TrackStatus {
+  Pending = 'Pending',
+  Transit = 'Transit',
+  Completed = 'Completed'
+}
+
+export type Track = {
+  route: Route;
+  status: TrackStatus;
+  departureDate: Date;
+  arrivalDate: Date;
+};
 
 export enum OrderStatus {
   Taken = 'Taken', 

@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
-
 import { Location } from '../locations/locations.models';
+
 
 export enum VehicleType {
   Plane = 'Plane',
@@ -22,7 +22,7 @@ export enum VehicleSpeed {
 
 export type Vehicle = {
   destination: Location,
-  date: Date,
+  arrivalDate: Date,
   type: VehicleType
 }
 

@@ -1,8 +1,7 @@
 import * as mongoose from 'mongoose';
 
 import { routeSchema } from '../schemas';
-import { TrackStatus } from '../models';
-import { OrderStatus } from './orders.models';
+import { OrderStatus, TrackStatus } from './orders.models';
 
 // Order Model
 export const orderSchema = new mongoose.Schema({
