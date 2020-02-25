@@ -1,10 +1,10 @@
 import * as mongoose from 'mongoose';
 import CONSTS from './../const';
-import { Vehicle, VehicleMongo, VehiclePriceRatio, VehicleSpeed, VehicleType } from './vehicles.models';
-import { vehicleSchema } from './vehicles.schemas';
 import { cap } from '../utils';
 import { getDistanceBetween } from '../locations/locations.service';
 import { Location } from '../locations/locations.models';
+import { Vehicle, VehicleMongo, VehiclePriceRatio, VehicleSpeed, VehicleType } from './vehicles.models';
+import { vehicleSchema } from './vehicles.schemas';
 
 const vehicleModel = mongoose.model<VehicleMongo>('vehicles', vehicleSchema);
 
@@ -18,15 +18,17 @@ export async function getVehicles() {
 }
 
 export async function getNearestVehicle(vehicleType: VehicleType, location: Location, date: Date) {
-  const vehicles = (await vehicleModel.find({ type: vehicleType, 'destination.name': location.name })
+  const vehicles = await vehicleModel
+    .find({ type: vehicleType, 'destination.name': location.name })
     .sort('date')
-    .catch<Vehicle[]>((e) => console.log(e)));
+    .catch<Vehicle[]>(e => console.log(e));
   return vehicles.filter(vehicle => vehicle.arrivalDate > date)[0];
 }
 
 export function assignVehicle(vehicle: Vehicle, destination: Location) {
   const newVehicle = Object.assign({}, vehicle);
-  const distance = getDistanceBetween(vehicle.destination.coordinates, destination.coordinates) / CONSTS.METERS_PER_KILOMETER;
+  const distance =
+    getDistanceBetween(vehicle.destination.coordinates, destination.coordinates) / CONSTS.METERS_PER_KILOMETER;
   const vehicleSpeed = getVehicleSpeed(vehicle.type);
   const arrivalDate = getArrivalDate(vehicle.arrivalDate, distance / vehicleSpeed);
   newVehicle.arrivalDate = arrivalDate;

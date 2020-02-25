@@ -1,13 +1,22 @@
 import * as mongoose from 'mongoose';
 import * as qs from 'qs';
 import CONSTS from '../const';
-import { Order, OrderMongo, OrderStatus, Route, Track, TrackStatus, UserOrder, UserOrderInput } from './orders.models';
-import { orderSchema } from './orders.schemas';
 import { assignVehicle, getNearestVehicle, getVehiclePriceRatio, getVehicleSpeed } from '../vehicles/vehicles.service';
 import { cap } from '../utils';
-import { getDistanceBetween } from '../locations/locations.service';
+import { getDistanceBetween, getLocationByName } from '../locations/locations.service';
 import { Location, LocationMongo } from '../locations/locations.models';
 import { locationSchema } from '../locations/locations.schemas';
+import {
+  Order,
+  OrderMongo,
+  OrderStatus,
+  Route,
+  Track,
+  TrackStatus,
+  UserOrder,
+  UserOrderInput
+  } from './orders.models';
+import { orderSchema } from './orders.schemas';
 import { Vehicle, VehicleSpeed, VehicleType } from '../vehicles/vehicles.models';
 
 const orderModel = mongoose.model<OrderMongo>('orders', orderSchema);
@@ -67,7 +76,7 @@ export async function getOrderUserLogin(id: string) {
   return userLogin;
 }
 
-export async function getOrderPrice(orderParams: string): Promise<string> {
+export async function getOrderPrice(orderParams: string) {
   const userOrderInput: UserOrderInput = qs.parse(orderParams);
   const userOrder = await getUserOrderFromInput(userOrderInput);
   const distance = getDistanceBetween(userOrder.from.coordinates, userOrder.to.coordinates);
@@ -78,61 +87,92 @@ export async function getOrderPrice(orderParams: string): Promise<string> {
 function createTrack(route: Route, vehicle: Vehicle) {
   const today = new Date();
   const status = route.departureDate <= today ? getTrackStatus('Transit') : getTrackStatus('Pending');
-  return {
+  const track: Track = {
     status: status,
     route: route,
     departureDate: route.departureDate,
     arrivalDate: vehicle.arrivalDate
-  } as Track;
+  };
+  return track;
 }
 
 export async function updateOrdersStatus() {
   const today = new Date();
   const orders = await orderModel.find().catch<Order[]>(e => console.log(e));
 
-  orders.forEach(order => {
-    order.routes.forEach((route, index) => {
-      if (route.departureDate <= today) {
-        order.tracks.filter(track => track.route == route)
-        // order.tracks.push({
-        //   route: route,
-        //   status: getTrackStatus('Completed'),
-        //   departureDate: ,
-        //   arrivalDate: 
-        // })
+  await orders.forEach(async (order: OrderMongo) => {
+    await order.tracks.forEach(async track => {
+      if (track.departureDate <= today) {
+        track.status = getTrackStatus('Completed');
+        const route = order.routes[order.tracks.length]; // get next route, FIX
+        const newTrack = createTrack(route, route.vehicle);
+        order.tracks.push(newTrack);
+        await orderModel.updateOne({ _id: order._id }, order);
       }
-    })
-  })
+    });
+  });
 }
 
 export async function addOrder(userOrderInput: UserOrderInput) {
+  userOrderInput = {
+    from: 'Gomel',
+    to: 'Minsk',
+    who: 'user',
+    vehicle: VehicleType.Car,
+    cargos: [''],
+    message: ''
+  };
+
   const userOrder = await getUserOrderFromInput(userOrderInput);
-  const nearestVehicle = await getNearestVehicle(userOrder.vehicle, userOrder.from, new Date());
-  const assignedVehicle = assignVehicle(nearestVehicle, userOrder.to);
-  
-  const price = 666;//computePrice(distance, userOrder.vehicle);
+  // const nearestVehicle = await getNearestVehicle(userOrder.vehicle, userOrder.from, new Date());
+  // const assignedVehicle = assignVehicle(nearestVehicle, userOrder.to);
+
+  const price = 666; //computePrice(distance, userOrder.vehicle);
+
+  // Gomel -> Zhlobin -> Bobruisk -> Minsk
+
+  const lGomel = await getLocationByName('Gomel');
+  const lBobruisk = await getLocationByName('Bobruisk');
+  const lZhlobin = await getLocationByName('Zhlobin');
+  const lMinsk = await getLocationByName('Minsk');
+
+  const nearestVehicle1 = await getNearestVehicle(userOrder.vehicle, lGomel, new Date());
+  const assignedVehicle1 = assignVehicle(nearestVehicle1, lZhlobin);
+
+  const nearestVehicle2 = await getNearestVehicle(userOrder.vehicle, lZhlobin, assignedVehicle1.arrivalDate);
+  const assignedVehicle2 = assignVehicle(nearestVehicle2, lBobruisk);
+
+  const nearestVehicle3 = await getNearestVehicle(userOrder.vehicle, lBobruisk, assignedVehicle2.arrivalDate);
+  const assignedVehicle3 = assignVehicle(nearestVehicle3, lMinsk);
 
   const routes: Route[] = [
     {
-      startLocation: userOrder.from,
-      endLocation: userOrder.to,
+      startLocation: lGomel,
+      endLocation: lZhlobin,
       cargos: userOrder.cargos,
-      departureDate: nearestVehicle.arrivalDate,
-      vehicle: assignedVehicle
+      departureDate: nearestVehicle1.arrivalDate,
+      vehicle: assignedVehicle1
     },
     {
-      startLocation: userOrder.to,
-      endLocation: userOrder.from,
+      startLocation: lZhlobin,
+      endLocation: lBobruisk,
       cargos: userOrder.cargos,
-      departureDate: nearestVehicle.arrivalDate,
-      vehicle: assignedVehicle
+      departureDate: nearestVehicle2.arrivalDate,
+      vehicle: assignedVehicle2
+    },
+    {
+      startLocation: lBobruisk,
+      endLocation: lMinsk,
+      cargos: userOrder.cargos,
+      departureDate: nearestVehicle3.arrivalDate,
+      vehicle: assignedVehicle3
     }
-  ]
+  ];
 
   const trackNumber = getTrackNumber();
   const order: Order = {
     message: userOrder.message,
-    tracks: [createTrack(routes[0], assignedVehicle)],
+    tracks: [createTrack(routes[0], assignedVehicle1)],
     userLogin: userOrder.who,
     price: +price,
     status: getOrderStatus('Taken'),
