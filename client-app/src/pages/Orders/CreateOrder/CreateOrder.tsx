@@ -51,9 +51,9 @@ class CreateOrder extends Component<{}, CreateOrderState> {
     this.setState({ locations, isLoaded: true });
   }
 
-  handleChange = (event: any) => {
+  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    const property: 'from' | 'to' | 'vehicle' | 'cargos' | 'message' = event.target.name;
+    const property = event.target.name;
     this.setState(state => ({
       input: { ...state.input, [property]: value },
       isError: { ...state.isError, [property]: false },

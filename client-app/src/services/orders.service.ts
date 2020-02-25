@@ -11,13 +11,13 @@ export async function getOrderPrice(order: OrderUserInput) {
 export async function getOrderByTrackNumber(trackNumber: string) {
   const order = (
     await axios.get(`orders/track/${trackNumber}`).catch<any>(() => {
-      return { data: 'Track not found' };
+      throw new Error('Track not found')
     })
   ).data;
   return order;
 }
 
-export async function createOrder(order: OrderUserInput): Promise<string> {
+export async function createOrder(order: OrderUserInput) {
   const params: OrderUser = {
     from: order.from,
     to: order.to,
