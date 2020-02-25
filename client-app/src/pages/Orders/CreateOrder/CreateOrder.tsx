@@ -19,7 +19,6 @@ type CreateOrderState = {
   isError: {
     from: boolean;
     to: boolean;
-    vehicle: boolean;
   };
   input: OrderUserInput;
 };
@@ -33,14 +32,12 @@ class CreateOrder extends Component<{}, CreateOrderState> {
     isOrderCreated: false,
     isError: {
       from: false,
-      to: false,
-      vehicle: false
+      to: false
     },
 
     input: {
       from: '',
       to: '',
-      vehicle: '',
       cargos: '',
       message: ''
     }
@@ -62,21 +59,19 @@ class CreateOrder extends Component<{}, CreateOrderState> {
   };
 
   showPrice = () => {
-    if (this.state.input.from && this.state.input.to && this.state.input.vehicle) {
+    if (this.state.input.from && this.state.input.to) {
       this.setState(state => ({
         isPriceChecked: true,
         isError: {
           from: false,
-          to: false,
-          vehicle: false
+          to: false
         }
       }));
     } else {
       this.setState(state => ({
         isError: {
           from: !state.input.from,
-          to: !state.input.to,
-          vehicle: !state.input.vehicle
+          to: !state.input.to
         }
       }));
     }
@@ -91,9 +86,6 @@ class CreateOrder extends Component<{}, CreateOrderState> {
   };
 
   render() {
-    const vehicleList = Object.keys(VehicleType).map(i => {
-      return { name: i };
-    });
     return (
       <Card className={styles.order}>
         {!this.state.isOrderCreated ? (
@@ -130,16 +122,6 @@ class CreateOrder extends Component<{}, CreateOrderState> {
                     onChange={this.handleChange}
                   />
                 )}
-              </div>
-              <div className={styles.vehicle}>
-                <ControlsSelect
-                  isError={this.state.isError.vehicle}
-                  label='Vehicle'
-                  options={vehicleList}
-                  valueProp='name'
-                  textProp='name'
-                  onChange={this.handleChange}
-                />
               </div>
               <div className={styles.cargos}>
                 <TextField name='cargos' label='Cargos' onChange={this.handleChange} fullWidth />
