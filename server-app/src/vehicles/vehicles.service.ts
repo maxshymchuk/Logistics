@@ -20,19 +20,19 @@ export async function getVehicles() {
 export async function getNearestVehicle(vehicleType: VehicleType, location: Location, date: Date) {
   const vehicles = await vehicleModel
     .find({ type: vehicleType, 'destination.name': location.name })
-    .sort('date')
+    .sort('arrivalDate')
     .catch<VehicleMongo[]>(e => console.log(e));
   return vehicles.filter(vehicle => vehicle.arrivalDate >= date)[0];
 }
 
 export async function assignVehicle(vehicle: VehicleMongo, destination: Location) {
-  const newVehicle = vehicle.toObject();
+  const newVehicle: VehicleMongo = vehicle.toObject();
   const distance =
-    getDistanceBetween(vehicle.destination.coordinates, destination.coordinates) / CONSTS.METERS_PER_KILOMETER;
-  const vehicleSpeed = VehicleSpeed[vehicle.type];
-  const arrivalDate = getArrivalDate(vehicle.arrivalDate, distance / vehicleSpeed);
+    getDistanceBetween(newVehicle.destination.coordinates, destination.coordinates) / CONSTS.METERS_PER_KILOMETER;
+  const vehicleSpeed = VehicleSpeed[newVehicle.type];
+  const arrivalDate = getArrivalDate(newVehicle.arrivalDate, distance / vehicleSpeed);
   newVehicle.arrivalDate = arrivalDate;
   newVehicle.destination = destination;
-  await vehicleModel.updateOne({ _id: vehicle._id }, newVehicle);
+  await vehicleModel.updateOne({ _id: newVehicle._id }, newVehicle);
   return newVehicle;
 }

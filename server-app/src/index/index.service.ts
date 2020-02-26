@@ -2,7 +2,7 @@ import * as mongoose from 'mongoose';
 import CONSTS from '../const';
 import { OrderMongo } from '../orders/orders.models';
 import { orderSchema } from '../orders/orders.schemas';
-import { updateOrdersStatus } from '../orders/orders.service';
+import { updateOrders } from '../orders/orders.service';
 import { VehicleMongo } from '../vehicles/vehicles.models';
 import { vehicleSchema } from '../vehicles/vehicles.schemas';
 
@@ -35,7 +35,7 @@ export async function moveTimeOn(days: number) {
       await orderModel.updateOne({ _id: order._id }, order);
     });
 
-    await updateOrdersStatus();
+    await updateOrders();
   }
 
   return days >= 0 ? `Plus ${Math.abs(days)} day(s)` : `Minus ${Math.abs(days)} day(s)`;
