@@ -9,10 +9,7 @@
     "noImplicitAny": true,
     "experimentalDecorators": true,
     "strictNullChecks": false,
-    "strict": false,
+    "strict": false
   },
-  "include": [
-    "src/**/*",
-    "./app.ts"
-  ]
+  "include": ["src/**/*", "./app.ts"]
 }
