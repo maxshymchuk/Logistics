@@ -71,44 +71,75 @@ export async function getOrderPrice(orderParams: string) {
   const userOrderInput: UserOrderInput = qs.parse(orderParams);
   const userOrder = await getUserOrderFromInput(userOrderInput);
   const distance = getDistanceBetween(userOrder.from.coordinates, userOrder.to.coordinates);
-  // const price = computePrice(distance, userOrder.vehicle);
-  return '123';
-  // return price.toString();
+  const price = computePrice(distance, userOrder.vehicle);
+  return price.toString();
 }
 
-function createTrack(route: Route, vehicle: Vehicle) {
+function createTrack(route: Route) {
   const today = new Date();
   const status = route.departureDate <= today ? TrackStatus.Transit : TrackStatus.Pending;
   const track: Track = {
     status: status,
     route: route,
     departureDate: route.departureDate,
-    arrivalDate: vehicle.arrivalDate
+    arrivalDate: route.vehicle.arrivalDate
   };
   return track;
 }
 
-export async function updateOrdersStatus() {
+export async function updateOrders() {
   const today = new Date();
   const orders = await orderModel.find({ status: OrderStatus.Taken }).catch<Order[]>(e => console.log(e));
 
   await orders.forEach(async (order: OrderMongo) => {
     const routesLength = order.routes.length;
     const lastTrack = order.tracks[order.tracks.length - 1];
-    if (lastTrack.departureDate === today) {
+
+    if (lastTrack.departureDate <= today && lastTrack.arrivalDate > today) {
       lastTrack.status = TrackStatus.Transit;
-    } else if (lastTrack.departureDate > today) {
+    } else if (lastTrack.arrivalDate <= today) {
       lastTrack.status = TrackStatus.Completed;
       if (order.tracks.length === routesLength) {
         order.status = OrderStatus.Completed;
       } else {
         const route = order.routes[order.tracks.length];
-        const newTrack = createTrack(route, route.vehicle);
+        const newTrack = createTrack(route);
         order.tracks.push(newTrack);
       }
     }
     await orderModel.updateOne({ _id: order._id }, order);
   });
+}
+
+async function createRoutes(userOrder: UserOrder) {
+  // Gomel -> Zhlobin -> Bobruisk -> Minsk
+  const brest = await getLocationByName('Brest');
+  const minsk = await getLocationByName('Minsk');
+  const vitebsk = await getLocationByName('Vitebsk');
+
+  const nearestVehicle1 = await getNearestVehicle(userOrder.vehicle, brest, new Date());
+  const assignedVehicle1 = await assignVehicle(nearestVehicle1, minsk);
+
+  const nearestVehicle2 = await getNearestVehicle(userOrder.vehicle, minsk, assignedVehicle1.arrivalDate);
+  const assignedVehicle2 = await assignVehicle(nearestVehicle2, vitebsk);
+
+  const routes: Route[] = [
+    {
+      startLocation: brest,
+      endLocation: minsk,
+      cargos: userOrder.cargos,
+      departureDate: nearestVehicle1.arrivalDate,
+      vehicle: assignedVehicle1
+    },
+    {
+      startLocation: minsk,
+      endLocation: vitebsk,
+      cargos: userOrder.cargos,
+      departureDate: nearestVehicle2.arrivalDate,
+      vehicle: assignedVehicle2
+    }
+  ];
+  return routes;
 }
 
 export async function addOrder(userOrderInput: UserOrderInput) {
@@ -122,55 +153,15 @@ export async function addOrder(userOrderInput: UserOrderInput) {
   };
 
   const userOrder = await getUserOrderFromInput(userOrderInput);
-  // const nearestVehicle = await getNearestVehicle(userOrder.vehicle, userOrder.from, new Date());
-  // const assignedVehicle = assignVehicle(nearestVehicle, userOrder.to);
+  // const price = computePrice(distance, userOrder.vehicle);
+  const price = 666;
 
-  const price = 666; //computePrice(distance, userOrder.vehicle);
-
-  // Gomel -> Zhlobin -> Bobruisk -> Minsk
-
-  const lGomel = await getLocationByName('Gomel');
-  const lZhlobin = await getLocationByName('Zhlobin');
-  const lBobruisk = await getLocationByName('Bobruisk');
-  const lMinsk = await getLocationByName('Minsk');
-
-  const nearestVehicle1 = await getNearestVehicle(userOrder.vehicle, lGomel, new Date());
-  const assignedVehicle1 = await assignVehicle(nearestVehicle1, lZhlobin);
-
-  const nearestVehicle2 = await getNearestVehicle(userOrder.vehicle, lZhlobin, assignedVehicle1.arrivalDate);
-  const assignedVehicle2 = await assignVehicle(nearestVehicle2, lBobruisk);
-
-  const nearestVehicle3 = await getNearestVehicle(userOrder.vehicle, lBobruisk, assignedVehicle2.arrivalDate);
-  const assignedVehicle3 = await assignVehicle(nearestVehicle3, lMinsk);
-
-  const routes: Route[] = [
-    {
-      startLocation: lGomel,
-      endLocation: lZhlobin,
-      cargos: userOrder.cargos,
-      departureDate: nearestVehicle1.arrivalDate,
-      vehicle: assignedVehicle1
-    },
-    {
-      startLocation: lZhlobin,
-      endLocation: lBobruisk,
-      cargos: userOrder.cargos,
-      departureDate: nearestVehicle2.arrivalDate,
-      vehicle: assignedVehicle2
-    },
-    {
-      startLocation: lBobruisk,
-      endLocation: lMinsk,
-      cargos: userOrder.cargos,
-      departureDate: nearestVehicle3.arrivalDate,
-      vehicle: assignedVehicle3
-    }
-  ];
+  const routes = await createRoutes(userOrder);
 
   const trackNumber = getTrackNumber();
   const order: Order = {
     message: userOrder.message,
-    tracks: [createTrack(routes[0], assignedVehicle1)],
+    tracks: [createTrack(routes[0])],
     userLogin: userOrder.who,
     price: +price,
     status: getOrderStatus('Taken'),
