@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import './vehicles.scss';
 import { Vehicle } from '../../models/vehicles.models';
+import './vehicles.scss';
 
 type VehicleItemProps = {
   vehicle: Vehicle;
@@ -8,7 +8,7 @@ type VehicleItemProps = {
 
 class VehicleItem extends Component<VehicleItemProps> {
   render() {
-    const { destination, type, date } = this.props.vehicle;
+    const { destination, type, arrivalDate } = this.props.vehicle;
     return (
       <div className='vehicles__item'>
         <div className='vehicle-type'>
@@ -21,7 +21,7 @@ class VehicleItem extends Component<VehicleItemProps> {
         </div>
         <div className='vehicle-arrivalDate'>
           <strong>When: </strong>
-          {new Date(date).toDateString()}
+          {new Date(arrivalDate).toDateString()}
         </div>
         <div className={`vehicle-image ${type.toLowerCase()}`}></div>
       </div>

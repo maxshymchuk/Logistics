@@ -37,8 +37,8 @@ class TrackOrder extends Component<{}, TrackOrderState> {
       this.setState(state => ({
         isTrackFound: true,
         isClicked: false,
-        order: res,
-        trackNumber: ''
+        order: res
+        // trackNumber: ''
       }));
     } catch (err) {
       this.setState(state => ({
