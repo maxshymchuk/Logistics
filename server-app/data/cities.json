@@ -12,7 +12,6 @@
   { "name": "Brussels", "coordinates": { "lat": 50.8333, "lon": 4.3333 } },
   { "name": "Warsaw", "coordinates": { "lat": 52.25, "lon": 21 } },
   { "name": "Budapest", "coordinates": { "lat": 47.5, "lon": 19.0833 } },
-  { "name": "The Hague", "coordinates": { "lat": 52.08, "lon": 4.27 } },
   { "name": "Stockholm", "coordinates": { "lat": 59.3508, "lon": 18.0973 } },
   { "name": "Sofia", "coordinates": { "lat": 42.6833, "lon": 23.3167 } },
   { "name": "Helsinki", "coordinates": { "lat": 60.1756, "lon": 24.9341 } },

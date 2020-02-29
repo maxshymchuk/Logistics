@@ -40,19 +40,20 @@ export async function assignVehicle(vehicle: VehicleMongo, destination: Location
 }
 
 export async function regenerateVehicles() {
-  const AMOUNT = 100;
+  const VEHICLES_NUMBER = 100;
   const locations = await getLocations();
-  const vehicles: Array<any> = [];
   const today = new Date();
-  for (let i = 0; i < AMOUNT; i++) {
+  const vehicles: Vehicle[] = [];
+  const vehicleTypes = Object.keys(VehicleType);
+  for (let i = 0; i < VEHICLES_NUMBER; i++) {
     vehicles.push({
       destination: locations[rand(0, locations.length - 1)],
-      arrivalDate: +new Date(today.getFullYear(), rand(today.getMonth(), 11), rand(today.getDate(), 30)),
-      type: [VehicleType.Car, VehicleType.Plane, VehicleType.Train][rand(0, 2)]
+      arrivalDate: new Date(today.getFullYear(), rand(today.getMonth(), 11), rand(today.getDate() + 1, 30)),
+      type: vehicleTypes[rand(0, vehicleTypes.length - 1)] as VehicleType
     });
   }
   await vehicleModel.deleteMany({});
   vehicles.forEach(async vehicle => {
-    await vehicleModel.create(vehicle, (err: Error) => err && console.log(err));
+    await vehicleModel.create(vehicle, (err: Error) => console.log(err));
   });
 }
