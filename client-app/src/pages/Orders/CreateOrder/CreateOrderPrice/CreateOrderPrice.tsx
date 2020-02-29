@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styles from './createOrderPrice.module.scss';
-import { LinearProgress } from '@material-ui/core';
 import { getOrderPrice } from '../../../../services/orders.service';
+import { LinearProgress } from '@material-ui/core';
 import { OrderUserInput } from '../../../../models/orders.models';
 
 type CreateOrderPriceProps = {
@@ -20,11 +20,7 @@ class CreateOrderPrice extends Component<CreateOrderPriceProps> {
   }
 
   render() {
-    return (
-      <React.Fragment>
-        {!this.state.loaded ? <LinearProgress /> : <span className={styles.price}>{this.state.price}</span>}
-      </React.Fragment>
-    );
+    return <>{!this.state.loaded ? <LinearProgress /> : <span className={styles.price}>{this.state.price}</span>}</>;
   }
 }
 

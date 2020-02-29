@@ -3,7 +3,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import React, { Component } from 'react';
 import styles from './trackOrderInfo.module.scss';
 import { Button, Card, Collapse, List, ListItem, ListItemText } from '@material-ui/core';
-import { Order } from '../../../../models/orders.models';
+import { Order, OrderStatus } from '../../../../models/orders.models';
 import { Route } from '../../../../models/routes.models';
 import { Track } from '../../../../models/tracks.models';
 
@@ -52,7 +52,7 @@ class TrackOrderInfo extends Component<TrackOrderInfoProps, TrackOrderInfoState>
     const routePath = `${route.startLocation.name} -> ${route.endLocation.name}`;
     const date = new Date(route.departureDate).toLocaleString();
     return (
-      <ListItem key={route._id} button className={styles.nested}>
+      <ListItem key={route._id} className={styles.nested}>
         <ListItemText primary={routePath} />
         <ListItemText primary={date} />
       </ListItem>
@@ -64,7 +64,7 @@ class TrackOrderInfo extends Component<TrackOrderInfoProps, TrackOrderInfoState>
     const arrDate = new Date(track.arrivalDate).toLocaleString();
     const status = track.status;
     return (
-      <ListItem button key={track._id} className={styles.nested}>
+      <ListItem key={track._id} className={styles.nested}>
         <ListItemText primary={`${depDate} - ${arrDate}`} />
         <ListItemText primary={status} />
       </ListItem>
@@ -99,9 +99,11 @@ class TrackOrderInfo extends Component<TrackOrderInfoProps, TrackOrderInfoState>
           </Collapse>
         </List>
         {message && <div className={styles.row}>{`${message}`}</div>}
-        <Button className={styles['button-cancel']} variant='contained' color='secondary' fullWidth>
-          Cancel order
-        </Button>
+        {status !== OrderStatus.Completed && (
+          <Button className={styles['button-cancel']} variant='contained' color='secondary' fullWidth>
+            Cancel order
+          </Button>
+        )}
       </Card>
     );
   }
