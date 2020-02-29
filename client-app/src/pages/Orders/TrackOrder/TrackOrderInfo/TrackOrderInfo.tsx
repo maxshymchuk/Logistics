@@ -2,7 +2,7 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import React, { Component } from 'react';
 import styles from './trackOrderInfo.module.scss';
-import { Card, Collapse, List, ListItem, ListItemText } from '@material-ui/core';
+import { Button, Card, Collapse, List, ListItem, ListItemText } from '@material-ui/core';
 import { Order } from '../../../../models/orders.models';
 import { Route } from '../../../../models/routes.models';
 import { Track } from '../../../../models/tracks.models';
@@ -60,8 +60,8 @@ class TrackOrderInfo extends Component<TrackOrderInfoProps, TrackOrderInfoState>
   }
 
   getTrackItem(track: Track) {
-    const depDate = track.departureDate;
-    const arrDate = track.arrivalDate;
+    const depDate = new Date(track.departureDate).toLocaleString();
+    const arrDate = new Date(track.arrivalDate).toLocaleString();
     const status = track.status;
     return (
       <ListItem button key={track._id} className={styles.nested}>
@@ -98,7 +98,10 @@ class TrackOrderInfo extends Component<TrackOrderInfoProps, TrackOrderInfoState>
             <List disablePadding>{tracks.map(track => this.getTrackItem(track))}</List>
           </Collapse>
         </List>
-        <div className={styles.row}>{`"${message}"`}</div>
+        {message && <div className={styles.row}>{`${message}`}</div>}
+        <Button className={styles['button-cancel']} variant='contained' color='secondary' fullWidth>
+          Cancel order
+        </Button>
       </Card>
     );
   }

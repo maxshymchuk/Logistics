@@ -30,7 +30,6 @@ export type OrderUser = {
 export type OrderUserInput = {
   from: string;
   to: string;
-  vehicle: string;
   cargos: string;
   message: string;
 };

@@ -19,15 +19,19 @@ class TimeChanger extends Component {
 
   handleChange = (route: string) => {
     changeTime(`/${route}/${this.state.value}`);
-    cogoToast.success(`${route} ${this.state.value} day(s)!`, {
-      hideAfter: 1,
-      position: 'bottom-right'
-    });
+    cogoToast
+      .success(`${route} ${this.state.value} day(s)!`, {
+        hideAfter: 1,
+        position: 'bottom-right'
+      })
+      .then(() => {
+        window.location.reload(false);
+      });
   };
 
   handleInput = (event: any) => {
     const target = event.target;
-    if (target.value > 0)
+    if (target.value >= 0)
       this.setState(state => ({
         value: target.value
       }));

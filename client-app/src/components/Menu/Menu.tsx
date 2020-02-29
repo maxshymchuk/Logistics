@@ -16,27 +16,13 @@ class Menu extends Component {
             <Typography className='menu-title' variant='h6'>
               Logistics
             </Typography>
-            <Link to='/'>
-              <Button color='inherit'>Home</Button>
-            </Link>
-            <Link to='/vehicles'>
-              <Button color='inherit'>Vehicles</Button>
-            </Link>
-            <Link to='/users'>
-              <Button color='inherit'>Users</Button>
-            </Link>
-            <Link to='/locations'>
-              <Button color='inherit'>Locations</Button>
-            </Link>
-            <Link to='/orders'>
-              <Button color='inherit'>Orders</Button>
-            </Link>
-            <Link to='/create'>
-              <Button color='inherit'>Create order page</Button>
-            </Link>
-            <Link to='/track'>
-              <Button color='inherit'>Track order page</Button>
-            </Link>
+            <Button color='inherit' component={Link} to='/'>Home</Button>
+            <Button color='inherit' component={Link} to='/vehicles'>Vehicles</Button>
+            <Button color='inherit' component={Link} to='/users'>Users</Button>
+            <Button color='inherit' component={Link} to='/locations'>Locations</Button>
+            <Button color='inherit' component={Link} to='/orders'>Orders</Button>
+            <Button color='inherit' component={Link} to='/create'>Create order page</Button>
+            <Button color='inherit' component={Link} to='/track'>Track order page</Button>
             <TimeChanger />
           </Toolbar>
         </AppBar>

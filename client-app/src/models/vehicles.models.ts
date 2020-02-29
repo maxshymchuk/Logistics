@@ -9,6 +9,6 @@ export enum VehicleType {
 export type Vehicle = {
   _id?: string;
   destination: Location;
-  date: string;
+  arrivalDate: string;
   type: VehicleType;
 };

@@ -32,20 +32,20 @@ class TrackOrder extends Component<{}, TrackOrderState> {
     this.setState(state => ({
       isClicked: true
     }));
-    const res = await getOrderByTrackNumber(this.state.trackNumber);
-    if (typeof res === 'object') {
+    try {
+      const res = await getOrderByTrackNumber(this.state.trackNumber);
       this.setState(state => ({
         isTrackFound: true,
         isClicked: false,
-        order: res,
-        trackNumber: ''
+        order: res
+        // trackNumber: ''
       }));
-    } else {
+    } catch (err) {
       this.setState(state => ({
         isClicked: false,
         isTrackFound: false
       }));
-      cogoToast.error(res, {
+      cogoToast.error(err.message, {
         hideAfter: 2
       });
     }
@@ -53,7 +53,7 @@ class TrackOrder extends Component<{}, TrackOrderState> {
 
   render() {
     return (
-      <React.Fragment>
+      <>
         <Card className={styles.track}>
           <TextField
             name='trackNumber'
@@ -74,7 +74,7 @@ class TrackOrder extends Component<{}, TrackOrderState> {
           {this.state.isClicked && <LinearProgress />}
         </Card>
         {this.state.isTrackFound && <TrackOrderInfo order={this.state.order} />}
-      </React.Fragment>
+      </>
     );
   }
 }

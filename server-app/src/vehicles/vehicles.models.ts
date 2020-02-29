@@ -1,29 +1,34 @@
 import * as mongoose from 'mongoose';
-
 import { Location } from '../locations/locations.models';
 
 export enum VehicleType {
-  Plane = 'Plane',
   Car = 'Car',
-  Train = 'Train'
+  Plane = 'Plane',
+  Ship = 'Ship',
+  Train = 'Train',
+  Truck = 'Truck'
 }
 
 export enum VehiclePriceRatio {
-  Plane = 5,
   Car = 1.2,
-  Train = 1
+  Plane = 5,
+  Ship = 3,
+  Train = 1,
+  Truck = 1.5
 }
 
 export enum VehicleSpeed {
-  Plane = 900, // km/h
-  Car = 80,
-  Train = 120
+  Car = 90,
+  Plane = 900,
+  Ship = 50,
+  Train = 120,
+  Truck = 75
 }
 
 export type Vehicle = {
-  destination: Location,
-  date: Date,
-  type: VehicleType
-}
+  destination: Location;
+  arrivalDate: Date;
+  type: VehicleType;
+};
 
 export interface VehicleMongo extends mongoose.Document, Vehicle {}
