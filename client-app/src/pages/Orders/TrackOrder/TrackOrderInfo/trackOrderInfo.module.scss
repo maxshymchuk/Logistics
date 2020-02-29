@@ -29,13 +29,6 @@
   padding-left: $item-gap;
   .nested {
     padding-left: 2 * $item-gap;
+    background-color: $primary-disabled-color;
   }
-}
-
-.test {
-  padding-left: $item-gap;
-}
-
-.MenuItem {
-  background-color: red;
 }

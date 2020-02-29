@@ -1,9 +1,10 @@
 import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
 import ControlsSelect from '../../../components/Controls/ControlsSelect';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import OrderPrice from './CreateOrderPrice/CreateOrderPrice';
 import React, { Component } from 'react';
 import styles from './createOrder.module.scss';
-import { Box, Button, Card, CircularProgress, Divider, TextField } from '@material-ui/core';
+import { Box, Button, Card, CircularProgress, Divider, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, TextField } from '@material-ui/core';
 import { createOrder } from '../../../services/orders.service';
 import { getLocationsData } from '../../../services/locations.service';
 import { Location } from '../../../models/locations.models';
@@ -97,14 +98,7 @@ class CreateOrder extends Component<{}, CreateOrderState> {
                     <CircularProgress />
                   </Box>
                 ) : (
-                  <ControlsSelect
-                    isError={this.state.isError.from}
-                    label='From'
-                    options={this.state.locations}
-                    valueProp='_id'
-                    textProp='name'
-                    onChange={this.handleChange}
-                  />
+                  <ControlsSelect isError={this.state.isError.from} label='From' options={this.state.locations} valueProp='_id' textProp='name' onChange={this.handleChange} />
                 )}
               </div>
               <div className={styles.to}>
@@ -113,28 +107,23 @@ class CreateOrder extends Component<{}, CreateOrderState> {
                     <CircularProgress />
                   </Box>
                 ) : (
-                  <ControlsSelect
-                    isError={this.state.isError.to}
-                    label='To'
-                    options={this.state.locations}
-                    valueProp='_id'
-                    textProp='name'
-                    onChange={this.handleChange}
-                  />
+                  <ControlsSelect isError={this.state.isError.to} label='To' options={this.state.locations} valueProp='_id' textProp='name' onChange={this.handleChange} />
                 )}
               </div>
               <div className={styles.cargos}>
-                <TextField name='cargos' label='Cargos' onChange={this.handleChange} fullWidth />
+                <List>
+                  <ListItem dense disableGutters>
+                    <TextField name='description' label='Description' onChange={this.handleChange} />
+                    <ListItemSecondaryAction>
+                      <IconButton edge='end'>
+                        <DeleteForeverIcon />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                </List>
               </div>
               <div className={styles.message}>
-                <TextField
-                  name='message'
-                  label='Message'
-                  variant='outlined'
-                  onChange={this.handleChange}
-                  multiline
-                  fullWidth
-                />
+                <TextField name='message' label='Message' variant='outlined' onChange={this.handleChange} multiline fullWidth />
               </div>
               {!this.state.isPriceChecked && (
                 <div className={styles['button-check']}>
@@ -144,7 +133,7 @@ class CreateOrder extends Component<{}, CreateOrderState> {
                 </div>
               )}
               {this.state.isPriceChecked && (
-                <React.Fragment>
+                <>
                   <div className={styles.price}>
                     <OrderPrice order={this.state.input} />
                   </div>
@@ -153,12 +142,12 @@ class CreateOrder extends Component<{}, CreateOrderState> {
                       Create order
                     </Button>
                   </div>
-                </React.Fragment>
+                </>
               )}
             </section>
           </form>
         ) : (
-          <React.Fragment>
+          <>
             <article className={styles.congrats}>
               <CheckCircleOutlineOutlinedIcon className={styles.image} />
               <span className={styles.title}>Order has been created</span>
@@ -169,7 +158,7 @@ class CreateOrder extends Component<{}, CreateOrderState> {
               <span className={styles['track-number']}>{this.state.trackNumber}</span>
               <span className={styles.help}>Use this code to track your parcels</span>
             </section>
-          </React.Fragment>
+          </>
         )}
       </Card>
     );
