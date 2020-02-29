@@ -2,24 +2,15 @@ import * as mongoose from 'mongoose';
 import * as qs from 'qs';
 import CONSTS from '../const';
 import { assignVehicle, getNearestVehicle } from '../vehicles/vehicles.service';
-import { cap } from '../utils';
-import { getDistanceBetween, getLocationByName } from '../locations/locations.service';
+import { getLocationByName, getRoutesDistance } from '../locations/locations.service';
 import { Location, LocationMongo } from '../locations/locations.models';
 import { locationSchema } from '../locations/locations.schemas';
 import { Order, OrderMongo, OrderStatus, Route, Track, TrackStatus, UserOrder, UserOrderInput } from './orders.models';
 import { orderSchema } from './orders.schemas';
-import { Vehicle, VehiclePriceRatio, VehicleSpeed, VehicleType } from '../vehicles/vehicles.models';
+import { VehiclePriceRatio, VehicleType } from '../vehicles/vehicles.models';
 
 const orderModel = mongoose.model<OrderMongo>('orders', orderSchema);
 const locationModel = mongoose.model<LocationMongo>('locations', locationSchema);
-
-function getOrderStatus(name: string) {
-  return OrderStatus[cap(name) as OrderStatus];
-}
-
-function getTrackStatus(name: string) {
-  return TrackStatus[cap(name) as TrackStatus];
-}
 
 async function getUserOrderFromInput(userOrderInput: UserOrderInput): Promise<UserOrder> {
   const from: Location = await locationModel.findOne({ name: userOrderInput.from });
@@ -68,10 +59,19 @@ export async function getOrderUserLogin(id: string) {
 }
 
 export async function getOrderPrice(orderParams: string) {
-  const userOrderInput: UserOrderInput = qs.parse(orderParams);
+  // const userOrderInput: UserOrderInput = qs.parse(orderParams);
+  const userOrderInput = {
+    from: 'Gomel',
+    to: 'Minsk',
+    who: 'user',
+    vehicle: VehicleType.Car,
+    cargos: [''],
+    message: ''
+  };
   const userOrder = await getUserOrderFromInput(userOrderInput);
-  const distance = getDistanceBetween(userOrder.from.coordinates, userOrder.to.coordinates);
-  const price = computePrice(distance, userOrder.vehicle);
+  const routes = await createRoutes(userOrder);
+  const fullDistance = getRoutesDistance(routes);
+  const price = computePrice(fullDistance, userOrder.vehicle);
   return price.toString();
 }
 
@@ -112,7 +112,6 @@ export async function updateOrders() {
 }
 
 async function createRoutes(userOrder: UserOrder) {
-  // Gomel -> Zhlobin -> Bobruisk -> Minsk
   const brest = await getLocationByName('Brest');
   const minsk = await getLocationByName('Minsk');
   const vitebsk = await getLocationByName('Vitebsk');
@@ -153,10 +152,8 @@ export async function addOrder(userOrderInput: UserOrderInput) {
   };
 
   const userOrder = await getUserOrderFromInput(userOrderInput);
-  // const price = computePrice(distance, userOrder.vehicle);
-  const price = 666;
-
   const routes = await createRoutes(userOrder);
+  const price = computePrice(getRoutesDistance(routes), userOrder.vehicle);
 
   const trackNumber = getTrackNumber();
   const order: Order = {
@@ -164,7 +161,7 @@ export async function addOrder(userOrderInput: UserOrderInput) {
     tracks: [createTrack(routes[0])],
     userLogin: userOrder.who,
     price: +price,
-    status: getOrderStatus('Taken'),
+    status: OrderStatus.Taken,
     routes: routes,
     trackNumber: trackNumber
   };
