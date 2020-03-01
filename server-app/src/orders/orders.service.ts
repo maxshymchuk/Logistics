@@ -70,7 +70,7 @@ export async function getOrderPrice(orderParams: string) {
   };
   const userOrder = await getUserOrderFromInput(userOrderInput);
   const routes = await createRoutes(userOrder);
-  const fullDistance = getRoutesDistance(routes);
+  const fullDistance = await getRoutesDistance(routes);
   const price = computePrice(fullDistance, userOrder.vehicle);
   return price.toString();
 }
@@ -153,7 +153,8 @@ export async function addOrder(userOrderInput: UserOrderInput) {
 
   const userOrder = await getUserOrderFromInput(userOrderInput);
   const routes = await createRoutes(userOrder);
-  const price = computePrice(getRoutesDistance(routes), userOrder.vehicle);
+  const fullDistance = await getRoutesDistance(routes);
+  const price = computePrice(fullDistance, userOrder.vehicle);
 
   const trackNumber = getTrackNumber();
   const order: Order = {

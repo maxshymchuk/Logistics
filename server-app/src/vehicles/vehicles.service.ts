@@ -30,7 +30,8 @@ export async function getNearestVehicle(vehicleType: VehicleType, location: Loca
 
 export async function assignVehicle(vehicle: VehicleMongo, destination: Location) {
   const newVehicle: VehicleMongo = vehicle.toObject();
-  const distance = getDistanceBetween(newVehicle.destination.coordinates, destination.coordinates) / CONSTS.METERS_PER_KILOMETER;
+  const distance =
+    (await getDistanceBetween(newVehicle.destination.name, destination.name)) / CONSTS.METERS_PER_KILOMETER;
   const vehicleSpeed = VehicleSpeed[newVehicle.type];
   const arrivalDate = getArrivalDate(newVehicle.arrivalDate, distance / vehicleSpeed);
   newVehicle.arrivalDate = arrivalDate;
