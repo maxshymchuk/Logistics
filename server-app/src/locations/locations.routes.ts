@@ -1,6 +1,6 @@
 import * as locationController from './locations.service';
 import { MapType } from './locations.models';
-import { regenerateLocations, regenerateMaps, shortestPath } from './locations.service';
+import { regenerateLocations, regenerateMaps, createPaths } from './locations.service';
 import { Request, Response, Router } from 'express';
 
 export const router = Router();
@@ -17,7 +17,10 @@ router.get('/regen', async (req: Request, res: Response) => {
 });
 
 router.get('/calc', async (req: Request, res: Response) => {
-  const result = await shortestPath('Copenhagen', 'Dublin', MapType.Roads);
+  const result = await createPaths({
+    from: 'Minsk',
+    to: 'Lisbon'
+  });
   res.status(result ? 200 : 404).send(result);
 });
 
