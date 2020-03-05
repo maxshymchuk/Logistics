@@ -4,7 +4,7 @@ import { getAirplaneRoutes, getRoutes } from './router';
 
 export async function getLocations() {
   const locations = await locationModel.find().catch<Location[]>(e => console.log(e));
-  return locations;
+  return locations.sort((a: Location, b: Location) => (a.name > b.name ? 1 : -1));
 }
 
 export async function getLocationByName(name: string) {
