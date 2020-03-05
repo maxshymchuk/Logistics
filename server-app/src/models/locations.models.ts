@@ -1,11 +1,9 @@
 import * as mongoose from 'mongoose';
-import { VehicleType } from '../vehicles/vehicles.models';
+import { VehicleType } from './vehicles.models';
+import { locationSchema, mapSchema } from '../schemas/locations.schemas';
 
-export enum MapType {
-  Roads = 'Roads',
-  Railways = 'Railways',
-  Searoutes = 'Searoutes'
-}
+export const locationModel = mongoose.model<LocationMongo>('locations', locationSchema);
+export const mapModel = mongoose.model<MapMongo>('maps', mapSchema);
 
 export type Coordinate = {
   lat: number;
@@ -17,8 +15,14 @@ export interface Location {
   coordinates: Coordinate;
 }
 
+export enum MapType {
+  Roads = 'Roads',
+  Railways = 'Railways',
+  Searoutes = 'Searoutes'
+}
+
 export interface Map {
-  type: MapType;
+  mapType: MapType;
   cities: string[];
   table: number[][];
 }
@@ -33,6 +37,16 @@ export type Path = {
   distance: number;
   timeInterval: number;
   vehicle: VehicleType;
+  price: number;
+};
+
+export type UserPath = {
+  paths: Path[];
+  price: number;
+  timeInterval: number;
+  distance: number;
+  message: string;
+  cargos: string[];
 };
 
 export type PathfinderInput = {

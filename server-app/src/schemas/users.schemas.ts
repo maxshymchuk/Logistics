@@ -10,4 +10,4 @@ export const userSchema = new mongoose.Schema({
   login: String,
   password: String,
   isAdmin: Boolean
-})
+});
