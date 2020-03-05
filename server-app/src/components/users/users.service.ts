@@ -1,8 +1,4 @@
-import * as mongoose from 'mongoose';
-import { Autorization, User, UserMongo } from './users.models';
-import { userSchema } from './users.schemas';
-
-const userModel = mongoose.model<UserMongo>('users', userSchema);
+import { User, UserMongo, userModel } from '../../models/users.models';
 
 async function findUserById(_id: string) {
   const order = await userModel.findOne({ _id }).catch<User>(e => console.log(e));
@@ -27,18 +23,6 @@ export async function addUser(user: User): Promise<string> {
     userModel.create(user, (err: Error) => err && console.log(err));
     return 'User added';
   }
-}
-
-export async function authorizeUser(user: Autorization): Promise<void> {
-  // const foundedUser: User = await userModel.findOne({ login: user.login });
-  // return (foundedUser.password === user.password) ?
-  //   /* auth, */ {
-  //     content: 'User login',
-  //     code: 200
-  //   } : {
-  //     content: 'Access denied, wrong password',
-  //     code: 403
-  //   }
 }
 
 export async function deleteUserById(_id: string) {

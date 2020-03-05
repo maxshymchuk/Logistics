@@ -1,5 +1,4 @@
 import * as mongoose from 'mongoose';
-import { MapType } from './locations.models';
 
 // Location Model
 export const locationSchema = new mongoose.Schema({
@@ -12,10 +11,7 @@ export const locationSchema = new mongoose.Schema({
 
 // Map Model
 export const mapSchema = new mongoose.Schema({
-  type: {
-    type: String,
-    default: MapType.Roads
-  },
+  mapType: String,
   cities: [String],
   table: [[Number]]
 });

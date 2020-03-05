@@ -1,8 +1,6 @@
 import * as mongoose from 'mongoose';
-import { locationSchema } from '../locations/locations.schemas';
-import { OrderStatus, TrackStatus } from './orders.models';
-import { vehicleSchema } from '../vehicles/vehicles.schemas';
-
+import { locationSchema } from './locations.schemas';
+import { vehicleSchema } from './vehicles.schemas';
 
 // Route Model
 export const routeSchema = new mongoose.Schema({
@@ -19,20 +17,14 @@ export const orderSchema = new mongoose.Schema({
   tracks: [
     {
       route: routeSchema,
-      status: {
-        type: String,
-        default: TrackStatus.Pending
-      },
+      status: String,
       departureDate: Date,
       arrivalDate: Date
     }
   ],
   userLogin: String,
   price: Number,
-  status: {
-    type: String,
-    default: OrderStatus.Taken
-  },
+  status: String,
   routes: [routeSchema],
   trackNumber: String
 });

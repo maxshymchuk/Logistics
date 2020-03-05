@@ -8,16 +8,17 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const debug = require('debug')('server-app:server');
 
-import * as index from './src/index/index.routes';
-import * as order from './src/orders/orders.routes';
-import * as user from './src/users/users.routes';
-import * as location from './src/locations/locations.routes';
-import * as vehicle from './src/vehicles/vehicles.routes';
+import * as index from './src/components/index/index.routes';
+import * as order from './src/components/orders/orders.routes';
+import * as user from './src/components/users/users.routes';
+import * as location from './src/components/locations/locations.routes';
+import * as vehicle from './src/components/vehicles/vehicles.routes';
 
 export const app = express();
 
 mongoose.connect('mongodb://127.0.0.1:27017/Logistics', {
-  useNewUrlParser: true
+  useNewUrlParser: true,
+  useUnifiedTopology: true
 });
 
 app.use(logger('dev'));

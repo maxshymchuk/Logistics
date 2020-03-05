@@ -1,6 +1,6 @@
 [
   {
-    "type": "Roads",
+    "mapType": "Roads",
     "cities": [
       "Lisbon",
       "Madrid",
@@ -1265,7 +1265,7 @@
     ]
   },
   {
-    "type": "Railways",
+    "mapType": "Railways",
     "cities": [
       "Copenhagen",
       "Oslo",
@@ -1982,7 +1982,7 @@
         null,
         null,
         null,
-        461.9054698898776,
+        null,
         null,
         null,
         null,
@@ -2014,7 +2014,7 @@
         null,
         411.7047035542071,
         null,
-        461.9054698898776,
+        null,
         null,
         986.8714450629795,
         null,
@@ -2326,7 +2326,7 @@
     ]
   },
   {
-    "type": "Searoutes",
+    "mapType": "Searoutes",
     "cities": [
       "Reykjavík",
       "Dublin",
