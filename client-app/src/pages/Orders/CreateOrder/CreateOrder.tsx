@@ -1,36 +1,47 @@
 import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
 import ControlsSelect from '../../../components/Controls/ControlsSelect';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import OrderPrice from './CreateOrderPrice/CreateOrderPrice';
+import OrderPathsList from './OrderPathsList/OrderPathsList';
 import React, { Component } from 'react';
 import styles from './createOrder.module.scss';
-import { Box, Button, Card, CircularProgress, Divider, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, TextField } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  Card,
+  CircularProgress,
+  Divider,
+  IconButton,
+  List,
+  ListItem,
+  ListItemSecondaryAction,
+  ListItemText,
+  TextField
+} from '@material-ui/core';
 import { createOrder } from '../../../services/orders.service';
 import { getLocationsData } from '../../../services/locations.service';
-import { Location } from '../../../models/locations.models';
-import { OrderUserInput } from '../../../models/orders.models';
-import { VehicleType } from '../../../models/vehicles.models';
+import { Location, UserPath } from '../../../models/locations.models';
+import { OrderUser } from '../../../models/orders.models';
 
 type CreateOrderState = {
   locations: Location[];
   trackNumber: string;
   isLoaded: boolean;
-  isPriceChecked: boolean;
-  isOrderCreated: boolean;
+  isRoutesShown: boolean;
+  isOrderTaken: boolean;
   isError: {
     from: boolean;
     to: boolean;
   };
-  input: OrderUserInput;
+  input: OrderUser;
 };
 
 class CreateOrder extends Component<{}, CreateOrderState> {
-  state = {
+  state: CreateOrderState = {
     locations: [],
     trackNumber: '',
     isLoaded: false,
-    isPriceChecked: false,
-    isOrderCreated: false,
+    isRoutesShown: false,
+    isOrderTaken: false,
     isError: {
       from: false,
       to: false
@@ -39,7 +50,7 @@ class CreateOrder extends Component<{}, CreateOrderState> {
     input: {
       from: '',
       to: '',
-      cargos: '',
+      cargos: [''],
       message: ''
     }
   };
@@ -55,14 +66,14 @@ class CreateOrder extends Component<{}, CreateOrderState> {
     this.setState(state => ({
       input: { ...state.input, [property]: value },
       isError: { ...state.isError, [property]: false },
-      isPriceChecked: false
+      isRoutesShown: false
     }));
   };
 
-  showPrice = () => {
+  showRoutes = () => {
     if (this.state.input.from && this.state.input.to) {
       this.setState(state => ({
-        isPriceChecked: true,
+        isRoutesShown: true,
         isError: {
           from: false,
           to: false
@@ -78,10 +89,10 @@ class CreateOrder extends Component<{}, CreateOrderState> {
     }
   };
 
-  createOrder = async () => {
-    const trackNumber = await createOrder(this.state.input);
+  takeOrder = async (path: UserPath) => {
+    const trackNumber = await createOrder(path);
     this.setState(state => ({
-      isOrderCreated: true,
+      isOrderTaken: true,
       trackNumber: trackNumber
     }));
   };
@@ -89,7 +100,7 @@ class CreateOrder extends Component<{}, CreateOrderState> {
   render() {
     return (
       <Card className={styles.order}>
-        {!this.state.isOrderCreated ? (
+        {!this.state.isOrderTaken ? (
           <form>
             <section className={styles.inputs}>
               <div className={styles.from}>
@@ -98,7 +109,14 @@ class CreateOrder extends Component<{}, CreateOrderState> {
                     <CircularProgress />
                   </Box>
                 ) : (
-                  <ControlsSelect isError={this.state.isError.from} label='From' options={this.state.locations} valueProp='_id' textProp='name' onChange={this.handleChange} />
+                  <ControlsSelect
+                    isError={this.state.isError.from}
+                    label='From'
+                    options={this.state.locations}
+                    valueProp='_id'
+                    textProp='name'
+                    onChange={this.handleChange}
+                  />
                 )}
               </div>
               <div className={styles.to}>
@@ -107,13 +125,21 @@ class CreateOrder extends Component<{}, CreateOrderState> {
                     <CircularProgress />
                   </Box>
                 ) : (
-                  <ControlsSelect isError={this.state.isError.to} label='To' options={this.state.locations} valueProp='_id' textProp='name' onChange={this.handleChange} />
+                  <ControlsSelect
+                    isError={this.state.isError.to}
+                    label='To'
+                    options={this.state.locations}
+                    valueProp='_id'
+                    textProp='name'
+                    onChange={this.handleChange}
+                  />
                 )}
               </div>
               <div className={styles.cargos}>
                 <List>
                   <ListItem dense disableGutters>
                     <TextField name='description' label='Description' onChange={this.handleChange} />
+                    {/* <ControlsSelect isError={} label='Cargo Type' options={} valueProp='_id' textProp='name' /> */}
                     <ListItemSecondaryAction>
                       <IconButton edge='end'>
                         <DeleteForeverIcon />
@@ -123,26 +149,26 @@ class CreateOrder extends Component<{}, CreateOrderState> {
                 </List>
               </div>
               <div className={styles.message}>
-                <TextField name='message' label='Message' variant='outlined' onChange={this.handleChange} multiline fullWidth />
+                <TextField
+                  name='message'
+                  label='Message'
+                  variant='outlined'
+                  onChange={this.handleChange}
+                  multiline
+                  fullWidth
+                />
               </div>
-              {!this.state.isPriceChecked && (
+              {this.state.isRoutesShown ? (
+                <div className={styles.list}>
+                  <article className={styles.title}>Choose a suitable route</article>
+                  <OrderPathsList order={this.state.input} callback={this.takeOrder} />
+                </div>
+              ) : (
                 <div className={styles['button-check']}>
-                  <Button variant='outlined' color='primary' onClick={this.showPrice} fullWidth>
-                    Check price
+                  <Button variant='outlined' color='primary' onClick={this.showRoutes} fullWidth>
+                    Show possible routes
                   </Button>
                 </div>
-              )}
-              {this.state.isPriceChecked && (
-                <>
-                  <div className={styles.price}>
-                    <OrderPrice order={this.state.input} />
-                  </div>
-                  <div className={styles['button-confirm']}>
-                    <Button variant='contained' color='primary' onClick={this.createOrder} fullWidth>
-                      Create order
-                    </Button>
-                  </div>
-                </>
               )}
             </section>
           </form>

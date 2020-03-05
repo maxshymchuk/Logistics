@@ -3,6 +3,7 @@ import VehicleItem from './VehicleItem';
 import { Vehicle } from '../../models/vehicles.models';
 import { getVehiclesData } from '../../services/vehicles.service';
 import { CircularProgress } from '@material-ui/core';
+import styles from './vehicles.module.scss';
 
 class VehicleList extends Component<{}, { vehicles: Vehicle[]; loaded: boolean }> {
   state = {

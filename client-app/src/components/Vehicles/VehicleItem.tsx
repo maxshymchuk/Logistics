@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Vehicle } from '../../models/vehicles.models';
-import './vehicles.scss';
+import styles from './vehicles.module.scss';
 
 type VehicleItemProps = {
   vehicle: Vehicle;
