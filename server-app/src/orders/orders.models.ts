@@ -45,7 +45,6 @@ export type UserOrder = {
   from: Location;
   to: Location;
   who: string;
-  vehicle: VehicleType;
   cargos: string[];
   message: string;
 };
@@ -54,7 +53,6 @@ export type UserOrderInput = {
   from: string;
   to: string;
   who: string;
-  vehicle: VehicleType;
   cargos: string[];
   message: string;
 };
