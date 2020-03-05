@@ -16,17 +16,22 @@
   grid-gap: $item-gap;
 }
 
+.title {
+  font-size: 2rem;
+}
+
 .message,
 .price,
 .cargos,
+.list,
 .button-check,
 .button-confirm {
   grid-column: 1 / 3;
 }
 
-.price {
-  background-color: rgba($secondary-color, 0.1);
-  border-radius: $border-radius;
+.list {
+  display: grid;
+  grid-gap: $item-gap;
 }
 
 .congrats {

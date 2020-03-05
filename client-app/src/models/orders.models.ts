@@ -21,15 +21,6 @@ export type Order = {
 export type OrderUser = {
   from: string;
   to: string;
-  who: string;
   cargos: string[];
-  vehicle: string;
-  message: string;
-};
-
-export type OrderUserInput = {
-  from: string;
-  to: string;
-  cargos: string;
   message: string;
 };
