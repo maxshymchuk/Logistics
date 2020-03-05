@@ -19,6 +19,6 @@ export async function getOrderByTrackNumber(trackNumber: string) {
 }
 
 export async function createOrder(userPath: UserPath) {
-  const res = await axios.post('orders', userPath);
-  return res.data;
+  const res: string = (await axios.post('orders', userPath)).data;
+  return res;
 }

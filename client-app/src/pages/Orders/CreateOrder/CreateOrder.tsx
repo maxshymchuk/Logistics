@@ -1,5 +1,4 @@
 import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
-import ControlsSelect from '../../../components/Controls/ControlsSelect';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import OrderPathsList from './OrderPathsList/OrderPathsList';
 import React, { Component } from 'react';
@@ -14,12 +13,12 @@ import {
   List,
   ListItem,
   ListItemSecondaryAction,
-  ListItemText,
   TextField
 } from '@material-ui/core';
 import { createOrder } from '../../../services/orders.service';
 import { getLocationsData } from '../../../services/locations.service';
 import { Location, UserPath } from '../../../models/locations.models';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { OrderUser } from '../../../models/orders.models';
 
 type CreateOrderState = {
@@ -39,6 +38,7 @@ class CreateOrder extends Component<{}, CreateOrderState> {
   state: CreateOrderState = {
     locations: [],
     trackNumber: '',
+
     isLoaded: false,
     isRoutesShown: false,
     isOrderTaken: false,
@@ -60,7 +60,7 @@ class CreateOrder extends Component<{}, CreateOrderState> {
     this.setState({ locations, isLoaded: true });
   }
 
-  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     const property = event.target.name;
     this.setState(state => ({
@@ -70,30 +70,31 @@ class CreateOrder extends Component<{}, CreateOrderState> {
     }));
   };
 
-  showRoutes = () => {
-    if (this.state.input.from && this.state.input.to) {
+  handleAutocomplete = (event: any, value: Location | null, str: string) => {
+    if (value) {
       this.setState(state => ({
-        isRoutesShown: true,
-        isError: {
-          from: false,
-          to: false
-        }
-      }));
-    } else {
-      this.setState(state => ({
-        isError: {
-          from: !state.input.from,
-          to: !state.input.to
-        }
+        input: { ...state.input, [str]: value.name },
+        isError: { ...state.isError, [str]: false },
+        isRoutesShown: false
       }));
     }
+  };
+
+  showRoutes = () => {
+    this.setState(state => ({
+      isRoutesShown: !!state.input.from && !!state.input.to,
+      isError: {
+        from: !state.input.from,
+        to: !state.input.to
+      }
+    }));
   };
 
   takeOrder = async (path: UserPath) => {
     const trackNumber = await createOrder(path);
     this.setState(state => ({
       isOrderTaken: true,
-      trackNumber: trackNumber
+      trackNumber
     }));
   };
 
@@ -102,58 +103,63 @@ class CreateOrder extends Component<{}, CreateOrderState> {
       <Card className={styles.order}>
         {!this.state.isOrderTaken ? (
           <form>
-            <section className={styles.inputs}>
-              <div className={styles.from}>
-                {!this.state.isLoaded ? (
-                  <Box className='progress-bar'>
-                    <CircularProgress />
-                  </Box>
-                ) : (
-                  <ControlsSelect
-                    isError={this.state.isError.from}
-                    label='From'
+            <section className={styles.form}>
+              <article className={styles.title}>Create order</article>
+              {!this.state.isLoaded ? (
+                <Box className='progress-bar'>
+                  <CircularProgress />
+                </Box>
+              ) : (
+                <section className={styles.inputs}>
+                  <Autocomplete
+                    id='location_from'
                     options={this.state.locations}
-                    valueProp='_id'
-                    textProp='name'
-                    onChange={this.handleChange}
+                    getOptionLabel={(option: Location) => option.name}
+                    renderOption={(option: Location) => option.name}
+                    renderInput={(params: any) => (
+                      <TextField
+                        {...params}
+                        label='Choose from location'
+                        variant='outlined'
+                        inputProps={{
+                          ...params.inputProps,
+                          autoComplete: 'new-password'
+                        }}
+                      />
+                    )}
+                    onChange={(e: any, v: Location | null) => this.handleAutocomplete(e, v, 'from')}
+                    autoHighlight
+                    disableClearable
                   />
-                )}
-              </div>
-              <div className={styles.to}>
-                {!this.state.isLoaded ? (
-                  <Box className='progress-bar'>
-                    <CircularProgress />
-                  </Box>
-                ) : (
-                  <ControlsSelect
-                    isError={this.state.isError.to}
-                    label='To'
+                  <Autocomplete
+                    id='location_to'
                     options={this.state.locations}
-                    valueProp='_id'
-                    textProp='name'
-                    onChange={this.handleChange}
+                    getOptionLabel={(option: Location) => option.name}
+                    renderOption={(option: Location) => option.name}
+                    renderInput={(params: any) => (
+                      <TextField
+                        {...params}
+                        label='Choose to location'
+                        variant='outlined'
+                        inputProps={{
+                          ...params.inputProps,
+                          autoComplete: 'new-password'
+                        }}
+                      />
+                    )}
+                    onChange={(e: any, v: Location | null) => this.handleAutocomplete(e, v, 'to')}
+                    autoHighlight
+                    disableClearable
                   />
-                )}
-              </div>
-              <div className={styles.cargos}>
-                <List>
-                  <ListItem dense disableGutters>
-                    <TextField name='description' label='Description' onChange={this.handleChange} />
-                    {/* <ControlsSelect isError={} label='Cargo Type' options={} valueProp='_id' textProp='name' /> */}
-                    <ListItemSecondaryAction>
-                      <IconButton edge='end'>
-                        <DeleteForeverIcon />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                </List>
-              </div>
+                </section>
+              )}
+              <TextField name='description' label='Cargos' variant='outlined' onChange={this.handleInput} fullWidth />
               <div className={styles.message}>
                 <TextField
                   name='message'
                   label='Message'
                   variant='outlined'
-                  onChange={this.handleChange}
+                  onChange={this.handleInput}
                   multiline
                   fullWidth
                 />
@@ -165,9 +171,15 @@ class CreateOrder extends Component<{}, CreateOrderState> {
                 </div>
               ) : (
                 <div className={styles['button-check']}>
-                  <Button variant='outlined' color='primary' onClick={this.showRoutes} fullWidth>
-                    Show possible routes
-                  </Button>
+                  {!this.state.isError.from && !this.state.isError.to ? (
+                    <Button variant='outlined' color='primary' onClick={this.showRoutes} fullWidth>
+                      Show possible routes
+                    </Button>
+                  ) : (
+                    <Button variant='outlined' color='secondary' onClick={this.showRoutes} fullWidth>
+                      Choose from and to locations
+                    </Button>
+                  )}
                 </div>
               )}
             </section>
