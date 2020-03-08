@@ -48,8 +48,8 @@ export const News = () => {
           <div className={styles.content}>
             <Carousel
               slidesPerPage={3}
-              arrowLeft={<ArrowBackIcon />}
-              arrowRight={<ArrowForwardIcon />}
+              arrowLeft={<ArrowBackIcon className={styles.arrow} />}
+              arrowRight={<ArrowForwardIcon className={styles.arrow} />}
               autoPlay={8000}
               animationSpeed={2000}
               breakpoints={{

@@ -13,6 +13,11 @@
     text-align: left;
   }
 
+  .arrow {
+    margin: 0 $item-gap / 2;
+    cursor: pointer;
+  }
+
   .subtitle {
     text-align: left;
     padding-bottom: $item-gap;

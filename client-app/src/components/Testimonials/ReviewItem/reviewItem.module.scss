@@ -39,7 +39,7 @@
       @media screen and (max-width: 700px) {
         @include crop(1);
       }
-      @media screen and (max-width: $container-mobile-width) {
+      @media screen and (max-width: $container-tablet-width) {
         @include crop(2);
       }
     }

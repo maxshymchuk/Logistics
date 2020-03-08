@@ -46,11 +46,11 @@ export const Menu = () => {
             </section>
           </div>
           <section className={styles.social_networks}>
-            <div className={styles.social_network_logo}></div>
-            <div className={styles.social_network_logo}></div>
-            <div className={styles.social_network_logo}></div>
-            <div className={styles.social_network_logo}></div>
-            <div className={styles.social_network_logo}></div>
+            <div className={styles.social_behance}></div>
+            <div className={styles.social_vk}></div>
+            <div className={styles.social_facebook}></div>
+            <div className={styles.social_twitter}></div>
+            <div className={styles.social_instagram}></div>
           </section>
         </section>
       </div>
