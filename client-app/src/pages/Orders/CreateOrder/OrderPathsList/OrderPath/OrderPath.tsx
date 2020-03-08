@@ -3,7 +3,7 @@ import Divider from '@material-ui/core/Divider';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import ScheduleIcon from '@material-ui/icons/Schedule';
-import { ListItem, ListItemText, Collapse, List, Button, Chip, Avatar, Box } from '@material-ui/core';
+import { ListItem, ListItemText, Collapse, List, Button, Chip, Avatar } from '@material-ui/core';
 import styles from './OrderPath.module.scss';
 import { UserPath } from '../../../../../models/locations.models';
 
@@ -68,8 +68,8 @@ class OrderPath extends Component<OrderPathProps, OrderPathState> {
         </ListItem>
         <Collapse in={this.state.isPathOpen} unmountOnExit>
           <List disablePadding>
-            {this.props.userPath.paths.map(routes => (
-              <>
+            {this.props.userPath.paths.map((routes, index) => (
+              <div key={index}>
                 <Divider />
                 <ListItem>
                   <ListItemText>
@@ -77,12 +77,12 @@ class OrderPath extends Component<OrderPathProps, OrderPathState> {
                     <span className={styles.vehicleTime}>{this.getHoursStr(routes.timeInterval)}</span>
                   </ListItemText>
                   <List className={styles.list} disablePadding>
-                    {routes.routes.map(route => (
-                      <ListItemText>{route}</ListItemText>
+                    {routes.routes.map((route, index) => (
+                      <ListItemText key={index}>{route}</ListItemText>
                     ))}
                   </List>
                 </ListItem>
-              </>
+              </div>
             ))}
           </List>
         </Collapse>

@@ -37,8 +37,8 @@ class OrderPathsList extends Component<CreateOrderPathsProps, OrderPathsListStat
           <LinearProgress />
         ) : (
           <>
-            {this.state.paths.map(path => (
-              <Card>
+            {this.state.paths.map((path, index) => (
+              <Card key={index}>
                 <List component='nav' disablePadding>
                   <OrderPath userPath={path} callback={this.props.callback} />
                 </List>

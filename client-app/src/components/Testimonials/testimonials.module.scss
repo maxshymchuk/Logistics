@@ -1,0 +1,23 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.testimonials {
+  @include section;
+}
+
+.wrapper_testimonials {
+  @include wrapper;
+
+  .title {
+    @include title;
+  }
+
+  .subtitle {
+    text-align: center;
+    padding-bottom: $item-gap;
+  }
+
+  .slide {
+    padding: 0 $item-gap;
+  }
+}

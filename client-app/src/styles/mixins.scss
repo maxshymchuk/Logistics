@@ -3,3 +3,40 @@
   background-color: $disabled-color;
   padding: $item-gap / 2 $item-gap;
 }
+
+@mixin section {
+  margin: 50px 0;
+  box-sizing: border-box;
+}
+
+@mixin wrapper {
+  max-width: $container-width;
+  margin: 0 auto;
+  padding: $item-gap / 2 $item-gap;
+}
+
+@mixin title {
+  margin-top: 0;
+  font-size: 2rem;
+  text-align: center;
+  font-weight: bold;
+}
+
+@mixin logo($height: 60px) {
+  $width: $height * 1.5;
+  width: $width;
+  height: $height;
+  background: url('../assets/logo.svg') no-repeat center center;
+  background-size: contain;
+  margin-right: $width;
+  &:after {
+    content: 'universal shipping';
+    font-size: $height / 3;
+    display: flex;
+    height: $height;
+    line-height: $height / 3;
+    align-items: center;
+    position: relative;
+    left: $width;
+  }
+}

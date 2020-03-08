@@ -1,0 +1,89 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.social {
+  width: 100%;
+  background-color: #00000099;
+  color: #fff;
+  position: relative;
+  z-index: 999;
+
+  .wrapper_social {
+    @include wrapper;
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .info {
+    display: flex;
+  }
+
+  .phone,
+  .date {
+    display: flex;
+    align-items: center;
+    span {
+      margin: 0 $item-gap / 2;
+    }
+  }
+
+  .date {
+    @media screen and (max-width: $container-mobile-width) {
+      display: none;
+    }
+  }
+
+  .social_networks {
+    display: flex;
+    align-items: center;
+    .social_network_logo {
+      width: 20px;
+      height: 20px;
+      margin-left: $item-gap / 2;
+      background-color: #00000055;
+      border-radius: 50%;
+    }
+  }
+}
+
+.menu {
+  background-color: #ffffffdd;
+  width: 100%;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+
+  .logo {
+    @include logo(40px);
+  }
+
+  .wrapper_menu {
+    @include wrapper;
+    padding: 0 $item-gap;
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .menu_list {
+    width: 100%;
+    @media screen and (max-width: $container-mobile-width) {
+      display: none;
+    }
+  }
+
+  .user {
+    display: flex;
+  }
+
+  .burger {
+    display: none;
+    @media screen and (max-width: $container-mobile-width) {
+      display: block;
+    }
+  }
+}

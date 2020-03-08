@@ -1,0 +1,67 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.header {
+  width: 100%;
+  height: 100vh;
+  background-size: cover;
+  position: absolute;
+  top: 0;
+  backdrop-filter: blur(0.8);
+}
+
+.layer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  color: #fff;
+  padding: 100px;
+  box-sizing: border-box;
+
+  .title {
+    @include title;
+    text-align: left;
+  }
+
+  .subtitle {
+    max-width: 40%;
+    padding: $item-gap 0;
+  }
+
+  .button {
+    width: 200px;
+    color: #fff;
+  }
+}
+
+.airplane,
+.train,
+.truck,
+.ship {
+  width: 100%;
+  height: 100vh;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  filter: brightness(0.5);
+}
+
+.airplane {
+  background-image: url('../../assets/header/airplane.jpg');
+}
+
+.train {
+  background-image: url('../../assets/header/train.jpg');
+}
+
+.ship {
+  background-image: url('../../assets/header/ship.jpg');
+}
+
+.truck {
+  background-image: url('../../assets/header/truck.jpg');
+}

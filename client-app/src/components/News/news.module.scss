@@ -1,0 +1,20 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.news {
+  @include section;
+}
+
+.wrapper_news {
+  @include wrapper;
+
+  .title {
+    @include title;
+    text-align: left;
+  }
+
+  .subtitle {
+    text-align: left;
+    padding-bottom: $item-gap;
+  }
+}

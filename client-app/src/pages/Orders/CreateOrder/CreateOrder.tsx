@@ -1,20 +1,8 @@
 import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import OrderPathsList from './OrderPathsList/OrderPathsList';
 import React, { Component } from 'react';
 import styles from './createOrder.module.scss';
-import {
-  Box,
-  Button,
-  Card,
-  CircularProgress,
-  Divider,
-  IconButton,
-  List,
-  ListItem,
-  ListItemSecondaryAction,
-  TextField
-} from '@material-ui/core';
+import { Box, Button, Card, CircularProgress, Divider, TextField } from '@material-ui/core';
 import { createOrder } from '../../../services/orders.service';
 import { getLocationsData } from '../../../services/locations.service';
 import { Location, UserPath } from '../../../models/locations.models';

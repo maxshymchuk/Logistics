@@ -1,0 +1,89 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.process {
+  @include section;
+}
+
+.wrapper_process {
+  @include wrapper;
+
+  .title {
+    @include title;
+  }
+
+  .subtitle {
+    text-align: center;
+    padding-bottom: $item-gap;
+  }
+
+  .content {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    counter-reset: step;
+  }
+
+  .step {
+    counter-increment: step;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: $item-gap $item-gap / 2;
+    width: 100px;
+    position: relative;
+    &:nth-child(1) .image {
+      background-image: url('../../assets/process/taking.svg');
+      background-size: 50%;
+    }
+    &:nth-child(2) .image {
+      background-image: url('../../assets/process/manage.svg');
+      background-size: 50%;
+    }
+    &:nth-child(3) .image {
+      background-image: url('../../assets/process/shipment.svg');
+      background-size: 50%;
+    }
+    &:nth-child(4) .image {
+      background-image: url('../../assets/process/warehousing.svg');
+      background-size: 50%;
+    }
+    &:nth-child(5) .image {
+      background-image: url('../../assets/process/transportation.svg');
+      background-size: 50%;
+    }
+    &:nth-child(6) .image {
+      background-image: url('../../assets/process/home.svg');
+      background-size: 50%;
+    }
+    .image {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      margin: $item-gap / 2 0;
+      background-color: #fff;
+      background-repeat: no-repeat;
+      background-position: center center;
+      &:before {
+        content: counter(step);
+        display: block;
+        width: 20px;
+        line-height: 20px;
+        text-align: center;
+        border-radius: 50%;
+        background-color: $accent-color;
+        font-size: 0.7rem;
+        color: #fff;
+        position: absolute;
+        right: $item-gap * 1.5;
+      }
+    }
+    .title {
+      font-size: 0.8rem;
+      font-weight: normal;
+      white-space: nowrap;
+    }
+  }
+}

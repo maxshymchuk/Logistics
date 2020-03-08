@@ -1,0 +1,71 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.about {
+  @include section;
+  margin-top: 95vh;
+}
+
+.wrapper_about {
+  @include wrapper;
+
+  .title {
+    @include title;
+  }
+
+  .subtitle {
+    text-align: center;
+    padding-bottom: $item-gap;
+  }
+
+  .content {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin: 0 $item-gap;
+  }
+
+  .text {
+    position: relative;
+    left: 0;
+    z-index: 1;
+    max-width: 500px;
+    padding-right: 50px;
+    background: rgb(255, 255, 255);
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.85) 70%, rgba(255, 255, 255, 0) 100%);
+  }
+
+  .photos {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 0;
+    height: 200px;
+    @media screen and (max-width: $container-mobile-width) {
+      display: none;
+    }
+    div {
+      position: absolute;
+      width: 200px;
+      height: 140px;
+      border-radius: 10px;
+    }
+    .photo1 {
+      background: url('../../assets/about/containers.jpg') no-repeat center center;
+      background-size: cover;
+      right: 0;
+    }
+    .photo2 {
+      background: url('../../assets/about/warehouse.jpg') no-repeat center center;
+      background-size: cover;
+      top: 80px;
+      right: 90px;
+    }
+    .photo3 {
+      background: url('../../assets/about/cargo.jpg') no-repeat center center;
+      background-size: cover;
+      top: 180px;
+      right: 40px;
+    }
+  }
+}
