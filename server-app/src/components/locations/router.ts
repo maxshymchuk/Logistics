@@ -1,10 +1,10 @@
-import CONSTS from '../../const';
-import { MapType, mapModel, Path } from '../../models/locations.models';
-import { VehicleType, VehicleSpeed } from '../../models/vehicles.models';
-import { pathfinder } from './pathfinder';
-import { Route } from '../../models/routes.models';
-import { getLocationByName } from './locations.service';
-import { calculatePrice } from './calculator';
+import CONSTS from "../../const";
+import { MapType, mapModel, Path } from "../../models/locations.models";
+import { VehicleType, VehicleSpeed } from "../../models/vehicles.models";
+import { pathfinder } from "./pathfinder";
+import { Route } from "../../models/routes.models";
+import { getLocationByName } from "./locations.service";
+import { calculatePrice } from "./calculator";
 
 function getMapVehicle(mapType: MapType) {
   switch (mapType) {
@@ -28,7 +28,10 @@ export async function getDistanceBetween(from: string, to: string) {
   const deltaLon = ((point2.lon - point1.lon) * Math.PI) / PI_DEGREES;
   const a =
     Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
-    Math.cos(angle1) * Math.cos(angle2) * Math.sin(deltaLon / 2) * Math.sin(deltaLon / 2);
+    Math.cos(angle1) *
+      Math.cos(angle2) *
+      Math.sin(deltaLon / 2) *
+      Math.sin(deltaLon / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   const distance = EARTH_RADIUS * c;
   return distance / CONSTS.METERS_PER_KILOMETER;
@@ -45,11 +48,17 @@ async function getCitiesDistance(cities: string[]) {
   return fullDistance;
 }
 
-async function getNearestCityPath(from: string, sourceMapType: MapType, targetMapType: MapType) {
+async function getNearestCityPath(
+  from: string,
+  sourceMapType: MapType,
+  targetMapType: MapType
+) {
   const sourceMap = await mapModel.findOne({ mapType: sourceMapType });
   const targetMap = await mapModel.findOne({ mapType: targetMapType });
 
-  const commonCities = sourceMap.cities.filter(city => targetMap.cities.includes(city)).filter(city => city !== from);
+  const commonCities = sourceMap.cities
+    .filter(city => targetMap.cities.includes(city))
+    .filter(city => city !== from);
 
   const nearestCity: { routes: string[]; distance: number } = {
     routes: [],
@@ -60,9 +69,16 @@ async function getNearestCityPath(from: string, sourceMapType: MapType, targetMa
     const startVertex = sourceMap.cities.indexOf(from);
     const endVertex = sourceMap.cities.indexOf(commonCities[i]);
     const numVertices = sourceMap.cities.length;
-    const edges = sourceMap.table.map(line => line.map(cell => (cell ? cell : Infinity)));
+    const edges = sourceMap.table.map(line =>
+      line.map(cell => (cell ? cell : Infinity))
+    );
     if (startVertex === -1 || endVertex === -1) break;
-    const routes = pathfinder({ numVertices, startVertex, endVertex, edges }).map(route => sourceMap.cities[route]);
+    const routes = pathfinder({
+      numVertices,
+      startVertex,
+      endVertex,
+      edges
+    }).map(route => sourceMap.cities[route]);
     const fullDistance = await getCitiesDistance(routes);
     if (fullDistance < nearestCity.distance) {
       nearestCity.routes = routes;
@@ -75,7 +91,10 @@ async function getNearestCityPath(from: string, sourceMapType: MapType, targetMa
 export async function getRoutesDistance(routes: Route[]) {
   let fullDistance = 0;
   for (let i = 0; i < routes.length; i++) {
-    const distance = await getDistanceBetween(routes[i].startLocation.name, routes[i].endLocation.name);
+    const distance = await getDistanceBetween(
+      routes[i].startLocation.name,
+      routes[i].endLocation.name
+    );
     fullDistance += distance;
   }
   return fullDistance;
@@ -111,13 +130,25 @@ export async function getRoutes(from: string, to: string, mapType: MapType) {
     const price = calculatePrice(distance, vehicle);
     path.push({ routes, distance, timeInterval, vehicle, price });
   } else if (params.startVertex === -1 || params.endVertex === -1) {
-    const targetMapType = mapType === MapType.Searoutes ? MapType.Roads : MapType.Searoutes;
-    const { routes, distance } = await getNearestCityPath(from, mapType, targetMapType);
+    const targetMapType =
+      mapType === MapType.Searoutes ? MapType.Roads : MapType.Searoutes;
+    const { routes, distance } = await getNearestCityPath(
+      from,
+      mapType,
+      targetMapType
+    );
     const price = calculatePrice(distance, vehicle);
     if (routes.length) {
-      const lastRoute = await getRoutes(routes[routes.length - 1], to, targetMapType);
+      const lastRoute = await getRoutes(
+        routes[routes.length - 1],
+        to,
+        targetMapType
+      );
       const timeInterval = distance / VehicleSpeed[vehicle];
-      path.push({ routes, distance, timeInterval, vehicle, price }, ...lastRoute);
+      path.push(
+        { routes, distance, timeInterval, vehicle, price },
+        ...lastRoute
+      );
     }
   }
   return path;

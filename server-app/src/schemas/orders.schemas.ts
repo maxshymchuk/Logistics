@@ -1,6 +1,6 @@
-import * as mongoose from 'mongoose';
-import { locationSchema } from './locations.schemas';
-import { vehicleSchema } from './vehicles.schemas';
+import * as mongoose from "mongoose";
+import { locationSchema } from "./locations.schemas";
+import { vehicleSchema } from "./vehicles.schemas";
 
 // Route Model
 export const routeSchema = new mongoose.Schema({

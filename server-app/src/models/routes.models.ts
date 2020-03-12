@@ -1,5 +1,5 @@
-import { Vehicle } from './vehicles.models';
-import { Location } from './locations.models';
+import { Vehicle } from "./vehicles.models";
+import { Location } from "./locations.models";
 
 export type Route = {
   startLocation: Location;

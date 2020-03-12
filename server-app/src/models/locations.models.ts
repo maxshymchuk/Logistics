@@ -1,9 +1,12 @@
-import * as mongoose from 'mongoose';
-import { VehicleType } from './vehicles.models';
-import { locationSchema, mapSchema } from '../schemas/locations.schemas';
+import * as mongoose from "mongoose";
+import { VehicleType } from "./vehicles.models";
+import { locationSchema, mapSchema } from "../schemas/locations.schemas";
 
-export const locationModel = mongoose.model<LocationMongo>('locations', locationSchema);
-export const mapModel = mongoose.model<MapMongo>('maps', mapSchema);
+export const locationModel = mongoose.model<LocationMongo>(
+  "locations",
+  locationSchema
+);
+export const mapModel = mongoose.model<MapMongo>("maps", mapSchema);
 
 export type Coordinate = {
   lat: number;
@@ -16,9 +19,9 @@ export interface Location {
 }
 
 export enum MapType {
-  Roads = 'Roads',
-  Railways = 'Railways',
-  Searoutes = 'Searoutes'
+  Roads = "Roads",
+  Railways = "Railways",
+  Searoutes = "Searoutes"
 }
 
 export interface Map {
