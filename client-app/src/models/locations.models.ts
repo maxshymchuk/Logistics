@@ -1,4 +1,4 @@
-import { VehicleType } from './vehicles.models';
+import { VehicleType } from "./vehicles.models";
 
 export type Coordinate = {
   lat: number;

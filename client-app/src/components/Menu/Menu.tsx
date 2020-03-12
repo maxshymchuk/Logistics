@@ -1,38 +1,55 @@
-import React, { useState } from 'react';
-import FaceIcon from '@material-ui/icons/Face';
-import styles from './menu.module.scss';
-import CommuteIcon from '@material-ui/icons/Commute';
-import MenuIcon from '@material-ui/icons/Menu';
-import { IconButton, Drawer, makeStyles } from '@material-ui/core';
-import PhoneInTalkIcon from '@material-ui/icons/PhoneInTalk';
-import ScrollableAnchor, { configureAnchors } from 'react-scrollable-anchor';
-import ScheduleIcon from '@material-ui/icons/Schedule';
-import { MenuList } from './MenuList/MenuList';
+import React, { useState, useContext } from "react";
+import { Link, Redirect } from "react-router-dom";
+import { configureAnchors } from "react-scrollable-anchor";
+
+import { Drawer, IconButton, makeStyles } from "@material-ui/core";
+import CommuteIcon from "@material-ui/icons/Commute";
+import FaceIcon from "@material-ui/icons/Face";
+import MenuIcon from "@material-ui/icons/Menu";
+import PhoneInTalkIcon from "@material-ui/icons/PhoneInTalk";
+import ScheduleIcon from "@material-ui/icons/Schedule";
+
+import { logout } from "../../services/users.service";
+import { LoginContext, ContextType } from "../SignIn/SignIn";
+import styles from "./menu.module.scss";
+import { MenuList } from "./MenuList/MenuList";
 
 configureAnchors({ offset: -50, scrollDuration: 800 });
 
 const useStyles = makeStyles(() => ({
   modal: {
-    background: 'none'
+    background: "none"
   },
   paper: {
-    height: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'transparent',
-    backdropFilter: 'blur(5px)',
-    color: '#FFF'
+    height: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "transparent",
+    backdropFilter: "blur(5px)",
+    color: "#FFF"
   }
 }));
 
 export const Menu = () => {
   const classes = useStyles();
+
+  const [isLogged, setLogged] = useState(false);
   const [isDrawerOpened, handleDrawer] = useState(false);
+
+  const context = useContext<ContextType>(LoginContext);
+
+  const handleLogout = async () => {
+    setLogged(false);
+    context.checkLogin({
+      user: undefined,
+      isLogged: false
+    });
+    await logout();
+  };
 
   return (
     <>
-      {/* <ScrollableAnchor id='top'> */}
       <div className={styles.social}>
         <section className={styles.wrapper_social}>
           <div className={styles.info}>
@@ -58,31 +75,46 @@ export const Menu = () => {
         <section className={styles.wrapper_menu}>
           <div className={styles.logo}></div>
           <div className={styles.menu_list}>
-            <MenuList direction='row' />
+            <MenuList direction="row" />
           </div>
           <div className={styles.user}>
-            <IconButton>
-              <FaceIcon />
-            </IconButton>
-            <IconButton>
-              <CommuteIcon />
-            </IconButton>
-            <IconButton className={styles.burger} onClick={() => handleDrawer(!isDrawerOpened)}>
+            <LoginContext.Consumer>
+              {value =>
+                value.isLogged ? (
+                  <>
+                    <IconButton>
+                      <FaceIcon />
+                    </IconButton>
+                    <IconButton onClick={handleLogout}>
+                      <CommuteIcon />
+                    </IconButton>
+                    {!isLogged && <Redirect to="/" />}
+                  </>
+                ) : (
+                  <IconButton component={Link} to={"/login"}>
+                    <FaceIcon />
+                  </IconButton>
+                )
+              }
+            </LoginContext.Consumer>
+            <IconButton
+              className={styles.burger}
+              onClick={() => handleDrawer(!isDrawerOpened)}
+            >
               <MenuIcon />
             </IconButton>
           </div>
           <Drawer
             classes={classes}
-            anchor='top'
+            anchor="top"
             open={isDrawerOpened}
             onClose={() => handleDrawer(!isDrawerOpened)}
             transitionDuration={800}
           >
-            <MenuList direction='column' callback={handleDrawer} />
+            <MenuList direction="column" callback={handleDrawer} />
           </Drawer>
         </section>
       </div>
-      {/* </ScrollableAnchor> */}
     </>
   );
 };

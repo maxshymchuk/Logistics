@@ -1,5 +1,5 @@
-@import '../../styles/variables.scss';
-@import '../../styles/mixins.scss';
+@import "../../styles/variables.scss";
+@import "../../styles/mixins.scss";
 
 .social {
   width: 100%;
@@ -50,19 +50,19 @@
       background-size: cover;
     }
     .social_behance {
-      background-image: url('../../assets/menu/behance.svg');
+      background-image: url("../../assets/menu/behance.svg");
     }
     .social_vk {
-      background-image: url('../../assets/menu/vk.svg');
+      background-image: url("../../assets/menu/vk.svg");
     }
     .social_facebook {
-      background-image: url('../../assets/menu/facebook.svg');
+      background-image: url("../../assets/menu/facebook.svg");
     }
     .social_twitter {
-      background-image: url('../../assets/menu/twitter.svg');
+      background-image: url("../../assets/menu/twitter.svg");
     }
     .social_instagram {
-      background-image: url('../../assets/menu/instagram.svg');
+      background-image: url("../../assets/menu/instagram.svg");
     }
   }
 }
@@ -74,6 +74,10 @@
   position: sticky;
   top: 0;
   z-index: 999;
+
+  a {
+    display: block;
+  }
 
   .logo {
     @include logo(40px);

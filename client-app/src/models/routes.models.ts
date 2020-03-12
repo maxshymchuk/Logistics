@@ -1,5 +1,5 @@
-import { Vehicle } from './vehicles.models';
-import { Location } from './locations.models';
+import { Location } from "./locations.models";
+import { Vehicle } from "./vehicles.models";
 
 export type Route = {
   _id?: string;

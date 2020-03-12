@@ -5,7 +5,17 @@ export type User = {
   birthday: Date;
   email: string;
   phone: string;
-  login: string;
+  username: string;
   password: string;
   isAdmin: boolean;
+};
+
+export type UserSignUp = {
+  name: string;
+  surname: string;
+  birthday: Date;
+  email: string;
+  phone: string;
+  username: string;
+  password: string;
 };

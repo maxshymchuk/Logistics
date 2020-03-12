@@ -1,11 +1,21 @@
-import React, { Component } from 'react';
-import Divider from '@material-ui/core/Divider';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
-import ScheduleIcon from '@material-ui/icons/Schedule';
-import { ListItem, ListItemText, Collapse, List, Button, Chip, Avatar } from '@material-ui/core';
-import styles from './OrderPath.module.scss';
-import { UserPath } from '../../../../../models/locations.models';
+import React, { Component } from "react";
+
+import {
+  Avatar,
+  Button,
+  Chip,
+  Collapse,
+  List,
+  ListItem,
+  ListItemText
+} from "@material-ui/core";
+import Divider from "@material-ui/core/Divider";
+import ExpandLess from "@material-ui/icons/ExpandLess";
+import ExpandMore from "@material-ui/icons/ExpandMore";
+import ScheduleIcon from "@material-ui/icons/Schedule";
+
+import { UserPath } from "../../../../../models/locations.models";
+import styles from "./OrderPath.module.scss";
 
 type OrderPathState = {
   isLoaded: boolean;
@@ -45,24 +55,30 @@ class OrderPath extends Component<OrderPathProps, OrderPathState> {
           {this.state.isPathOpen ? <ExpandLess /> : <ExpandMore />}
           <ListItemText
             className={styles.routes}
-            primary={this.props.userPath.paths.map(path => path.vehicle).join(' – ')}
+            primary={this.props.userPath.paths
+              .map(path => path.vehicle)
+              .join(" – ")}
           />
           <ListItemText style={{ flexGrow: 0 }} className={styles.time}>
             <Chip
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
               icon={<ScheduleIcon />}
               label={this.getHoursStr(this.props.userPath.timeInterval)}
             />
           </ListItemText>
           <ListItemText style={{ flexGrow: 0 }} className={styles.price}>
             <Chip
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
               avatar={<Avatar>$</Avatar>}
-              color='primary'
+              color="primary"
               label={this.props.userPath.price.toFixed(2)}
             />
           </ListItemText>
-          <Button variant='contained' color='primary' onClick={this.handleOrder}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={this.handleOrder}
+          >
             Take
           </Button>
         </ListItem>
@@ -74,7 +90,9 @@ class OrderPath extends Component<OrderPathProps, OrderPathState> {
                 <ListItem>
                   <ListItemText>
                     <span>{routes.vehicle}</span>
-                    <span className={styles.vehicleTime}>{this.getHoursStr(routes.timeInterval)}</span>
+                    <span className={styles.vehicleTime}>
+                      {this.getHoursStr(routes.timeInterval)}
+                    </span>
                   </ListItemText>
                   <List className={styles.list} disablePadding>
                     {routes.routes.map((route, index) => (

@@ -1,6 +1,7 @@
-import React from 'react';
-import styles from './tracker.module.scss';
-import TrackOrder from '../../pages/Orders/TrackOrder/TrackOrder';
+import React from "react";
+
+import TrackOrder from "../../pages/Orders/TrackOrder/TrackOrder";
+import styles from "./tracker.module.scss";
 
 export const Tracker = () => {
   return (

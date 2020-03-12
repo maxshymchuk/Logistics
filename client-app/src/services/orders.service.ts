@@ -1,7 +1,8 @@
-import * as qs from 'qs';
-import axios from 'axios';
-import { OrderUser } from '../models/orders.models';
-import { UserPath } from '../models/locations.models';
+import axios from "axios";
+import * as qs from "qs";
+
+import { UserPath } from "../models/locations.models";
+import { OrderUser } from "../models/orders.models";
 
 export async function getOrderPaths(order: OrderUser) {
   const params = qs.stringify(order);
@@ -12,13 +13,13 @@ export async function getOrderPaths(order: OrderUser) {
 export async function getOrderByTrackNumber(trackNumber: string) {
   const order = (
     await axios.get(`orders/track/${trackNumber}`).catch<any>(() => {
-      throw new Error('Track not found');
+      throw new Error("Track not found");
     })
   ).data;
   return order;
 }
 
 export async function createOrder(userPath: UserPath) {
-  const res: string = (await axios.post('orders', userPath)).data;
+  const res: string = (await axios.post("orders", userPath)).data;
   return res;
 }

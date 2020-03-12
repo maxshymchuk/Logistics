@@ -1,5 +1,5 @@
-@import '../../styles/variables.scss';
-@import '../../styles/mixins.scss';
+@import "../../styles/variables.scss";
+@import "../../styles/mixins.scss";
 
 .process {
   @include section;
@@ -35,27 +35,27 @@
     width: 100px;
     position: relative;
     &:nth-child(1) .image {
-      background-image: url('../../assets/process/taking.svg');
+      background-image: url("../../assets/process/taking.svg");
       background-size: 50%;
     }
     &:nth-child(2) .image {
-      background-image: url('../../assets/process/manage.svg');
+      background-image: url("../../assets/process/manage.svg");
       background-size: 50%;
     }
     &:nth-child(3) .image {
-      background-image: url('../../assets/process/shipment.svg');
+      background-image: url("../../assets/process/shipment.svg");
       background-size: 50%;
     }
     &:nth-child(4) .image {
-      background-image: url('../../assets/process/warehousing.svg');
+      background-image: url("../../assets/process/warehousing.svg");
       background-size: 50%;
     }
     &:nth-child(5) .image {
-      background-image: url('../../assets/process/transportation.svg');
+      background-image: url("../../assets/process/transportation.svg");
       background-size: 50%;
     }
     &:nth-child(6) .image {
-      background-image: url('../../assets/process/home.svg');
+      background-image: url("../../assets/process/home.svg");
       background-size: 50%;
     }
     .image {

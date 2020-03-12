@@ -1,13 +1,17 @@
-import React from 'react';
-import styles from './process.module.scss';
-import { Card } from '@material-ui/core';
+import React from "react";
+
+import { Card } from "@material-ui/core";
+
+import styles from "./process.module.scss";
 
 export const Process = () => {
   return (
     <div className={styles.process}>
       <section className={styles.wrapper_process}>
         <h1 className={styles.title}>Our Working Process</h1>
-        <article className={styles.subtitle}>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</article>
+        <article className={styles.subtitle}>
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+        </article>
         <div className={styles.content}>
           <div className={styles.step}>
             <Card className={styles.image}></Card>

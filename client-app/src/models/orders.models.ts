@@ -1,10 +1,10 @@
-import { Route } from './routes.models';
-import { Track } from './tracks.models';
+import { Route } from "./routes.models";
+import { Track } from "./tracks.models";
 
 export enum OrderStatus {
-  Taken = 'Taken',
-  Completed = 'Completed',
-  Canceled = 'Canceled'
+  Taken = "Taken",
+  Completed = "Completed",
+  Canceled = "Canceled"
 }
 
 export type Order = {

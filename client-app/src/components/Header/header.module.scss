@@ -1,5 +1,5 @@
-@import '../../styles/variables.scss';
-@import '../../styles/mixins.scss';
+@import "../../styles/variables.scss";
+@import "../../styles/mixins.scss";
 
 .header {
   width: 100%;
@@ -51,17 +51,17 @@
 }
 
 .airplane {
-  background-image: url('../../assets/header/airplane.jpg');
+  background-image: url("../../assets/header/airplane.jpg");
 }
 
 .train {
-  background-image: url('../../assets/header/train.jpg');
+  background-image: url("../../assets/header/train.jpg");
 }
 
 .ship {
-  background-image: url('../../assets/header/ship.jpg');
+  background-image: url("../../assets/header/ship.jpg");
 }
 
 .truck {
-  background-image: url('../../assets/header/truck.jpg');
+  background-image: url("../../assets/header/truck.jpg");
 }

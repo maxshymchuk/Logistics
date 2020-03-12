@@ -1,5 +1,5 @@
-@import '../../../../styles/variables.scss';
-@import '../../../../styles/mixins.scss';
+@import "../../../../styles/variables.scss";
+@import "../../../../styles/mixins.scss";
 
 .order {
   display: grid;
@@ -19,7 +19,7 @@
   color: $accent-color;
   font-family: $font-monospace;
   &:before {
-    content: '#';
+    content: "#";
     font-size: 1rem;
   }
 }

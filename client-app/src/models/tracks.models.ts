@@ -1,11 +1,11 @@
-import { Location } from './locations.models';
-import { Route } from './routes.models';
-import { Vehicle } from './vehicles.models';
+import { Location } from "./locations.models";
+import { Route } from "./routes.models";
+import { Vehicle } from "./vehicles.models";
 
 export enum TrackStatus {
-  Pending = 'pending',
-  Transit = 'transit',
-  Completed = 'completed'
+  Pending = "pending",
+  Transit = "transit",
+  Completed = "completed"
 }
 
 export type Track = {
