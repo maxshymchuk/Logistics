@@ -1,11 +1,16 @@
-import React, { Component } from 'react';
-import VehicleItem from './VehicleItem';
-import { CircularProgress } from '@material-ui/core';
-import { Vehicle } from '../../../models/vehicles.models';
-import { getVehiclesData } from '../../../services/vehicles.service';
-import styles from './vehicles.module.scss';
+import React, { Component } from "react";
 
-class VehicleList extends Component<{}, { vehicles: Vehicle[]; loaded: boolean }> {
+import { CircularProgress } from "@material-ui/core";
+
+import { Vehicle } from "../../../models/vehicles.models";
+import { getVehiclesData } from "../../../services/vehicles.service";
+import VehicleItem from "./VehicleItem";
+import styles from "./vehicles.module.scss";
+
+class VehicleList extends Component<
+  {},
+  { vehicles: Vehicle[]; loaded: boolean }
+> {
   state = {
     vehicles: [],
     loaded: false
@@ -20,7 +25,7 @@ class VehicleList extends Component<{}, { vehicles: Vehicle[]; loaded: boolean }
     return (
       <React.Fragment>
         {!this.state.loaded && <CircularProgress />}
-        <section className='vehicles'>
+        <section className="vehicles">
           {this.state.vehicles.map((vehicle: Vehicle) => {
             return <VehicleItem vehicle={vehicle} key={vehicle._id} />;
           })}

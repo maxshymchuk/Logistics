@@ -1,10 +1,10 @@
 .changer {
   display: flex;
   align-items: center;
-  &-icons {
+  .icon {
     color: #fff;
   }
-  &-days {
+  .days {
     width: 80px;
     input {
       color: #fff;
