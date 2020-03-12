@@ -41,7 +41,7 @@
     right: 0;
     z-index: 0;
     height: 200px;
-    @media screen and (max-width: $container-mobile-width) {
+    @media screen and (max-width: $container-tablet-width) {
       display: none;
     }
     div {

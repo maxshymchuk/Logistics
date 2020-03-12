@@ -27,10 +27,7 @@
     span {
       margin: 0 $item-gap / 2;
     }
-  }
-
-  .date {
-    @media screen and (max-width: $container-mobile-width) {
+    @media screen and (max-width: $container-tablet-width) {
       display: none;
     }
   }
@@ -38,12 +35,34 @@
   .social_networks {
     display: flex;
     align-items: center;
-    .social_network_logo {
+    .social_behance,
+    .social_vk,
+    .social_facebook,
+    .social_twitter,
+    .social_instagram {
       width: 20px;
       height: 20px;
       margin-left: $item-gap / 2;
       background-color: #00000055;
       border-radius: 50%;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+    .social_behance {
+      background-image: url('../../assets/menu/behance.svg');
+    }
+    .social_vk {
+      background-image: url('../../assets/menu/vk.svg');
+    }
+    .social_facebook {
+      background-image: url('../../assets/menu/facebook.svg');
+    }
+    .social_twitter {
+      background-image: url('../../assets/menu/twitter.svg');
+    }
+    .social_instagram {
+      background-image: url('../../assets/menu/instagram.svg');
     }
   }
 }
@@ -71,7 +90,7 @@
 
   .menu_list {
     width: 100%;
-    @media screen and (max-width: $container-mobile-width) {
+    @media screen and (max-width: $container-tablet-width) {
       display: none;
     }
   }
@@ -82,7 +101,7 @@
 
   .burger {
     display: none;
-    @media screen and (max-width: $container-mobile-width) {
+    @media screen and (max-width: $container-tablet-width) {
       display: block;
     }
   }

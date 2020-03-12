@@ -8,7 +8,7 @@ export const Header = () => {
   return (
     <div className={styles.header}>
       <div className={styles.content}>
-        <Carousel slidesPerPage={1} autoPlay={3000} animationSpeed={2000} draggable={false} infinite>
+        <Carousel slidesPerPage={1} autoPlay={8000} animationSpeed={2000} draggable={false} infinite>
           <div className={styles.airplane}></div>
           <div className={styles.train}></div>
           <div className={styles.ship}></div>

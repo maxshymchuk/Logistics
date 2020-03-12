@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
-import UserItem from './UserItem';
-import { User } from '../../../models/users.models';
-import { getUsersData } from '../../../services/users.service';
-import { CircularProgress } from '@material-ui/core';
+import React, { Component } from "react";
+
+import { CircularProgress } from "@material-ui/core";
+
+import { User } from "../../../models/users.models";
+import { getUsersData } from "../../../services/users.service";
+import UserItem from "./UserItem";
 
 class UsersList extends Component<{}, { users: User[]; loaded: boolean }> {
   state = {
@@ -19,7 +21,7 @@ class UsersList extends Component<{}, { users: User[]; loaded: boolean }> {
     return (
       <React.Fragment>
         {!this.state.loaded && <CircularProgress />}
-        <section className='users'>
+        <section className="users">
           {this.state.users.map((user: User) => {
             return <UserItem user={user} key={user._id} />;
           })}

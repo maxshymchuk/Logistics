@@ -31,7 +31,7 @@
     display: grid;
     grid-gap: $item-gap;
     grid-template-columns: repeat(2, 1fr);
-    @media screen and (max-width: $container-mobile-width) {
+    @media screen and (max-width: $container-tablet-width) {
       width: 100%;
     }
   }

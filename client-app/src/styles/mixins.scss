@@ -20,6 +20,9 @@
   font-size: 2rem;
   text-align: center;
   font-weight: bold;
+  @media screen and (max-width: $container-tablet-width) {
+    font-size: 1.4rem;
+  }
 }
 
 @mixin logo($height: 60px) {
@@ -29,6 +32,9 @@
   background: url('../assets/logo.svg') no-repeat center center;
   background-size: contain;
   margin-right: $width;
+  @media screen and (max-width: $container-mobile-width) {
+    margin: 0;
+  }
   &:after {
     content: 'universal shipping';
     font-size: $height / 3;
@@ -38,5 +44,8 @@
     align-items: center;
     position: relative;
     left: $width;
+    @media screen and (max-width: $container-mobile-width) {
+      display: none;
+    }
   }
 }
