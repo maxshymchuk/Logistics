@@ -1,4 +1,4 @@
-@import '../../../styles/variables.scss';
+@import "../../../styles/variables.scss";
 
 .vehicles {
   display: grid;
@@ -19,15 +19,15 @@
     background-position: center center;
     background-repeat: no-repeat;
     &.car {
-      background-image: url('./assets/cargo.svg');
+      background-image: url("./assets/cargo.svg");
       background-size: 70%;
     }
     &.plane {
-      background-image: url('./assets/airplane.svg');
+      background-image: url("./assets/airplane.svg");
       background-size: 70%;
     }
     &.train {
-      background-image: url('./assets/train.svg');
+      background-image: url("./assets/train.svg");
       background-size: 70%;
     }
   }
