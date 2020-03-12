@@ -1,13 +1,22 @@
-import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
-import OrderPathsList from './OrderPathsList/OrderPathsList';
-import React, { Component } from 'react';
-import styles from './createOrder.module.scss';
-import { Box, Button, Card, CircularProgress, Divider, TextField } from '@material-ui/core';
-import { createOrder } from '../../../services/orders.service';
-import { getLocationsData } from '../../../services/locations.service';
-import { Location, UserPath } from '../../../models/locations.models';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import { OrderUser } from '../../../models/orders.models';
+import React, { Component } from "react";
+
+import {
+  Box,
+  Button,
+  Card,
+  CircularProgress,
+  Divider,
+  TextField
+} from "@material-ui/core";
+import CheckCircleOutlineOutlinedIcon from "@material-ui/icons/CheckCircleOutlineOutlined";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+
+import { Location, UserPath } from "../../../models/locations.models";
+import { OrderUser } from "../../../models/orders.models";
+import { getLocationsData } from "../../../services/locations.service";
+import { createOrder } from "../../../services/orders.service";
+import styles from "./createOrder.module.scss";
+import OrderPathsList from "./OrderPathsList/OrderPathsList";
 
 type CreateOrderState = {
   locations: Location[];
@@ -25,7 +34,7 @@ type CreateOrderState = {
 class CreateOrder extends Component<{}, CreateOrderState> {
   state: CreateOrderState = {
     locations: [],
-    trackNumber: '',
+    trackNumber: "",
 
     isLoaded: false,
     isRoutesShown: false,
@@ -36,10 +45,10 @@ class CreateOrder extends Component<{}, CreateOrderState> {
     },
 
     input: {
-      from: '',
-      to: '',
-      cargos: [''],
-      message: ''
+      from: "",
+      to: "",
+      cargos: [""],
+      message: ""
     }
   };
 
@@ -94,59 +103,69 @@ class CreateOrder extends Component<{}, CreateOrderState> {
             <section className={styles.form}>
               <article className={styles.title}>Create order</article>
               {!this.state.isLoaded ? (
-                <Box className='progress-bar'>
+                <Box className="progress-bar">
                   <CircularProgress />
                 </Box>
               ) : (
                 <section className={styles.inputs}>
                   <Autocomplete
-                    id='location_from'
+                    id="location_from"
                     options={this.state.locations}
                     getOptionLabel={(option: Location) => option.name}
                     renderOption={(option: Location) => option.name}
                     renderInput={(params: any) => (
                       <TextField
                         {...params}
-                        label='Choose from location'
-                        variant='outlined'
+                        label="Choose from location"
+                        variant="outlined"
                         inputProps={{
                           ...params.inputProps,
-                          autoComplete: 'new-password'
+                          autoComplete: "new-password"
                         }}
                       />
                     )}
-                    onChange={(e: any, v: Location | null) => this.handleAutocomplete(e, v, 'from')}
+                    onChange={(e: any, v: Location | null) =>
+                      this.handleAutocomplete(e, v, "from")
+                    }
                     autoHighlight
                     disableClearable
                   />
                   <Autocomplete
-                    id='location_to'
+                    id="location_to"
                     options={this.state.locations}
                     getOptionLabel={(option: Location) => option.name}
                     renderOption={(option: Location) => option.name}
                     renderInput={(params: any) => (
                       <TextField
                         {...params}
-                        label='Choose to location'
-                        variant='outlined'
+                        label="Choose to location"
+                        variant="outlined"
                         inputProps={{
                           ...params.inputProps,
-                          autoComplete: 'new-password'
+                          autoComplete: "new-password"
                         }}
                       />
                     )}
-                    onChange={(e: any, v: Location | null) => this.handleAutocomplete(e, v, 'to')}
+                    onChange={(e: any, v: Location | null) =>
+                      this.handleAutocomplete(e, v, "to")
+                    }
                     autoHighlight
                     disableClearable
                   />
                 </section>
               )}
-              <TextField name='description' label='Cargos' variant='outlined' onChange={this.handleInput} fullWidth />
+              <TextField
+                name="description"
+                label="Cargos"
+                variant="outlined"
+                onChange={this.handleInput}
+                fullWidth
+              />
               <div className={styles.message}>
                 <TextField
-                  name='message'
-                  label='Message'
-                  variant='outlined'
+                  name="message"
+                  label="Message"
+                  variant="outlined"
                   onChange={this.handleInput}
                   multiline
                   fullWidth
@@ -154,17 +173,32 @@ class CreateOrder extends Component<{}, CreateOrderState> {
               </div>
               {this.state.isRoutesShown ? (
                 <div className={styles.list}>
-                  <article className={styles.title}>Choose a suitable route</article>
-                  <OrderPathsList order={this.state.input} callback={this.takeOrder} />
+                  <article className={styles.title}>
+                    Choose a suitable route
+                  </article>
+                  <OrderPathsList
+                    order={this.state.input}
+                    callback={this.takeOrder}
+                  />
                 </div>
               ) : (
-                <div className={styles['button-check']}>
+                <div className={styles["button-check"]}>
                   {!this.state.isError.from && !this.state.isError.to ? (
-                    <Button variant='outlined' color='primary' onClick={this.showRoutes} fullWidth>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={this.showRoutes}
+                      fullWidth
+                    >
                       Show possible routes
                     </Button>
                   ) : (
-                    <Button variant='outlined' color='secondary' onClick={this.showRoutes} fullWidth>
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      onClick={this.showRoutes}
+                      fullWidth
+                    >
                       Choose from and to locations
                     </Button>
                   )}
@@ -181,8 +215,12 @@ class CreateOrder extends Component<{}, CreateOrderState> {
             <Divider className={styles.divider} />
             <section className={styles.track}>
               <article className={styles.title}>Your track number</article>
-              <span className={styles['track-number']}>{this.state.trackNumber}</span>
-              <span className={styles.help}>Use this code to track your parcels</span>
+              <span className={styles["track-number"]}>
+                {this.state.trackNumber}
+              </span>
+              <span className={styles.help}>
+                Use this code to track your parcels
+              </span>
             </section>
           </>
         )}

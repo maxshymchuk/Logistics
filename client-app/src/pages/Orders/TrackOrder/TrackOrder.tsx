@@ -1,10 +1,12 @@
-import cogoToast from 'cogo-toast';
-import React, { Component } from 'react';
-import styles from './trackOrder.module.scss';
-import TrackOrderInfo from './TrackOrderInfo/TrackOrderInfo';
-import { Button, Card, LinearProgress, TextField } from '@material-ui/core';
-import { getOrderByTrackNumber } from '../../../services/orders.service';
-import { Order } from '../../../models/orders.models';
+import cogoToast from "cogo-toast";
+import React, { Component } from "react";
+
+import { Button, Card, LinearProgress, TextField } from "@material-ui/core";
+
+import { Order } from "../../../models/orders.models";
+import { getOrderByTrackNumber } from "../../../services/orders.service";
+import styles from "./trackOrder.module.scss";
+import TrackOrderInfo from "./TrackOrderInfo/TrackOrderInfo";
 
 type TrackOrderState = {
   trackNumber: string;
@@ -15,7 +17,7 @@ type TrackOrderState = {
 
 class TrackOrder extends Component<{}, TrackOrderState> {
   state = {
-    trackNumber: '',
+    trackNumber: "",
     order: {} as Order,
     isClicked: false,
     isTrackFound: false
@@ -56,16 +58,16 @@ class TrackOrder extends Component<{}, TrackOrderState> {
       <>
         <Card className={styles.track}>
           <TextField
-            name='trackNumber'
+            name="trackNumber"
             value={this.state.trackNumber}
-            label='Track number'
+            label="Track number"
             onChange={this.handleChange}
             fullWidth
           />
           <Button
-            className={styles['button-find']}
-            variant='contained'
-            color='primary'
+            className={styles["button-find"]}
+            variant="contained"
+            color="primary"
             onClick={this.showOrder}
             fullWidth
           >

@@ -1,6 +1,14 @@
-import React from 'react';
-import styles from './newsItem.module.scss';
-import { Card, CardContent, CardActions, Button, CardMedia } from '@material-ui/core';
+import React from "react";
+
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia
+} from "@material-ui/core";
+
+import styles from "./newsItem.module.scss";
 
 type NewsItemProps = {
   date: Date;
@@ -19,8 +27,8 @@ export const NewsItem = (props: NewsItemProps) => {
         <article className={styles.title}>{props.title}</article>
       </CardContent>
       <CardActions className={styles.actions}>
-        <Button className={styles.button} size='small'>
-          <a href={props.source} target='_blank' rel='noopener noreferrer'>
+        <Button className={styles.button} size="small">
+          <a href={props.source} target="_blank" rel="noopener noreferrer">
             Read More
           </a>
         </Button>
