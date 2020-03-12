@@ -1,14 +1,17 @@
-import * as mongoose from 'mongoose';
-import { Location } from './locations.models';
-import { vehicleSchema } from '../schemas/vehicles.schemas';
+import * as mongoose from "mongoose";
+import { Location } from "./locations.models";
+import { vehicleSchema } from "../schemas/vehicles.schemas";
 
-export const vehicleModel = mongoose.model<VehicleMongo>('vehicles', vehicleSchema);
+export const vehicleModel = mongoose.model<VehicleMongo>(
+  "vehicles",
+  vehicleSchema
+);
 
 export enum VehicleType {
-  Car = 'Car',
-  Plane = 'Plane',
-  Ship = 'Ship',
-  Train = 'Train'
+  Car = "Car",
+  Plane = "Plane",
+  Ship = "Ship",
+  Train = "Train"
 }
 
 export enum VehiclePriceRatio {

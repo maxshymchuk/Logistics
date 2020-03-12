@@ -1,8 +1,8 @@
-import CONSTS from '../../const';
-import { updateOrders } from '../orders/orders.service';
-import { vehicleModel } from '../../models/vehicles.models';
-import { orderModel } from '../../models/orders.models';
-import { moveDate } from '../../utils';
+import CONSTS from "../../const";
+import { updateOrders } from "../orders/orders.service";
+import { vehicleModel } from "../../models/vehicles.models";
+import { orderModel } from "../../models/orders.models";
+import { moveDate } from "../../utils";
 
 export async function moveTimeOn(days: number) {
   const interval = Math.sign(days) * CONSTS.HOURS_PER_DAY;
@@ -17,7 +17,10 @@ export async function moveTimeOn(days: number) {
       for (let track of order.tracks) {
         track.departureDate = moveDate(track.departureDate, interval);
         track.arrivalDate = moveDate(track.arrivalDate, interval);
-        track.route.departureDate = moveDate(track.route.departureDate, interval);
+        track.route.departureDate = moveDate(
+          track.route.departureDate,
+          interval
+        );
       }
       for (let route of order.routes) {
         route.departureDate = moveDate(route.departureDate, interval);
@@ -26,5 +29,7 @@ export async function moveTimeOn(days: number) {
     }
     await updateOrders();
   }
-  return days >= 0 ? `Plus ${Math.abs(days)} day(s)` : `Minus ${Math.abs(days)} day(s)`;
+  return days >= 0
+    ? `Plus ${Math.abs(days)} day(s)`
+    : `Minus ${Math.abs(days)} day(s)`;
 }

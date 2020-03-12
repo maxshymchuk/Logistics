@@ -1,4 +1,4 @@
-import CONSTS from './const';
+import CONSTS from "./const";
 
 export function moveDate(current: Date, hours: number) {
   return new Date(current.getTime() + hours * CONSTS.HOUR_MILLISEC);
@@ -7,3 +7,17 @@ export function moveDate(current: Date, hours: number) {
 export function rand(a: number, b: number) {
   return Math.round(Math.random() * (b - a) + a);
 }
+
+export const requiresAdmin = () => {
+  return (req: any, res: any, next: any) => {
+    if (req.user && req.user.isAdmin === true) next();
+    else res.status(401).send("Unauthorized");
+  };
+};
+
+export const requiresLogin = () => {
+  return (req: any, res: any, next: any) => {
+    if (req.user) next();
+    else res.status(401).send("Unauthorized");
+  };
+};
