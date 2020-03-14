@@ -1,14 +1,9 @@
-import * as fs from "fs";
+import * as fs from 'fs';
+
 import {
-  mapModel,
-  Location,
-  Map,
-  MapType,
-  Path,
-  PathInput,
-  locationModel
-} from "../../models/locations.models";
-import { getAirplaneRoutes, getRoutes } from "./router";
+    Location, locationModel, Map, mapModel, MapType, Path, PathInput
+} from '../../models/locations.models';
+import { getAirplaneRoutes, getRoutes } from './router';
 
 export async function getLocations() {
   const locations = await locationModel
@@ -17,6 +12,11 @@ export async function getLocations() {
   return locations.sort((a: Location, b: Location) =>
     a.name > b.name ? 1 : -1
   );
+}
+
+export async function addLocation(location: Location) {
+  locationModel.create(location, (err: Error) => err && console.log(err));
+  return "Location added";
 }
 
 export async function getLocationByName(name: string) {

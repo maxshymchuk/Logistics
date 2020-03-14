@@ -1,5 +1,5 @@
-import { Router, Request, Response } from "express";
-import * as passport from "passport";
+import { Request, Response, Router } from 'express';
+import * as passport from 'passport';
 
 export const router = Router();
 
@@ -9,6 +9,9 @@ router.get("/login", async (req: Request, res: Response) => {
 
 router.get("/logout", async (req: Request, res: Response) => {
   req.logout();
+  req.session.destroy((err) => {
+    err && console.log(err);
+  });
 });
 
 router.post(

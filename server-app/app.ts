@@ -1,22 +1,22 @@
-import * as express from "express";
-import * as http from "http";
-import * as mongoose from "mongoose";
-import { Strategy } from "passport-local";
-import * as passport from "passport";
-import * as session from "express-session";
+import * as express from 'express';
+import * as session from 'express-session';
+import * as http from 'http';
+import * as mongoose from 'mongoose';
+import * as passport from 'passport';
+import { Strategy } from 'passport-local';
+
+import * as auth from './src/components/auth/auth.routes';
+import * as location from './src/components/locations/locations.routes';
+import * as order from './src/components/orders/orders.routes';
+import * as time from './src/components/time/time.routes';
+import * as user from './src/components/users/users.routes';
+import * as vehicle from './src/components/vehicles/vehicles.routes';
+import { userModel, UserMongo } from './src/models/users.models';
+import { requiresAdmin, requiresLogin } from './src/utils';
 
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const debug = require("debug")("server-app:server");
-
-import * as auth from "./src/components/auth/auth.routes";
-import * as time from "./src/components/time/time.routes";
-import * as order from "./src/components/orders/orders.routes";
-import * as user from "./src/components/users/users.routes";
-import * as location from "./src/components/locations/locations.routes";
-import * as vehicle from "./src/components/vehicles/vehicles.routes";
-import { userModel, UserMongo } from "./src/models/users.models";
-import { requiresAdmin, requiresLogin } from "./src/utils";
 
 export const app = express();
 
@@ -30,7 +30,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader("Access-Control-Allow-Origin", "http://localhost:3001");
   res.setHeader(
@@ -77,11 +76,9 @@ passport.deserializeUser((_id, done) => {
 app.use("/", auth.router);
 app.use("/orders", order.router);
 app.use("/users", user.router);
-
-app.use("/locations", requiresLogin(), location.router);
-
-app.use("/vehicles", requiresAdmin(), vehicle.router);
-app.use("/time", requiresAdmin(), time.router);
+app.use("/locations", location.router);
+app.use("/vehicles", vehicle.router);
+app.use("/time", time.router);
 
 app.use((err: any, req: express.Request, res: express.Response) => {
   res.locals.message = err.message;

@@ -1,20 +1,39 @@
-import { getLocations } from "../locations/locations.service";
-import { Location, locationModel } from "../../models/locations.models";
+import { Location, locationModel } from '../../models/locations.models';
 import {
-  Vehicle,
-  VehicleMongo,
-  VehicleSpeed,
-  VehicleType,
-  vehicleModel
-} from "../../models/vehicles.models";
-import { moveDate, rand } from "../../utils";
-import { getDistanceBetween } from "../locations/router";
+    Vehicle, vehicleModel, VehicleMongo, VehicleSpeed, VehicleType
+} from '../../models/vehicles.models';
+import { moveDate, rand } from '../../utils';
+import { getLocations } from '../locations/locations.service';
+import { getDistanceBetween } from '../locations/router';
+
+async function findVehicleById(_id: string) {
+  const vehicle = await vehicleModel
+    .findOne({ _id })
+    .catch<Vehicle>(e => console.log(e));
+  return vehicle;
+}
 
 export async function getVehicles() {
   const vehicles = await vehicleModel
     .find()
+    .sort("arrivalDate") 
     .catch<Vehicle[]>(e => console.log(e));
   return vehicles;
+}
+
+export async function addVehicle(vehicle: Vehicle) {
+  await vehicleModel.create(vehicle, (err: Error) => console.log(err));
+  return 'Vehicle added';
+}
+
+export async function deleteVehicleById(_id: string) {
+  const vehicle = await findVehicleById(_id);
+  if (vehicle) {
+    await vehicleModel.deleteOne({ _id });
+    return `Vehicle ${_id} deleted`;
+  } else {
+    return "Vehicle ID is not valid";
+  }
 }
 
 export async function getNearestVehicle(

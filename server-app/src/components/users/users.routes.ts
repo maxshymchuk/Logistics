@@ -1,6 +1,7 @@
-import * as userService from "./users.service";
-import { Request, Response, Router } from "express";
-import { requiresAdmin, requiresLogin } from "../../utils";
+import { Request, Response, Router } from 'express';
+
+import { requiresAdmin, requiresLogin } from '../../utils';
+import * as userService from './users.service';
 
 export const router = Router();
 
@@ -18,7 +19,7 @@ router.get(
   }
 );
 
-router.post("/", async (req: Request, res: Response) => {
+router.post("/", requiresLogin(), async (req: Request, res: Response) => {
   const result = await userService.addUser(req.body);
   res.status(result ? 200 : 403).send(result);
 });
