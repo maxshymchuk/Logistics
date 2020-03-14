@@ -5,6 +5,13 @@ import {
 } from '../../models/locations.models';
 import { getAirplaneRoutes, getRoutes } from './router';
 
+async function findLocationById(_id: string) {
+  const order = await locationModel
+    .findOne({ _id })
+    .catch<Location>(e => console.log(e));
+  return order;
+}
+
 export async function getLocations() {
   const locations = await locationModel
     .find()
@@ -41,9 +48,8 @@ export async function createPaths(pathInput: PathInput) {
 }
 
 export async function regenerateLocations() {
-  const cities: Location[] = JSON.parse(
-    (await fs.readFileSync("data/cities.json")).toString("utf8")
-  );
+  const citiesFile = await fs.readFileSync("data/cities.json");
+  const cities: Location[] = JSON.parse(citiesFile.toString("utf8"));
   await locationModel.deleteMany({});
   for (let city of cities) {
     await locationModel.create(city, (err: Error) => err && console.log(err));
@@ -51,11 +57,20 @@ export async function regenerateLocations() {
 }
 
 export async function regenerateMaps() {
-  const maps: Map[] = JSON.parse(
-    (await fs.readFileSync("data/maps.json")).toString("utf8")
-  );
+  const mapsFile = await fs.readFileSync("data/maps.json");
+  const maps: Map[] = JSON.parse(mapsFile.toString("utf8"));
   await mapModel.deleteMany({});
   for (let map of maps) {
     await mapModel.create(map, (err: Error) => err && console.log(err));
+  }
+}
+
+export async function deleteLocationById(_id: string) {
+  const location = await findLocationById(_id);
+  if (location) {
+    await locationModel.deleteOne({ _id }).catch(e => console.log(e));
+    return `Location ${_id} deleted`;
+  } else {
+    return "Cannot find location to delete";
   }
 }

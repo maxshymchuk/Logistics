@@ -2,5 +2,20 @@
 
 .wrapper_menu {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: $item-gap / 2 24px;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: auto;
+  justify-content: center;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  padding: 4px;
 }

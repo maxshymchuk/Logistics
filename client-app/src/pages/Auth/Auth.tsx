@@ -1,12 +1,11 @@
-import React, { useState } from "react";
-import SwipeableViews from "react-swipeable-views";
+import React, { useState } from 'react';
+import SwipeableViews from 'react-swipeable-views';
 
-import { Box, Card, Tab, Tabs, Typography } from "@material-ui/core";
+import { Box, Card, Tab, Tabs, Typography } from '@material-ui/core';
 
-import { Footer } from "../../components/Footer/Footer";
-import { SignIn } from "../../components/SignIn/SignIn";
-import { SignUp } from "../../components/SignUp/SignUp";
-import styles from "./auth.module.scss";
+import { SignIn } from '../../components/SignIn/SignIn';
+import { SignUp } from '../../components/SignUp/SignUp';
+import styles from './auth.module.scss';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -21,7 +20,6 @@ function TabPanel(props: TabPanelProps) {
       component="div"
       role="tabpanel"
       hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
       {...other}
     >
       {value === index && <Box p={3}>{children}</Box>}
@@ -52,7 +50,6 @@ export const Auth = () => {
           <SignUp />
         </TabPanel>
       </SwipeableViews>
-      {/* <Footer /> */}
     </Card>
   );
 };

@@ -1,34 +1,35 @@
 @import "../../../styles/variables.scss";
 
-.vehicles {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: $item-gap;
-  &__item {
-    border-radius: 4px;
-    box-shadow: $box-shadow;
-    padding: $item-gap / 2;
-    position: relative;
-  }
-  .vehicle-image {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 50px;
-    height: 50px;
-    background-position: center center;
-    background-repeat: no-repeat;
-    &.car {
-      background-image: url("./assets/cargo.svg");
-      background-size: 70%;
-    }
-    &.plane {
-      background-image: url("./assets/airplane.svg");
-      background-size: 70%;
-    }
-    &.train {
-      background-image: url("./assets/train.svg");
-      background-size: 70%;
-    }
-  }
+.vehicle {
+  display: flex;
+  align-items: center;
+}
+
+@mixin avatar {
+  width: 40px;
+  height: 40px;
+  margin-right: $item-gap;
+  background-size: 90%;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+ 
+.Car {
+  @include avatar;
+  background-image: url('../../../assets/vehicles/car.svg');
+}
+
+.Plane {
+  @include avatar;
+  background-image: url('../../../assets/vehicles/plane.svg');
+}
+
+.Train {
+  @include avatar;
+  background-image: url('../../../assets/vehicles/train.svg');
+}
+
+.Ship {
+  @include avatar;
+  background-image: url('../../../assets/vehicles/ship.svg');
 }

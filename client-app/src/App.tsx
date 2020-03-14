@@ -1,52 +1,72 @@
-import "./app.scss";
+import './app.scss';
 
-import axios from "axios";
-import React, { useState } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import axios from 'axios';
+import React, { createContext, useEffect, useState } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import { Menu } from "./components/Menu/Menu";
-import {
-  CallbackContextType,
-  defaultContext,
-  LoginContext
-} from "./components/SignIn/SignIn";
-import { User } from "./models/users.models";
-import { Admin } from "./pages/Admin/Admin";
-import { Auth } from "./pages/Auth/Auth";
-import { Home } from "./pages/Home/Home";
-import CreateOrder from "./pages/Orders/CreateOrder/CreateOrder";
-import TrackOrder from "./pages/Orders/TrackOrder/TrackOrder";
-
-// import { createStore } from 'redux';
-// import { appReducer } from './reducers';
+import { Menu } from './components/Menu/Menu';
+import { User } from './models/users.models';
+import { Admin } from './pages/Admin/Admin';
+import { Auth } from './pages/Auth/Auth';
+import { Home } from './pages/Home/Home';
+import CreateOrder from './pages/Orders/CreateOrder/CreateOrder';
+import TrackOrder from './pages/Orders/TrackOrder/TrackOrder';
+import { getLoggedUser, logout } from './services/users.service';
 
 axios.defaults.baseURL = "http://localhost:3000";
 axios.defaults.withCredentials = true;
-// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
-// const store = createStore(appReducer);
+export type CallbackContextType = {
+  user: User | undefined;
+  isLogged: boolean;
+};
+
+export type ContextType = CallbackContextType & {
+  checkLogin: (value: CallbackContextType) => void;
+  logout: () => void;
+};
+
+const defaultLoginContext = {
+  user: undefined,
+  isLogged: false,
+  checkLogin: () => {},
+  logout: async () => await logout()
+}
+
+export const LoginContext = createContext<ContextType>(defaultLoginContext);
 
 export const App = () => {
-  const changeState = (context: CallbackContextType) => {
-    console.log(context.isLogged);
+  const changeState = (newState: CallbackContextType) => {
     setLoginState({
       ...loginState,
-      user: context.user,
-      isLogged: context.isLogged
+      user: newState.user,
+      isLogged: newState.isLogged
     });
   };
 
-  const [loginState, setLoginState] = useState({
-    user: {} as User | undefined,
-    isLogged: false,
+  const [loginState, setLoginState] = useState<ContextType>({
+    ...defaultLoginContext,
     checkLogin: changeState
   });
+
+  useEffect(() => {
+    (async () => {
+      const user = await getLoggedUser();
+      setLoginState({
+        ...defaultLoginContext,
+        user: Object.keys(user).length ? user : undefined,
+        isLogged: !!Object.keys(user).length,
+        checkLogin: changeState
+      });
+    })()
+  }, [])
+  
 
   return (
     <LoginContext.Provider value={loginState}>
       <Router>
         <Switch>
-          <Route exact path="/admin" component={Admin} />
+          <Route path="/admin" component={Admin} />
           <Route path="/" component={Menu} />
         </Switch>
         <Switch>

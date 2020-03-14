@@ -1,16 +1,14 @@
-import * as qs from "qs";
-import { createPaths, getLocationByName } from "../locations/locations.service";
-import { UserPath, Location } from "../../models/locations.models";
+import * as qs from 'qs';
+
+import { Location, UserPath } from '../../models/locations.models';
 import {
-  Order,
-  OrderMongo,
-  OrderStatus,
-  UserOrderInput,
-  orderModel
-} from "../../models/orders.models";
-import { Track, TrackStatus } from "../../models/tracks.models";
-import { Route } from "../../models/routes.models";
-import { getNearestVehicle, assignVehicle } from "../vehicles/vehicles.service";
+    Order, orderModel, OrderMongo, OrderStatus, UserOrderInput
+} from '../../models/orders.models';
+import { Route } from '../../models/routes.models';
+import { Track, TrackStatus } from '../../models/tracks.models';
+import { User } from '../../models/users.models';
+import { createPaths, getLocationByName } from '../locations/locations.service';
+import { assignVehicle, getNearestVehicle } from '../vehicles/vehicles.service';
 
 function getTrackNumber(): string {
   return "xxxx-xxxx".replace(/[x]/g, () =>
@@ -139,13 +137,13 @@ async function createRoutes(userPath: UserPath) {
   return routes;
 }
 
-export async function addOrder(path: UserPath) {
+export async function addOrder(user: User, path: UserPath) {
   const routes = await createRoutes(path);
   const trackNumber = getTrackNumber();
   const order: Order = {
     message: path.message,
     tracks: [createTrack(routes[0])],
-    username: "noname",
+    username: user.username,
     price: path.price,
     status: OrderStatus.Taken,
     routes: routes,
@@ -161,7 +159,7 @@ export async function deleteOrderById(_id: string) {
     await orderModel.deleteOne({ _id }).catch(e => console.log(e));
     return `Order ${_id} deleted`;
   } else {
-    return "Order ID is not valid";
+    return "Cannot find order to delete";
   }
 }
 
@@ -173,6 +171,6 @@ export async function updateOrder(order: OrderMongo) {
       .catch(e => console.log(e));
     return `Order ${order._id} updated`;
   } else {
-    return "Order not found";
+    return "Cannot find order to update";
   }
 }

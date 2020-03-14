@@ -1,28 +1,11 @@
-import React, { createContext, useContext, useState } from "react";
-import { Redirect } from "react-router-dom";
+import React, { createContext, useContext, useState } from 'react';
+import { Redirect } from 'react-router-dom';
 
-import { Button, TextField } from "@material-ui/core";
+import { Button, TextField } from '@material-ui/core';
 
-import { User } from "../../models/users.models";
-import { authUser } from "../../services/users.service";
-import styles from "./signin.module.scss";
-
-export type CallbackContextType = {
-  user: User | undefined;
-  isLogged: boolean;
-};
-
-export type ContextType = CallbackContextType & {
-  checkLogin: (value: CallbackContextType) => any;
-};
-
-export const defaultContext: ContextType = {
-  user: undefined,
-  isLogged: false,
-  checkLogin: () => {}
-};
-
-export const LoginContext = createContext<ContextType>(defaultContext);
+import { ContextType, LoginContext } from '../../App';
+import { authUser } from '../../services/users.service';
+import styles from './signin.module.scss';
 
 export const SignIn = () => {
   const [isLogged, setLogged] = useState(false);

@@ -1,5 +1,18 @@
-import axios from "axios";
+import axios from 'axios';
 
-export async function getVehiclesData() {
-  return (await axios.get("/vehicles")).data;
+import { Vehicle } from '../models/vehicles.models';
+
+export async function getVehiclesData(): Promise<Vehicle[]> {
+  const res = (await axios.get("/vehicles")).data;
+  return res;
+}
+
+export async function addVehicle(vehicle: Vehicle): Promise<string> {
+  const res = (await axios.post("/vehicles", vehicle)).data;
+  return res;
+}
+
+export async function removeVehicleById(id: string): Promise<string> {
+  const res = (await axios.delete(`/vehicles/${id}`)).data;
+  return res;
 }

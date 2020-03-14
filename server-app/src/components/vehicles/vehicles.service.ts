@@ -86,6 +86,6 @@ export async function regenerateVehicles() {
   }
   await vehicleModel.deleteMany({});
   for (let vehicle of vehicles) {
-    await vehicleModel.create(vehicle, (err: Error) => console.log(err));
+    await vehicleModel.create(vehicle, (err: Error) => err && console.log(err));
   }
 }

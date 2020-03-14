@@ -7,7 +7,7 @@ import { regUser } from "../../services/users.service";
 import styles from "./signup.module.scss";
 
 export const SignUp = () => {
-  const [user, setUser] = useState({} as UserSignUp);
+  const [user, setUser] = useState<UserSignUp>(Object);
 
   const handleClick = async () => {
     const res = await regUser(user);

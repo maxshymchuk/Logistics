@@ -27,3 +27,12 @@ router.post("/", requiresAdmin(), async (req: Request, res: Response) => {
   const result = await locationService.addLocation(req.body);
   res.status(result ? 200 : 404).send(result);
 });
+
+router.delete(
+  "/:location_id",
+  requiresAdmin(),
+  async (req: Request, res: Response) => {
+    const result = await locationService.deleteLocationById(req.params.location_id);
+    res.status(result ? 200 : 403).send(result);
+  }
+);
