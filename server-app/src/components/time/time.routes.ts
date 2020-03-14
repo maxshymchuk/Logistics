@@ -2,6 +2,7 @@ import * as timeService from "./time.service";
 
 import { Router, Request, Response } from "express";
 
+// TODO: unclear naming for this module
 export const router = Router();
 
 router.get("/minus", async (req: Request, res: Response) => {

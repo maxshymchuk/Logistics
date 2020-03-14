@@ -18,6 +18,7 @@ function getTrackNumber(): string {
   );
 }
 
+// All service's methods should have return value
 async function findOrderById(_id: string) {
   const order = await orderModel
     .findOne({ _id })
@@ -26,6 +27,7 @@ async function findOrderById(_id: string) {
 }
 
 export async function getOrders() {
+  // TODO: Don't hide errors
   const orders = await orderModel.find().catch<Order[]>(e => console.log(e));
   return orders;
 }
@@ -36,6 +38,8 @@ export async function getOrderById(id: string) {
 }
 
 export async function getOrderByTrackNumber(trackNumber: string) {
+  export async function getOrders() {
+    // TODO: Don't hide errors
   const order = await orderModel
     .findOne({ trackNumber })
     .catch<Order>(e => console.log(e));
@@ -83,6 +87,8 @@ function createTrack(route: Route) {
   return track;
 }
 
+
+// TODO: split method to few small, async requests and logic should not be in one place
 export async function updateOrders() {
   const today = new Date();
   const orders = await orderModel
@@ -107,6 +113,7 @@ export async function updateOrders() {
   }
 }
 
+// TODO: unclear code, you can make it more clear by using temp variable with proper name and split steps to small good named functions
 async function createRoutes(userPath: UserPath) {
   const routes: Route[] = [];
   let date = new Date();
@@ -155,6 +162,7 @@ export async function addOrder(path: UserPath) {
   return trackNumber;
 }
 
+// TODO: for update and delete different message are used in case order not found
 export async function deleteOrderById(_id: string) {
   const tempOrder = await findOrderById(_id);
   if (tempOrder) {

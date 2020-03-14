@@ -12,6 +12,7 @@ type ReviewItemProps = {
 export const ReviewItem = (props: ReviewItemProps) => {
   const date = props.date.toDateString();
   const reviewersLength = props.reviewersPhotos.length;
+  // TODO: avoid using hacks, prefer simply solution
   const side = ~~(reviewersLength / 2);
   const photos = props.reviewersPhotos.map(
     (photo, index, reviewers) =>

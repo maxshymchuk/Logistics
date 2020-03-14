@@ -7,6 +7,7 @@ import { regUser } from "../../services/users.service";
 import styles from "./signup.module.scss";
 
 export const SignUp = () => {
+    // TODO: avoid unnecessary type cast. In this case {} is not UserSignUp
   const [user, setUser] = useState({} as UserSignUp);
 
   const handleClick = async () => {

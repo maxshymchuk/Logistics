@@ -7,6 +7,7 @@ type VehicleItemProps = {
   vehicle: Vehicle;
 };
 
+// TODO: better name is VehicleListItem
 class VehicleItem extends Component<VehicleItemProps> {
   render() {
     const { destination, type, arrivalDate } = this.props.vehicle;

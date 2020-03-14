@@ -41,6 +41,7 @@ export async function createPaths(pathInput: PathInput) {
 }
 
 export async function regenerateLocations() {
+  // TODO: assign result of asyn function to temporary variable
   const cities: Location[] = JSON.parse(
     (await fs.readFileSync("data/cities.json")).toString("utf8")
   );

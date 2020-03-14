@@ -1,5 +1,8 @@
 import CONSTS from "./const";
 
+
+// TODO: move function to different files
+// TODO: don't mix function and const arrow funcitons
 export function moveDate(current: Date, hours: number) {
   return new Date(current.getTime() + hours * CONSTS.HOUR_MILLISEC);
 }

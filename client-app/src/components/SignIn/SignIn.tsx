@@ -13,6 +13,7 @@ export type CallbackContextType = {
 };
 
 export type ContextType = CallbackContextType & {
+    // TODO: avoid using any
   checkLogin: (value: CallbackContextType) => any;
 };
 
@@ -22,6 +23,7 @@ export const defaultContext: ContextType = {
   checkLogin: () => {}
 };
 
+// TODO: move to the owm file. LoginContext should not belongs to SignIn component
 export const LoginContext = createContext<ContextType>(defaultContext);
 
 export const SignIn = () => {

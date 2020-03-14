@@ -31,9 +31,11 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
+// TODO split menu to few components
 export const Menu = () => {
   const classes = useStyles();
 
+  // TODO: remove, use LoginContext
   const [isLogged, setLogged] = useState(false);
   const [isDrawerOpened, handleDrawer] = useState(false);
 
@@ -45,6 +47,7 @@ export const Menu = () => {
       user: undefined,
       isLogged: false
     });
+    // Menu shouldn't know how work logout process, it should just use logout method from LoginContext
     await logout();
   };
 
@@ -63,6 +66,7 @@ export const Menu = () => {
             </section>
           </div>
           <section className={styles.social_networks}>
+            {/* TODO: collapse empty tag to for example '<div />*/}
             <div className={styles.social_behance}></div>
             <div className={styles.social_vk}></div>
             <div className={styles.social_facebook}></div>
@@ -88,6 +92,7 @@ export const Menu = () => {
                     <IconButton onClick={handleLogout}>
                       <CommuteIcon />
                     </IconButton>
+                    {/* TODO: this is not menu responsibility */}
                     {!isLogged && <Redirect to="/" />}
                   </>
                 ) : (

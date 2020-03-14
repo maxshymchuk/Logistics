@@ -17,6 +17,8 @@ import { Home } from "./pages/Home/Home";
 import CreateOrder from "./pages/Orders/CreateOrder/CreateOrder";
 import TrackOrder from "./pages/Orders/TrackOrder/TrackOrder";
 
+// TODO: delete all commented code from all files
+// TODO: remove all dependency from redux library
 // import { createStore } from 'redux';
 // import { appReducer } from './reducers';
 

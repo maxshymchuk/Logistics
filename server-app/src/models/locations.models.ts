@@ -1,7 +1,7 @@
 import * as mongoose from "mongoose";
 import { VehicleType } from "./vehicles.models";
 import { locationSchema, mapSchema } from "../schemas/locations.schemas";
-
+// TODO: move models and types to separate file, this todo for all /models/*
 export const locationModel = mongoose.model<LocationMongo>(
   "locations",
   locationSchema

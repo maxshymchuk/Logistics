@@ -14,6 +14,7 @@ import newsImage4 from "../../assets/news/4.jpg";
 import styles from "./news.module.scss";
 import { NewsItem } from "./NewsItem/NewsItem";
 
+// TODO: move data to the own file
 const news = [
   {
     date: new Date(2020, 2, 6),
@@ -60,6 +61,7 @@ export const News = () => {
               slidesPerPage={3}
               arrowLeft={<ArrowBackIcon className={styles.arrow} />}
               arrowRight={<ArrowForwardIcon className={styles.arrow} />}
+              {/* TODO: move to named constants*/}
               autoPlay={8000}
               animationSpeed={2000}
               breakpoints={{

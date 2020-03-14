@@ -18,6 +18,7 @@ import male3 from "../../assets/testimonials/male3.jpg";
 import { ReviewItem } from "./ReviewItem/ReviewItem";
 import styles from "./testimonials.module.scss";
 
+// TODO: move all date to the separate file
 const reviewers = [male1, female1, female2, male2, female3, male3, female4];
 const reviews = [
   {

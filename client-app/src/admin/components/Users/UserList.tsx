@@ -9,7 +9,7 @@ import UserItem from "./UserItem";
 class UsersList extends Component<{}, { users: User[]; loaded: boolean }> {
   state = {
     users: [],
-    loaded: false
+    loaded: false // TODO: for boolean variable use prefixes is, has, can
   };
 
   async componentDidMount() {

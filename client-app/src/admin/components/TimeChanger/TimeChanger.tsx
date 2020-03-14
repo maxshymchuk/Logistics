@@ -12,7 +12,10 @@ export const TimeChanger = () => {
   const [value, setValue] = useState(1);
 
   const handleChange = (route: string) => {
+      // TODO: move construction of api route to changeTimeService
+      // TODO: why promise is ignored
     changeTime(`/time/${route}/${value}`);
+    // TOOD: how we can be sure that request was successful
     cogoToast
       .success(`${route} ${value} day(s)!`, {
         hideAfter: 1,

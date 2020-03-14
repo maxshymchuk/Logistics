@@ -6,6 +6,7 @@ import { Button } from "@material-ui/core";
 
 import styles from "./service.module.scss";
 
+// TODO: unclear naming
 export const Service = () => {
   return (
     <ScrollableAnchor id="service">

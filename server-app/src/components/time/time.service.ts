@@ -4,6 +4,7 @@ import { vehicleModel } from "../../models/vehicles.models";
 import { orderModel } from "../../models/orders.models";
 import { moveDate } from "../../utils";
 
+// TODO: split
 export async function moveTimeOn(days: number) {
   const interval = Math.sign(days) * CONSTS.HOURS_PER_DAY;
   const vehicles = await vehicleModel.find();
