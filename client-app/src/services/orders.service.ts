@@ -1,8 +1,13 @@
-import axios from "axios";
-import * as qs from "qs";
+import axios from 'axios';
+import * as qs from 'qs';
 
-import { UserPath } from "../models/locations.models";
-import { OrderUser } from "../models/orders.models";
+import { UserPath } from '../models/locations.models';
+import { Order, OrderUser } from '../models/orders.models';
+
+export async function getOrdersData(): Promise<Order[]> {
+  const orders: Order[] = (await axios.get('/orders')).data;
+  return orders;
+}
 
 export async function getOrderPaths(order: OrderUser) {
   const params = qs.stringify(order);
@@ -19,7 +24,12 @@ export async function getOrderByTrackNumber(trackNumber: string) {
   return order;
 }
 
-export async function createOrder(userPath: UserPath) {
-  const res: string = (await axios.post("orders", userPath)).data;
+export async function createOrder(userPath: UserPath): Promise<string> {
+  const res = (await axios.post("orders", userPath)).data;
+  return res;
+}
+
+export async function removeOrderById(id: string): Promise<string> {
+  const res = (await axios.delete(`/orders/${id}`)).data;
   return res;
 }

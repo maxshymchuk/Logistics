@@ -1,0 +1,17 @@
+@import "../../../styles/variables.scss";
+
+.progress {
+  margin-right: $item-gap;
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 190px);
+  grid-gap: $item-gap;
+}
+
+.name {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}

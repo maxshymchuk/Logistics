@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import styles from "./reviewItem.module.scss";
+import styles from './reviewItem.module.scss';
 
 type ReviewItemProps = {
   date: Date;
@@ -12,7 +12,7 @@ type ReviewItemProps = {
 export const ReviewItem = (props: ReviewItemProps) => {
   const date = props.date.toDateString();
   const reviewersLength = props.reviewersPhotos.length;
-  const side = ~~(reviewersLength / 2);
+  const side = Math.floor(reviewersLength / 2);
   const photos = props.reviewersPhotos.map(
     (photo, index, reviewers) =>
       reviewers[

@@ -1,22 +1,15 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import {
-  Box,
-  Button,
-  Card,
-  CircularProgress,
-  Divider,
-  TextField
-} from "@material-ui/core";
-import CheckCircleOutlineOutlinedIcon from "@material-ui/icons/CheckCircleOutlineOutlined";
-import Autocomplete from "@material-ui/lab/Autocomplete";
+import { Box, Button, Card, CircularProgress, Divider, TextField } from '@material-ui/core';
+import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
-import { Location, UserPath } from "../../../models/locations.models";
-import { OrderUser } from "../../../models/orders.models";
-import { getLocationsData } from "../../../services/locations.service";
-import { createOrder } from "../../../services/orders.service";
-import styles from "./createOrder.module.scss";
-import OrderPathsList from "./OrderPathsList/OrderPathsList";
+import { Location, UserPath } from '../../../models/locations.models';
+import { OrderUser } from '../../../models/orders.models';
+import { getLocationsData } from '../../../services/locations.service';
+import { createOrder } from '../../../services/orders.service';
+import styles from './createOrder.module.scss';
+import OrderPathsList from './OrderPathsList/OrderPathsList';
 
 type CreateOrderState = {
   locations: Location[];
@@ -53,7 +46,7 @@ class CreateOrder extends Component<{}, CreateOrderState> {
   };
 
   async componentDidMount() {
-    const locations: Location[] = await getLocationsData();
+    const locations = await getLocationsData();
     this.setState({ locations, isLoaded: true });
   }
 
@@ -103,9 +96,7 @@ class CreateOrder extends Component<{}, CreateOrderState> {
             <section className={styles.form}>
               <article className={styles.title}>Create order</article>
               {!this.state.isLoaded ? (
-                <Box className="progress-bar">
-                  <CircularProgress />
-                </Box>
+                <CircularProgress />
               ) : (
                 <section className={styles.inputs}>
                   <Autocomplete
@@ -155,7 +146,7 @@ class CreateOrder extends Component<{}, CreateOrderState> {
                 </section>
               )}
               <TextField
-                name="description"
+                name="cargos"
                 label="Cargos"
                 variant="outlined"
                 onChange={this.handleInput}
@@ -186,7 +177,7 @@ class CreateOrder extends Component<{}, CreateOrderState> {
                   {!this.state.isError.from && !this.state.isError.to ? (
                     <Button
                       variant="outlined"
-                      color="primary"
+                      color="primary" 
                       onClick={this.showRoutes}
                       fullWidth
                     >

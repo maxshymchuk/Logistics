@@ -1,4 +1,4 @@
-import * as mongoose from "mongoose";
+import * as mongoose from 'mongoose';
 
 // User Model
 export const userSchema = new mongoose.Schema({
@@ -7,7 +7,7 @@ export const userSchema = new mongoose.Schema({
   birthday: Date,
   email: String,
   phone: String,
-  login: String,
+  username: String,
   password: String,
   isAdmin: {
     type: Boolean,

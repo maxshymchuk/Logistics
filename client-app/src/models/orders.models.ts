@@ -1,5 +1,5 @@
-import { Route } from "./routes.models";
-import { Track } from "./tracks.models";
+import { Route } from './routes.models';
+import { Track } from './tracks.models';
 
 export enum OrderStatus {
   Taken = "Taken",
@@ -11,7 +11,7 @@ export type Order = {
   _id?: string;
   message: string;
   tracks: Track[];
-  userLogin: string;
+  username: string;
   price: number;
   status: OrderStatus;
   routes: Route[];

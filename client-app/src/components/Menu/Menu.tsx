@@ -1,20 +1,16 @@
-import React, { useState, useContext } from "react";
-import { Link, Redirect } from "react-router-dom";
-import { configureAnchors } from "react-scrollable-anchor";
+import React, { useContext, useState } from 'react';
+import { Link, Redirect } from 'react-router-dom';
 
-import { Drawer, IconButton, makeStyles } from "@material-ui/core";
-import CommuteIcon from "@material-ui/icons/Commute";
-import FaceIcon from "@material-ui/icons/Face";
-import MenuIcon from "@material-ui/icons/Menu";
-import PhoneInTalkIcon from "@material-ui/icons/PhoneInTalk";
-import ScheduleIcon from "@material-ui/icons/Schedule";
+import { Drawer, IconButton, makeStyles } from '@material-ui/core';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import FaceIcon from '@material-ui/icons/Face';
+import MenuIcon from '@material-ui/icons/Menu';
+import PhoneInTalkIcon from '@material-ui/icons/PhoneInTalk';
+import ScheduleIcon from '@material-ui/icons/Schedule';
 
-import { logout } from "../../services/users.service";
-import { LoginContext, ContextType } from "../SignIn/SignIn";
-import styles from "./menu.module.scss";
-import { MenuList } from "./MenuList/MenuList";
-
-configureAnchors({ offset: -50, scrollDuration: 800 });
+import { ContextType, LoginContext } from '../../App';
+import styles from './menu.module.scss';
+import { MenuList } from './MenuList/MenuList';
 
 const useStyles = makeStyles(() => ({
   modal: {
@@ -45,7 +41,7 @@ export const Menu = () => {
       user: undefined,
       isLogged: false
     });
-    await logout();
+    await context.logout();
   };
 
   return (
@@ -86,7 +82,7 @@ export const Menu = () => {
                       <FaceIcon />
                     </IconButton>
                     <IconButton onClick={handleLogout}>
-                      <CommuteIcon />
+                      <ExitToAppIcon />
                     </IconButton>
                     {!isLogged && <Redirect to="/" />}
                   </>

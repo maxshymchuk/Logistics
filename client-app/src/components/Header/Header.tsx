@@ -1,15 +1,15 @@
-import "@brainhubeu/react-carousel/lib/style.css";
+import '@brainhubeu/react-carousel/lib/style.css';
 
-import React from "react";
+import React from 'react';
 
-import Carousel from "@brainhubeu/react-carousel";
-import { Button } from "@material-ui/core";
+import Carousel from '@brainhubeu/react-carousel';
+import { Button } from '@material-ui/core';
 
-import styles from "./header.module.scss";
+import styles from './header.module.scss';
 
 export const Header = () => {
   return (
-    <div className={styles.header}>
+    <div className={styles.header} id='top'>
       <div className={styles.content}>
         <Carousel
           slidesPerPage={1}

@@ -1,5 +1,8 @@
-import * as orderService from "./orders.service";
-import { Request, Response, Router } from "express";
+import { Request, Response, Router } from 'express';
+
+import { User } from '../../models/users.models';
+import { requiresAdmin, requiresLogin } from '../../utils';
+import * as orderService from './orders.service';
 
 export const router = Router();
 
@@ -30,12 +33,21 @@ router.get("/paths/:path_params", async (req: Request, res: Response) => {
   res.status(200).send(result);
 });
 
-router.post("/", async (req: Request, res: Response) => {
-  const result = await orderService.addOrder(req.body);
+router.post("/", requiresLogin(), async (req: Request, res: Response) => {
+  const result = await orderService.addOrder((req.user as User), req.body);
   res.status(result ? 201 : 404).send(result);
 });
 
-router.put("/:order_id", async (req: Request, res: Response) => {
+router.put("/:order_id", requiresLogin(), async (req: Request, res: Response) => {
   const result = await orderService.updateOrder(req.body);
   res.status(result ? 200 : 404).send(result);
 });
+
+router.delete(
+  "/:order_id",
+  requiresAdmin(),
+  async (req: Request, res: Response) => {
+    const result = await orderService.deleteOrderById(req.params.order_id);
+    res.status(result ? 200 : 403).send(result);
+  }
+);
