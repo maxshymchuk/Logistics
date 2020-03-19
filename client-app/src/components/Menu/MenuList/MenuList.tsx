@@ -4,19 +4,13 @@ import { HashLink as Link } from 'react-router-hash-link';
 import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
 
-import { LoginContext } from '../../../App';
+import { LoginContext, scrollOffset } from '../../../App';
 import styles from './menuList.module.scss';
 
 type MenuListProps = {
   direction: "row" | "column";
   callback?: any;
 };
-
-const scrollOffset = (el: Element) => {
-  const Y_OFFSET = -50;
-  const yCoordinate = el.getBoundingClientRect().top + window.pageYOffset; 
-  window.scrollTo({ top: yCoordinate + Y_OFFSET, behavior: 'smooth' }); 
-}
 
 export const MenuList = (props: MenuListProps) => {
   const callback = () => {

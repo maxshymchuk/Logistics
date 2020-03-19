@@ -13,6 +13,7 @@ router.get("/", async (req: Request, res: Response) => {
 
 router.get(
   '/:request',
+  requiresLogin(),
   async (req: Request, res: Response, next: any) => {
     if (req.params.request === 'username') {
       const result = await orderService.getOrdersByUsername((req.user as User).username);
@@ -32,7 +33,7 @@ router.get("/track/:track_number", async (req: Request, res: Response) => {
   res.status(result ? 200 : 404).send(result);
 });
 
-router.get("/paths/:path_params", async (req: Request, res: Response) => {
+router.get("/paths/:path_params", requiresLogin(), async (req: Request, res: Response) => {
   const result = await orderService.getOrderPaths(req.params.path_params);
   res.status(200).send(result);
 });

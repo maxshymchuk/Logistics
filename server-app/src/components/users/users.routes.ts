@@ -19,7 +19,7 @@ router.get(
   }
 );
 
-router.post("/", requiresLogin(), async (req: Request, res: Response) => {
+router.post("/", async (req: Request, res: Response) => {
   const result = await userService.addUser(req.body);
   res.status(result ? 200 : 403).send(result);
 });

@@ -1,43 +1,47 @@
 import '@brainhubeu/react-carousel/lib/style.css';
 
 import React from 'react';
+import { HashLink } from 'react-router-hash-link';
 
 import Carousel from '@brainhubeu/react-carousel';
 import { Button } from '@material-ui/core';
 
+import { scrollOffset } from '../../App';
 import styles from './header.module.scss';
 
-export const Header = () => {
-  return (
-    <div className={styles.header} id='top'>
-      <div className={styles.content}>
-        <Carousel
-          slidesPerPage={1}
-          autoPlay={8000}
-          animationSpeed={2000}
-          draggable={false}
-          infinite
+export const Header = () => (
+  <div className={styles.header} id="top">
+    <div className={styles.content}>
+      <Carousel slidesPerPage={1} autoPlay={8000} animationSpeed={2000} draggable={false} infinite>
+        <div className={styles.airplane} />
+        <div className={styles.train} />
+        <div className={styles.ship} />
+        <div className={styles.truck} />
+      </Carousel>
+      <div className={styles.layer}>
+        <article className={styles.title}>
+          We Provide The Best
+          {' '}
+          <br />
+          Transport & Logistics Service
+        </article>
+        <article className={styles.subtitle}>
+          Fast. Effective. Comfortable. Simple.
+          {' '}
+          <br />
+          Sounds powerful, doesn't it?
+        </article>
+        <Button
+          color="primary"
+          variant="contained"
+          className={styles.button}
+          component={HashLink}
+          scroll={scrollOffset}
+          to="/#about"
         >
-          <div className={styles.airplane}></div>
-          <div className={styles.train}></div>
-          <div className={styles.ship}></div>
-          <div className={styles.truck}></div>
-        </Carousel>
-        <div className={styles.layer}>
-          <article className={styles.title}>
-            We Provide The Best <br /> Transport & Logistics Service
-          </article>
-          <article className={styles.subtitle}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam sed
-            expedita doloribus alias aliquid eaque. Reiciendis corrupti ipsa eos
-            vero labore quas maxime earum? Quae doloribus eum perferendis aut
-            totam!
-          </article>
-          <Button color="primary" variant="contained" className={styles.button}>
-            <a href="/#about">Learn More</a>
-          </Button>
-        </div>
+          Let's find out how we did it
+        </Button>
       </div>
     </div>
-  );
-};
+  </div>
+);

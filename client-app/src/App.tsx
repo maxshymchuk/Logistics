@@ -17,6 +17,12 @@ import { getLoggedUser, logout } from './services/users.service';
 axios.defaults.baseURL = "http://localhost:3000";
 axios.defaults.withCredentials = true;
 
+export const scrollOffset = (el: Element) => {
+  const Y_OFFSET = -50;
+  const yCoordinate = el.getBoundingClientRect().top + window.pageYOffset; 
+  window.scrollTo({ top: yCoordinate + Y_OFFSET, behavior: 'smooth' }); 
+}
+
 export type CallbackContextType = {
   user: User | undefined;
   isLogged: boolean;

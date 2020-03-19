@@ -25,18 +25,26 @@
   }
 }
 
+@mixin subtitle {
+  font-size: 1.6rem;
+  line-height: 1.5em;
+  @media screen and (max-width: $container-tablet-width) {
+    font-size: 1rem;
+  }
+}
+
 @mixin logo($height: 60px) {
   $width: $height * 1.5;
   width: $width;
   height: $height;
-  background: url("../assets/logo.svg") no-repeat center center;
+  background: url('../assets/logo.svg') no-repeat center center;
   background-size: contain;
   margin-right: $width;
   @media screen and (max-width: $container-mobile-width) {
     margin: 0;
   }
   &:after {
-    content: "universal shipping";
+    content: 'universal shipping';
     font-size: $height / 3;
     display: flex;
     height: $height;
