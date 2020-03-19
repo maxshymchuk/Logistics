@@ -9,6 +9,11 @@ export async function getOrdersData(): Promise<Order[]> {
   return orders;
 }
 
+export async function getOrdersByUsername(): Promise<Order[]> {
+  const orders: Order[] = (await axios.get('/orders/username')).data;
+  return orders;
+}
+
 export async function getOrderPaths(order: OrderUser) {
   const params = qs.stringify(order);
   const paths: UserPath[] = (await axios.get(`orders/paths/${params}`)).data;

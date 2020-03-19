@@ -8,9 +8,10 @@ import { Menu } from './components/Menu/Menu';
 import { User } from './models/users.models';
 import { Admin } from './pages/Admin/Admin';
 import { Auth } from './pages/Auth/Auth';
-import { Home } from './pages/Home/Home';
+import { Index } from './pages/Index/Index';
 import CreateOrder from './pages/Orders/CreateOrder/CreateOrder';
 import TrackOrder from './pages/Orders/TrackOrder/TrackOrder';
+import { Profile } from './pages/Profile/Profile';
 import { getLoggedUser, logout } from './services/users.service';
 
 axios.defaults.baseURL = "http://localhost:3000";
@@ -70,8 +71,9 @@ export const App = () => {
           <Route path="/" component={Menu} />
         </Switch>
         <Switch>
-          <Route exact path="/" component={Home} />
+          <Route exact path="/" component={Index} />
           <Route exact path="/login" component={Auth} />
+          <Route path="/profile" component={Profile} />
           <Route path="/create" component={CreateOrder} />
           <Route path="/track" component={TrackOrder} />
         </Switch>

@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./build/app.js",
+    "start": "tsc-watch --onSuccess \"nodemon ./build/app.js",
     "test": "jest",
     "compile": "tsc",
     "watch-ts": "tsc -w"
@@ -30,6 +30,7 @@
     "@types/qs": "^6.9.1",
     "@types/supertest": "^2.0.8",
     "supertest": "^4.0.2",
+    "tsc-watch": "^4.2.3",
     "typescript": "^3.8.3"
   }
 }

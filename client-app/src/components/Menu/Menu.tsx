@@ -74,24 +74,21 @@ export const Menu = () => {
             <MenuList direction="row" />
           </div>
           <div className={styles.user}>
-            <LoginContext.Consumer>
-              {value =>
-                value.isLogged ? (
-                  <>
-                    <IconButton>
-                      <FaceIcon />
-                    </IconButton>
-                    <IconButton onClick={handleLogout}>
-                      <ExitToAppIcon />
-                    </IconButton>
-                    {!isLogged && <Redirect to="/" />}
-                  </>
-                ) : (
-                  <IconButton component={Link} to={"/login"}>
+          <LoginContext.Consumer>
+              {(value) => (value.isLogged ? (
+                <>
+                  <IconButton component={Link} to="/profile">
                     <FaceIcon />
                   </IconButton>
-                )
-              }
+                  <IconButton onClick={handleLogout}>
+                    <ExitToAppIcon />
+                  </IconButton>
+                </>
+              ) : (
+                <IconButton component={Link} to="/login">
+                  <FaceIcon />
+                </IconButton>
+              ))}
             </LoginContext.Consumer>
             <IconButton
               className={styles.burger}

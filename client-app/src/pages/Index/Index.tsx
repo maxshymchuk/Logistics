@@ -10,7 +10,7 @@ import { Process } from '../../components/Process/Process';
 import { Testimonials } from '../../components/Testimonials/Testimonials';
 import { Tracker } from '../../components/Tracker/Tracker';
 
-export const Home = () => {
+export const Index = () => {
   return (
     <>
       <Header />

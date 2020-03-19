@@ -11,15 +11,19 @@ router.get("/", async (req: Request, res: Response) => {
   res.status(result ? 200 : 404).send(result);
 });
 
-router.get("/:order_id", async (req: Request, res: Response) => {
-  const result = await orderService.getOrderById(req.params.order_id);
-  res.status(result ? 200 : 404).send(result);
-});
-
-router.get("/:order_id/user", async (req: Request, res: Response) => {
-  const result = await orderService.getOrderUsername(req.params.order_id);
-  res.status(result ? 200 : 404).send(result);
-});
+router.get(
+  '/:request',
+  async (req: Request, res: Response, next: any) => {
+    if (req.params.request === 'username') {
+      const result = await orderService.getOrdersByUsername((req.user as User).username);
+      res.status(result ? 200 : 404).send(result);
+    } else next();
+  },
+  async (req: Request, res: Response) => {
+    const result = await orderService.getOrderById(req.params.request);
+    res.status(result ? 200 : 404).send(result);
+  }
+);
 
 router.get("/track/:track_number", async (req: Request, res: Response) => {
   const result = await orderService.getOrderByTrackNumber(

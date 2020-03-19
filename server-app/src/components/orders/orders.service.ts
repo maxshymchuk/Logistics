@@ -40,9 +40,9 @@ export async function getOrderByTrackNumber(trackNumber: string) {
   return order;
 }
 
-export async function getOrderUsername(id: string) {
-  const username = (await findOrderById(id))?.username;
-  return username;
+export async function getOrdersByUsername(username: string) {
+  const orders = await orderModel.find({ username }).catch<Order>(e => console.log(e));
+  return orders;
 }
 
 export async function getOrderPaths(orderParams: string) {
