@@ -33,6 +33,19 @@ const Profile = () => {
     })();
   }, [changes]);
 
+  const showOrders = () => {
+    return orders?.length ? (
+      orders.map((order, index) => (
+        <TrackOrderInfo key={index} order={order} />
+      ))
+    ) : (
+      <p className={styles.empty}>
+        Sorry, but you have no orders yet
+        <SentimentVeryDissatisfiedIcon className={styles.smile} fontSize='large' />
+      </p>
+    )
+  }
+
   return (
     <>
       {settingsResult && <Notification {...settingsResult} afterClose={() => setSettingsResult(null)} />}
@@ -76,25 +89,13 @@ const Profile = () => {
         </div>
         <Paper className={styles.orders}>
           <article className={styles.title}>Orders</article>
-          {(() => {
-            if (user) {
-              return orders ? (
-                orders.map((order, index) => (
-                  <TrackOrderInfo key={index} order={order} />
-                ))
-              ) : (
-                <p className={styles.empty}>
-                  Sorry, but you have no orders yet
-                  <SentimentVeryDissatisfiedIcon className={styles.smile} fontSize='large' />
-                </p>
-              );
-            } 
-            return (
-              <p>
-                <LinearProgress />
-              </p>
-            );
-          })()}
+          {user ? (
+            showOrders()
+          ) : (
+            <p>
+              <LinearProgress />
+            </p>
+          )}
         </Paper>
       </div>
     </>
