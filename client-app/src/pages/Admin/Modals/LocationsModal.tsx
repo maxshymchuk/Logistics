@@ -13,7 +13,7 @@ import styles from './form.module.scss';
 
 export type LocationsModalProps = {
   handleModal: (value: boolean) => any;
-}
+};
 
 export const LocationsModal = (props: LocationsModalProps) => {
   const [state, setState] = useState<Location>({
@@ -36,7 +36,7 @@ export const LocationsModal = (props: LocationsModalProps) => {
 
   return (
     <>
-      <Dialog open={true} onClose={handleClose} scroll='body' maxWidth='sm' fullWidth>
+      <Dialog open onClose={handleClose} scroll='body' maxWidth='sm' fullWidth>
         <DialogTitle>Locations</DialogTitle>
         <DialogContent>
           <div className={styles.form}>
@@ -73,4 +73,4 @@ export const LocationsModal = (props: LocationsModalProps) => {
       </Dialog>
     </>
   );
-}
+};

@@ -73,4 +73,11 @@
     @include title;
     text-align: left;
   }
+  .empty {
+    display: flex;
+    align-items: center;
+    .smile {
+      margin-left: $item-gap / 2;
+    }
+  }
 }

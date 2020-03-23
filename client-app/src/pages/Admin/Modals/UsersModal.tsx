@@ -15,7 +15,7 @@ import styles from './form.module.scss';
 
 export type UsersModalProps = {
   handleModal: (value: boolean) => any;
-}
+};
 
 export const UsersModal = (props: UsersModalProps) => {
   const [state, setState] = useState<User>({
@@ -41,7 +41,7 @@ export const UsersModal = (props: UsersModalProps) => {
 
   return (
     <>
-      <Dialog open={true} onClose={handleClose} scroll='body' maxWidth='sm' fullWidth>
+      <Dialog open onClose={handleClose} scroll='body' maxWidth='sm' fullWidth>
         <DialogTitle>Users</DialogTitle>
         <DialogContent>
           <div className={styles.form}>
@@ -97,8 +97,8 @@ export const UsersModal = (props: UsersModalProps) => {
                 value={state.isAdmin ? 'Admin' : 'User'}
                 onChange={e => setState({...state, isAdmin: e.target.value === 'Admin'})}
               >
-                <MenuItem value={'Admin'}>Admin</MenuItem>
-                <MenuItem value={'User'}>User</MenuItem>
+                <MenuItem value="Admin">Admin</MenuItem>
+                <MenuItem value="User">User</MenuItem>
               </Select>
             </FormControl>
           </div>
@@ -114,4 +114,4 @@ export const UsersModal = (props: UsersModalProps) => {
       </Dialog>
     </>
   );
-}
+};

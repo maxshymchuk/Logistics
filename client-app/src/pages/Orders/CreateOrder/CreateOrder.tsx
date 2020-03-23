@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { Box, Button, Card, CircularProgress, Divider, TextField } from '@material-ui/core';
+import { Button, Card, CircularProgress, Divider, TextField } from '@material-ui/core';
 import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
@@ -27,7 +27,7 @@ type CreateOrderState = {
 class CreateOrder extends Component<{}, CreateOrderState> {
   state: CreateOrderState = {
     locations: [],
-    trackNumber: "",
+    trackNumber: '',
 
     isLoaded: false,
     isRoutesShown: false,
@@ -38,10 +38,10 @@ class CreateOrder extends Component<{}, CreateOrderState> {
     },
 
     input: {
-      from: "",
-      to: "",
-      cargos: [""],
-      message: ""
+      from: '',
+      to: '',
+      cargos: [''],
+      message: ''
     }
   };
 
@@ -51,7 +51,7 @@ class CreateOrder extends Component<{}, CreateOrderState> {
   }
 
   handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
+    const {value} = event.target;
     const property = event.target.name;
     this.setState(state => ({
       input: { ...state.input, [property]: value },
@@ -111,13 +111,12 @@ class CreateOrder extends Component<{}, CreateOrderState> {
                         variant="outlined"
                         inputProps={{
                           ...params.inputProps,
-                          autoComplete: "new-password"
+                          autoComplete: 'new-password'
                         }}
                       />
                     )}
                     onChange={(e: any, v: Location | null) =>
-                      this.handleAutocomplete(e, v, "from")
-                    }
+                      this.handleAutocomplete(e, v, 'from')}
                     autoHighlight
                     disableClearable
                   />
@@ -133,13 +132,12 @@ class CreateOrder extends Component<{}, CreateOrderState> {
                         variant="outlined"
                         inputProps={{
                           ...params.inputProps,
-                          autoComplete: "new-password"
+                          autoComplete: 'new-password'
                         }}
                       />
                     )}
                     onChange={(e: any, v: Location | null) =>
-                      this.handleAutocomplete(e, v, "to")
-                    }
+                      this.handleAutocomplete(e, v, 'to')}
                     autoHighlight
                     disableClearable
                   />
@@ -173,7 +171,7 @@ class CreateOrder extends Component<{}, CreateOrderState> {
                   />
                 </div>
               ) : (
-                <div className={styles["button-check"]}>
+                <div className={styles['button-check']}>
                   {!this.state.isError.from && !this.state.isError.to ? (
                     <Button
                       variant="outlined"
@@ -206,7 +204,7 @@ class CreateOrder extends Component<{}, CreateOrderState> {
             <Divider className={styles.divider} />
             <section className={styles.track}>
               <article className={styles.title}>Your track number</article>
-              <span className={styles["track-number"]}>
+              <span className={styles['track-number']}>
                 {this.state.trackNumber}
               </span>
               <span className={styles.help}>

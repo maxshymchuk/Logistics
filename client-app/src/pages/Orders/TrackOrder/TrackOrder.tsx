@@ -1,12 +1,12 @@
-import cogoToast from "cogo-toast";
-import React, { Component } from "react";
+import cogoToast from 'cogo-toast';
+import React, { Component } from 'react';
 
-import { Button, Card, LinearProgress, TextField } from "@material-ui/core";
+import { Button, Card, LinearProgress, TextField } from '@material-ui/core';
 
-import { Order } from "../../../models/orders.models";
-import { getOrderByTrackNumber } from "../../../services/orders.service";
-import styles from "./trackOrder.module.scss";
-import TrackOrderInfo from "./TrackOrderInfo/TrackOrderInfo";
+import { Order } from '../../../models/orders.models';
+import { getOrderByTrackNumber } from '../../../services/orders.service';
+import styles from './trackOrder.module.scss';
+import TrackOrderInfo from './TrackOrderInfo/TrackOrderInfo';
 
 type TrackOrderState = {
   trackNumber: string;
@@ -17,14 +17,14 @@ type TrackOrderState = {
 
 class TrackOrder extends Component<{}, TrackOrderState> {
   state = {
-    trackNumber: "",
+    trackNumber: '',
     order: {} as Order,
     isClicked: false,
     isTrackFound: false
   };
 
   handleChange = (event: any) => {
-    const target = event.target;
+    const {target} = event;
     this.setState(state => ({
       trackNumber: target.value
     }));
@@ -65,7 +65,7 @@ class TrackOrder extends Component<{}, TrackOrderState> {
             fullWidth
           />
           <Button
-            className={styles["button-find"]}
+            className={styles['button-find']}
             variant="contained"
             color="primary"
             onClick={this.showOrder}

@@ -20,11 +20,11 @@ export type VehiclesModalState = {
   destination: Location | null;
   arrivalDate: Date;
   type: VehicleType;
-}
+};
 
 export type VehiclesModalProps = {
   handleModal: (value: boolean) => any;
-}
+};
 
 export const VehiclesModal = (props: VehiclesModalProps) => {
   const [locations, setLocations] = useState<Location[]>([]);
@@ -36,10 +36,10 @@ export const VehiclesModal = (props: VehiclesModalProps) => {
 
   useEffect(() => {
     (async () => {
-      const locations = await getLocationsData();
-      setLocations(locations);
-    })()
-  }, [])
+      const locationsData = await getLocationsData();
+      setLocations(locationsData);
+    })();
+  }, []);
 
   const handleClose = () => {
     props.handleModal(false);
@@ -55,7 +55,7 @@ export const VehiclesModal = (props: VehiclesModalProps) => {
 
   return (
     <>
-      <Dialog open={true} onClose={handleClose} scroll='body' maxWidth='sm' fullWidth>
+      <Dialog open onClose={handleClose} scroll='body' maxWidth='sm' fullWidth>
         <DialogTitle>Vehicles</DialogTitle>
         <DialogContent>
           <div className={styles.form}>
@@ -86,8 +86,7 @@ export const VehiclesModal = (props: VehiclesModalProps) => {
               getOptionLabel={location => location.name}
               renderInput={params => <TextField {...params} label='Destination' variant="outlined" />}
               onChange={(e: any, location: Location | null) =>
-                setState({...state, destination: location})
-              }
+                setState({...state, destination: location})}
               disableClearable
             />
           </div>
@@ -103,4 +102,4 @@ export const VehiclesModal = (props: VehiclesModalProps) => {
       </Dialog>
     </>
   );
-}
+};

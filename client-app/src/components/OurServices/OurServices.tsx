@@ -5,7 +5,7 @@ import { Button } from '@material-ui/core';
 
 import styles from './ourServices.module.scss';
 
-export const OurServices = () => {
+const OurServices = () => {
   return (
     <div className={styles.service} id="service">
       <section className={styles.wrapper_service}>
@@ -25,3 +25,5 @@ export const OurServices = () => {
     </div>
   );
 };
+
+export default OurServices;

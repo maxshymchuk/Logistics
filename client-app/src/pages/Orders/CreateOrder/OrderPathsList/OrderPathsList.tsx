@@ -1,12 +1,12 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import { Card, LinearProgress, List } from "@material-ui/core";
+import { Card, LinearProgress, List } from '@material-ui/core';
 
-import { UserPath } from "../../../../models/locations.models";
-import { OrderUser } from "../../../../models/orders.models";
-import { getOrderPaths } from "../../../../services/orders.service";
-import OrderPath from "./OrderPath/OrderPath";
-import styles from "./OrderPathsList.module.scss";
+import { UserPath } from '../../../../models/locations.models';
+import { OrderUser } from '../../../../models/orders.models';
+import { getOrderPaths } from '../../../../services/orders.service';
+import OrderPath from './OrderPath/OrderPath';
+import styles from './OrderPathsList.module.scss';
 
 type OrderPathsListState = {
   paths: UserPath[];
@@ -19,8 +19,8 @@ type CreateOrderPathsProps = {
 };
 
 class OrderPathsList extends Component<
-  CreateOrderPathsProps,
-  OrderPathsListState
+CreateOrderPathsProps,
+OrderPathsListState
 > {
   state: OrderPathsListState = {
     paths: [],

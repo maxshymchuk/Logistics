@@ -9,14 +9,13 @@ type ReviewItemProps = {
   text: string;
 };
 
-export const ReviewItem = (props: ReviewItemProps) => {
-  const date = props.date.toDateString();
-  const reviewersLength = props.reviewersPhotos.length;
+const ReviewItem = ({ date, reviewer, reviewersPhotos, text }: ReviewItemProps) => {
+  const reviewersLength = reviewersPhotos.length;
   const side = Math.floor(reviewersLength / 2);
-  const photos = props.reviewersPhotos.map(
+  const photos = reviewersPhotos.map(
     (photo, index, reviewers) =>
       reviewers[
-        (reviewersLength + (props.reviewer + index - side)) % reviewersLength
+        (reviewersLength + (reviewer + index - side)) % reviewersLength
       ]
   );
   return (
@@ -27,11 +26,14 @@ export const ReviewItem = (props: ReviewItemProps) => {
             className={index === side ? styles.reviewer : undefined}
             src={photo}
             key={index}
+            alt='Reviewer'
           />
         ))}
       </section>
-      <article className={styles.date}>{date}</article>
-      <p className={styles.title}>{props.text}</p>
+      <article className={styles.date}>{date.toDateString()}</article>
+      <p className={styles.title}>{text}</p>
     </div>
   );
 };
+
+export default ReviewItem;

@@ -8,19 +8,19 @@ import { LoginContext, scrollOffset } from '../../../App';
 import styles from './menuList.module.scss';
 
 type MenuListProps = {
-  direction: "row" | "column";
+  direction: 'row' | 'column';
   callback?: any;
 };
 
-export const MenuList = (props: MenuListProps) => {
-  const callback = () => {
-    props.callback && props.callback();
+const MenuList = ({ direction, callback }: MenuListProps) => {
+  const runCallback = () => {
+    if (callback) callback();
   };
 
   return (
     <section
       className={styles.menu_list}
-      style={{ flexDirection: props.direction }}
+      style={{ flexDirection: direction }}
     >
       <LoginContext.Consumer>
         {value =>
@@ -28,29 +28,30 @@ export const MenuList = (props: MenuListProps) => {
             <Button onClick={callback} color="inherit" component={Link} to='/admin/vehicles'>
               Admin
             </Button>
-          )
-        }
+          )}
       </LoginContext.Consumer>
-      <Button onClick={callback} color="inherit" component={Link} scroll={scrollOffset} to='/#top'>
+      <Button onClick={runCallback} color="inherit" component={Link} scroll={scrollOffset} to='/#top'>
         Home
       </Button>
-      <Button onClick={callback} color="inherit" component={Link} scroll={scrollOffset} to='/#about'>
+      <Button onClick={runCallback} color="inherit" component={Link} scroll={scrollOffset} to='/#about'>
         About
       </Button>
-      <Button onClick={callback} color="inherit" component={Link} scroll={scrollOffset} to='/#service'>
+      <Button onClick={runCallback} color="inherit" component={Link} scroll={scrollOffset} to='/#service'>
         Service
       </Button>
-      <Button onClick={callback} color="inherit" component={Link} scroll={scrollOffset} to='/#reviews'>
+      <Button onClick={runCallback} color="inherit" component={Link} scroll={scrollOffset} to='/#reviews'>
         Reviews
       </Button>
-      <Button onClick={callback} color="inherit" component={Link} scroll={scrollOffset} to='/#news'>
+      <Button onClick={runCallback} color="inherit" component={Link} scroll={scrollOffset} to='/#news'>
         News
       </Button>
-      {props.callback && (
+      {callback && (
         <div className={styles.drawer_close}>
-          <CloseIcon fontSize="large" onClick={() => props.callback()} />
+          <CloseIcon fontSize="large" onClick={() => runCallback()} />
         </div>
       )}
     </section>
   );
 };
+
+export default MenuList;

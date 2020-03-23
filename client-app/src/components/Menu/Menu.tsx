@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { Drawer, IconButton, makeStyles } from '@material-ui/core';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -10,33 +10,31 @@ import ScheduleIcon from '@material-ui/icons/Schedule';
 
 import { ContextType, LoginContext } from '../../App';
 import styles from './menu.module.scss';
-import { MenuList } from './MenuList/MenuList';
+import MenuList from './MenuList/MenuList';
 
 const useStyles = makeStyles(() => ({
   modal: {
-    background: "none"
+    background: 'none'
   },
   paper: {
-    height: "100%",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "transparent",
-    backdropFilter: "blur(5px)",
-    color: "#FFF"
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+    backdropFilter: 'blur(5px)',
+    color: '#FFF'
   }
 }));
 
-export const Menu = () => {
+const Menu = () => {
   const classes = useStyles();
 
-  const [isLogged, setLogged] = useState(false);
   const [isDrawerOpened, handleDrawer] = useState(false);
 
   const context = useContext<ContextType>(LoginContext);
 
   const handleLogout = async () => {
-    setLogged(false);
     context.checkLogin({
       user: undefined,
       isLogged: false
@@ -59,22 +57,22 @@ export const Menu = () => {
             </section>
           </div>
           <section className={styles.social_networks}>
-            <div className={styles.social_behance}></div>
-            <div className={styles.social_vk}></div>
-            <div className={styles.social_facebook}></div>
-            <div className={styles.social_twitter}></div>
-            <div className={styles.social_instagram}></div>
+            <div className={styles.social_behance} />
+            <div className={styles.social_vk} />
+            <div className={styles.social_facebook} />
+            <div className={styles.social_twitter} />
+            <div className={styles.social_instagram} />
           </section>
         </section>
       </div>
       <div className={styles.menu}>
         <section className={styles.wrapper_menu}>
-          <div className={styles.logo}></div>
+          <div className={styles.logo} />
           <div className={styles.menu_list}>
             <MenuList direction="row" />
           </div>
           <div className={styles.user}>
-          <LoginContext.Consumer>
+            <LoginContext.Consumer>
               {(value) => (value.isLogged ? (
                 <>
                   <IconButton component={Link} to="/profile">
@@ -111,3 +109,5 @@ export const Menu = () => {
     </>
   );
 };
+
+export default Menu;

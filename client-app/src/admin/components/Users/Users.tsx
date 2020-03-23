@@ -2,8 +2,8 @@ import cogoToast from 'cogo-toast';
 import React, { useContext, useEffect, useState } from 'react';
 
 import {
-    CircularProgress, Fade, IconButton, Paper, Table, TableBody, TableCell, TableContainer,
-    TableHead, TableRow
+  CircularProgress, Fade, IconButton, Paper, Table, TableBody, TableCell, TableContainer,
+  TableHead, TableRow
 } from '@material-ui/core';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
@@ -16,14 +16,14 @@ import styles from './users.module.scss';
 type UsersState = {
   users: User[]; 
   isLoaded: boolean;
-}
+};
 
 type UsersProps = {
   page: number;
   checkPages: (length: number) => any
-}
+};
 
-export const Users = (props: UsersProps) => {
+const Users = ({ page, checkPages }: UsersProps) => {
   const ITEMS_ON_PAGE = 20;
 
   const [changes, setChanges] = useState(false);
@@ -31,7 +31,7 @@ export const Users = (props: UsersProps) => {
   const [state, setState] = useState<UsersState>({
     users: [],
     isLoaded: false
-  })
+  });
 
   const context = useContext<boolean>(AdminContext);
 
@@ -40,12 +40,12 @@ export const Users = (props: UsersProps) => {
       const users = await getUsersData();
       setState({ ...state, users, isLoaded: true });
       setLength(Math.round(users.length / ITEMS_ON_PAGE));
-    })()
-  }, [changes, context])
+    })();
+  }, [changes, context]);
 
   useEffect(() => {
-    props.checkPages(length);
-  }, [length])
+    checkPages(length);
+  }, [length]);
 
   const removeUser = async (user: User) => {
     if (user._id) {
@@ -53,7 +53,7 @@ export const Users = (props: UsersProps) => {
       setChanges(!changes);
       cogoToast.warn(res, {position: 'bottom-right'});
     }
-  }
+  };
 
   return (
     !state.isLoaded ? (
@@ -71,11 +71,11 @@ export const Users = (props: UsersProps) => {
                 <TableCell align="right">Phone</TableCell>
                 <TableCell align="right">Username</TableCell>
                 <TableCell align="right">Password</TableCell>
-                <TableCell align="right"></TableCell>
+                <TableCell align="right" />
               </TableRow>
             </TableHead>
             <TableBody>
-              {state.users.slice((props.page - 1) * ITEMS_ON_PAGE, props.page * ITEMS_ON_PAGE).map((user, index) => (
+              {state.users.slice((page - 1) * ITEMS_ON_PAGE, page * ITEMS_ON_PAGE).map((user, index) => (
                 <TableRow className={user.isAdmin ? styles.admin : undefined} key={index}>
                   <TableCell component="th" scope="row">
                     {user.name}
@@ -115,4 +115,6 @@ export const Users = (props: UsersProps) => {
       </Fade>
     )
   );
-}
+};
+
+export default Users;

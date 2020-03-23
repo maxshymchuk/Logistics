@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
 import {
   Button,
@@ -7,14 +7,14 @@ import {
   List,
   ListItem,
   ListItemText
-} from "@material-ui/core";
-import ExpandLess from "@material-ui/icons/ExpandLess";
-import ExpandMore from "@material-ui/icons/ExpandMore";
+} from '@material-ui/core';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
 
-import { Order, OrderStatus } from "../../../../models/orders.models";
-import { Route } from "../../../../models/routes.models";
-import { Track } from "../../../../models/tracks.models";
-import styles from "./trackOrderInfo.module.scss";
+import { Order, OrderStatus } from '../../../../models/orders.models';
+import { Route } from '../../../../models/routes.models';
+import { Track } from '../../../../models/tracks.models';
+import styles from './trackOrderInfo.module.scss';
 
 type TrackOrderInfoProps = {
   order: Order;
@@ -32,17 +32,17 @@ enum ListType {
 }
 
 class TrackOrderInfo extends Component<
-  TrackOrderInfoProps,
-  TrackOrderInfoState
+TrackOrderInfoProps,
+TrackOrderInfoState
 > {
   state = {
-    trackNumber: "",
+    trackNumber: '',
     isRoutesOpen: false,
     isTracksOpen: false
   };
 
   handleChange = (event: any) => {
-    const target = event.target;
+    const {target} = event;
     this.setState(state => ({
       trackNumber: target.value
     }));
@@ -74,7 +74,7 @@ class TrackOrderInfo extends Component<
   getTrackItem(track: Track) {
     const depDate = new Date(track.departureDate).toLocaleString();
     const arrDate = new Date(track.arrivalDate).toLocaleString();
-    const status = track.status;
+    const {status} = track;
     return (
       <ListItem key={track._id} className={styles.nested}>
         <ListItemText primary={`${depDate} - ${arrDate}`} />
@@ -96,9 +96,12 @@ class TrackOrderInfo extends Component<
       <Card className={styles.order}>
         <span className={styles.title}>
           {status}
-          <span className={styles["track-number"]}>{trackNumber}</span>
+          <span className={styles['track-number']}>{trackNumber}</span>
         </span>
-        <div className={styles.row}>Price: {price}</div>
+        <div className={styles.row}>
+          Price:
+          {price}
+        </div>
         <List component="nav" className={styles.row} disablePadding>
           <ListItem button onClick={() => this.handleClick(ListType.Routes)}>
             <ListItemText primary="Routes" />
@@ -124,7 +127,7 @@ class TrackOrderInfo extends Component<
         {message && <div className={styles.row}>{`${message}`}</div>}
         {status !== OrderStatus.Completed && (
           <Button
-            className={styles["button-cancel"]}
+            className={styles['button-cancel']}
             variant="contained"
             color="secondary"
             fullWidth

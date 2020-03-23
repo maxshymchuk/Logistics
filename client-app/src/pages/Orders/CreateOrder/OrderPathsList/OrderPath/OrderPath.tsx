@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
 import {
   Avatar,
@@ -8,14 +8,14 @@ import {
   List,
   ListItem,
   ListItemText
-} from "@material-ui/core";
-import Divider from "@material-ui/core/Divider";
-import ExpandLess from "@material-ui/icons/ExpandLess";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-import ScheduleIcon from "@material-ui/icons/Schedule";
+} from '@material-ui/core';
+import Divider from '@material-ui/core/Divider';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import ScheduleIcon from '@material-ui/icons/Schedule';
 
-import { UserPath } from "../../../../../models/locations.models";
-import styles from "./OrderPath.module.scss";
+import { UserPath } from '../../../../../models/locations.models';
+import styles from './OrderPath.module.scss';
 
 type OrderPathState = {
   isLoaded: boolean;
@@ -57,18 +57,18 @@ class OrderPath extends Component<OrderPathProps, OrderPathState> {
             className={styles.routes}
             primary={this.props.userPath.paths
               .map(path => path.vehicle)
-              .join(" – ")}
+              .join(' – ')}
           />
           <ListItemText style={{ flexGrow: 0 }} className={styles.time}>
             <Chip
-              style={{ cursor: "pointer" }}
+              style={{ cursor: 'pointer' }}
               icon={<ScheduleIcon />}
               label={this.getHoursStr(this.props.userPath.timeInterval)}
             />
           </ListItemText>
           <ListItemText style={{ flexGrow: 0 }} className={styles.price}>
             <Chip
-              style={{ cursor: "pointer" }}
+              style={{ cursor: 'pointer' }}
               avatar={<Avatar>$</Avatar>}
               color="primary"
               label={this.props.userPath.price.toFixed(2)}

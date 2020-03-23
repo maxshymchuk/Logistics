@@ -23,14 +23,14 @@ export async function getOrderPaths(order: OrderUser) {
 export async function getOrderByTrackNumber(trackNumber: string) {
   const order = (
     await axios.get(`orders/track/${trackNumber}`).catch<any>(() => {
-      throw new Error("Track not found");
+      throw new Error('Track not found');
     })
   ).data;
   return order;
 }
 
 export async function createOrder(userPath: UserPath): Promise<string> {
-  const res = (await axios.post("orders", userPath)).data;
+  const res = (await axios.post('orders', userPath)).data;
   return res;
 }
 

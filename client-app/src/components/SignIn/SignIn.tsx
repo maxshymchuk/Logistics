@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import { Button, TextField } from '@material-ui/core';
@@ -7,10 +7,10 @@ import { ContextType, LoginContext } from '../../App';
 import { authUser } from '../../services/users.service';
 import styles from './signin.module.scss';
 
-export const SignIn = () => {
+const SignIn = () => {
   const [isLogged, setLogged] = useState(false);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
   const context = useContext<ContextType>(LoginContext);
 
@@ -45,3 +45,5 @@ export const SignIn = () => {
     </form>
   );
 };
+
+export default SignIn;

@@ -1,0 +1,12 @@
+@import '../../../styles/variables.scss';
+@import '../../../styles/mixins.scss';
+
+.progress {
+  @include progress_button;
+}
+
+.form {
+  display: grid;
+  grid-template-rows: repeat(6, 60px);
+  grid-gap: $item-gap / 2;
+}

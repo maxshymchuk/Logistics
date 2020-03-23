@@ -1,17 +1,20 @@
-import React, { useState } from "react";
+import cogoToast from 'cogo-toast';
+import React, { useState } from 'react';
 
-import { Button, TextField } from "@material-ui/core";
+import { Button, TextField } from '@material-ui/core';
 
-import { UserSignUp } from "../../models/users.models";
-import { regUser } from "../../services/users.service";
-import styles from "./signup.module.scss";
+import { UserSignUp } from '../../models/users.models';
+import { regUser } from '../../services/users.service';
+import styles from './signup.module.scss';
 
-export const SignUp = () => {
+const SignUp = () => {
   const [user, setUser] = useState<UserSignUp>(Object);
 
   const handleClick = async () => {
     const res = await regUser(user);
-    console.log(res);
+    cogoToast.success(res, {
+      position: 'bottom-right'
+    });
   };
 
   const handleChange = (e: any) => {
@@ -54,3 +57,5 @@ export const SignUp = () => {
     </form>
   );
 };
+
+export default SignUp;

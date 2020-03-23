@@ -1,14 +1,8 @@
-import React from "react";
+import React from 'react';
 
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia
-} from "@material-ui/core";
+import { Button, Card, CardActions, CardContent, CardMedia } from '@material-ui/core';
 
-import styles from "./newsItem.module.scss";
+import styles from './newsItem.module.scss';
 
 type NewsItemProps = {
   date: Date;
@@ -17,18 +11,17 @@ type NewsItemProps = {
   source: string;
 };
 
-export const NewsItem = (props: NewsItemProps) => {
-  const date = props.date.toDateString();
+const NewsItem = ({ date, image, title, source }: NewsItemProps) => {
   return (
     <Card className={styles.news_item}>
-      <CardMedia className={styles.image} image={props.image} />
+      <CardMedia className={styles.image} image={image} />
       <CardContent className={styles.description}>
-        <article className={styles.date}>{date}</article>
-        <article className={styles.title}>{props.title}</article>
+        <article className={styles.date}>{date.toDateString()}</article>
+        <article className={styles.title}>{title}</article>
       </CardContent>
       <CardActions className={styles.actions}>
         <Button className={styles.button} size="small">
-          <a href={props.source} target="_blank" rel="noopener noreferrer">
+          <a href={source} target="_blank" rel="noopener noreferrer">
             Read More
           </a>
         </Button>
@@ -36,3 +29,5 @@ export const NewsItem = (props: NewsItemProps) => {
     </Card>
   );
 };
+
+export default NewsItem;

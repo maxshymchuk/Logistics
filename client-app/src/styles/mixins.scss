@@ -1,3 +1,5 @@
+@import './variables.scss';
+
 @mixin filled {
   border-radius: $border-radius;
   background-color: $disabled-color;
@@ -56,4 +58,8 @@
       display: none;
     }
   }
+}
+
+@mixin progress_button {
+  margin-right: $item-gap;
 }

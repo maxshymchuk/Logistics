@@ -19,3 +19,14 @@ export type UserSignUp = {
   username: string;
   password: string;
 };
+
+export const defaultUser: User = {
+  name: 'Name',
+  surname: 'Surname',
+  birthday: new Date(),
+  email: 'Email',
+  phone: 'Phone',
+  username: 'Username',
+  password: 'Password',
+  isAdmin: false
+};

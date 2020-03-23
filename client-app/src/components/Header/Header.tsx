@@ -9,7 +9,7 @@ import { Button } from '@material-ui/core';
 import { scrollOffset } from '../../App';
 import styles from './header.module.scss';
 
-export const Header = () => (
+const Header = () => (
   <div className={styles.header} id="top">
     <div className={styles.content}>
       <Carousel slidesPerPage={1} autoPlay={8000} animationSpeed={2000} draggable={false} infinite>
@@ -29,7 +29,7 @@ export const Header = () => (
           Fast. Effective. Comfortable. Simple.
           {' '}
           <br />
-          Sounds powerful, doesn't it?
+          Sounds powerful, doesn&apos;t it?
         </article>
         <Button
           color="primary"
@@ -39,9 +39,11 @@ export const Header = () => (
           scroll={scrollOffset}
           to="/#about"
         >
-          Let's find out how we did it
+          Let&apos;s find out how we did it
         </Button>
       </div>
     </div>
   </div>
 );
+
+export default Header;

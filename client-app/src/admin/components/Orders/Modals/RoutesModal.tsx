@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import {
-    Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow
+  Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow
 } from '@material-ui/core';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -14,11 +14,11 @@ import tableStyles from '../../../styles/table.module.scss';
 type RoutesModalProps = {
   routes: Route[];
   handleModal: () => void;
-}
+};
 
-export const RoutesModal = (props: RoutesModalProps) => {
+const RoutesModal = ({ routes, handleModal }: RoutesModalProps) => {
   const handleClose = () => {
-    props.handleModal();
+    handleModal();
   };
 
   return (
@@ -38,7 +38,7 @@ export const RoutesModal = (props: RoutesModalProps) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {props.routes.map((route, index) => (
+              {routes.map((route, index) => (
                 <TableRow key={index}>
                   <TableCell>{index + 1}</TableCell>
                   <TableCell align="right">{route.startLocation.name}</TableCell>
@@ -59,4 +59,6 @@ export const RoutesModal = (props: RoutesModalProps) => {
       </DialogActions>
     </Dialog>
   );
-}
+};
+
+export default RoutesModal;

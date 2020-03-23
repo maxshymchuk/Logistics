@@ -3,8 +3,8 @@ import SwipeableViews from 'react-swipeable-views';
 
 import { Box, Card, Tab, Tabs, Typography } from '@material-ui/core';
 
-import { SignIn } from '../../components/SignIn/SignIn';
-import { SignUp } from '../../components/SignUp/SignUp';
+import SignIn from '../../components/SignIn/SignIn';
+import SignUp from '../../components/SignUp/SignUp';
 import styles from './auth.module.scss';
 
 interface TabPanelProps {
@@ -27,7 +27,7 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
-export const Auth = () => {
+const Auth = () => {
   const [value, setValue] = useState(0);
 
   return (
@@ -53,3 +53,5 @@ export const Auth = () => {
     </Card>
   );
 };
+
+export default Auth;

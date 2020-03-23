@@ -2,8 +2,8 @@ import cogoToast from 'cogo-toast';
 import React, { useContext, useEffect, useState } from 'react';
 
 import {
-    CircularProgress, Fade, IconButton, Paper, Table, TableBody, TableCell, TableContainer,
-    TableHead, TableRow
+  CircularProgress, Fade, IconButton, Paper, Table, TableBody, TableCell, TableContainer,
+  TableHead, TableRow
 } from '@material-ui/core';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
@@ -15,14 +15,14 @@ import tableStyles from '../../styles/table.module.scss';
 type LocationsState = {
   locations: Location[]; 
   isLoaded: boolean;
-}
+};
 
 type LocationsProps = {
   page: number;
   checkPages: (length: number) => any
-}
+};
 
-export const Locations = (props: LocationsProps) => {
+const Locations = ({ page, checkPages }: LocationsProps) => {
   const ITEMS_ON_PAGE = 20;
 
   const [changes, setChanges] = useState(false);
@@ -30,7 +30,7 @@ export const Locations = (props: LocationsProps) => {
   const [state, setState] = useState<LocationsState>({
     locations: [],
     isLoaded: false
-  })
+  });
 
   const context = useContext<boolean>(AdminContext);
 
@@ -39,12 +39,12 @@ export const Locations = (props: LocationsProps) => {
       const locations = await getLocationsData();
       setState({ ...state, locations, isLoaded: true });
       setPagesNumber(Math.round(locations.length / ITEMS_ON_PAGE));
-    })()
-  }, [changes, context])
+    })();
+  }, [changes, context]);
 
   useEffect(() => {
-    props.checkPages(pagesNumber);
-  }, [pagesNumber])
+    checkPages(pagesNumber);
+  }, [pagesNumber]);
 
   const removeLocation = async (location: Location) => {
     if (location._id) {
@@ -52,7 +52,7 @@ export const Locations = (props: LocationsProps) => {
       setChanges(!changes);
       cogoToast.warn(res, {position: 'bottom-right'});
     }
-  }
+  };
 
   return (
     !state.isLoaded ? (
@@ -65,11 +65,11 @@ export const Locations = (props: LocationsProps) => {
               <TableRow>
                 <TableCell>Location</TableCell>
                 <TableCell align="right">Coordinates (lat, lon)</TableCell>
-                <TableCell align="right"></TableCell>
+                <TableCell align="right" />
               </TableRow>
             </TableHead>
             <TableBody>
-              {state.locations.slice((props.page - 1) * ITEMS_ON_PAGE, props.page * ITEMS_ON_PAGE).map((location, index) => (
+              {state.locations.slice((page - 1) * ITEMS_ON_PAGE, page * ITEMS_ON_PAGE).map((location, index) => (
                 <TableRow key={index}>
                   <TableCell component="th" scope="row">
                     {location.name}
@@ -93,4 +93,6 @@ export const Locations = (props: LocationsProps) => {
       </Fade>
     )
   );
-}
+};
+
+export default Locations;

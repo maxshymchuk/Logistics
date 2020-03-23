@@ -2,7 +2,7 @@ import cogoToast from 'cogo-toast';
 import React, { useState } from 'react';
 
 import {
-    Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
+  Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
 } from '@material-ui/core';
 import ReplayIcon from '@material-ui/icons/Replay';
 
@@ -11,9 +11,9 @@ import styles from './regenerator.module.scss';
 
 type RegeneratorProps = {
   handleClose: () => void;
-}
+};
 
-export const Regenerator = (props: RegeneratorProps) => {
+const Regenerator = (props: RegeneratorProps) => {
   const [isLoading, setLoading] = useState({
     locations: false,
     vehicles: false
@@ -23,20 +23,20 @@ export const Regenerator = (props: RegeneratorProps) => {
     setLoading({...isLoading, locations: true});
     regenLocations().then((res) => {
       cogoToast.success(res, {
-        position: "bottom-right"
-      })
+        position: 'bottom-right'
+      });
       setLoading({...isLoading, locations: false});
-    })
+    });
   };
 
   const regenerateVehicles = async () => {
     setLoading({...isLoading, vehicles: true});
     regenVehicles().then((res) => {
       cogoToast.success(res, {
-        position: "bottom-right"
-      })
+        position: 'bottom-right'
+      });
       setLoading({...isLoading, vehicles: false});
-    })
+    });
   };
 
   const handleClose = () => {
@@ -55,11 +55,11 @@ export const Regenerator = (props: RegeneratorProps) => {
         </DialogContentText>
         <section className={styles.buttons}>
           <Button onClick={regenerateLocations} color="primary" variant='contained'>
-            {isLoading.locations ? <CircularProgress color='inherit' size={20}/> : <ReplayIcon />}
+            {isLoading.locations ? <CircularProgress color='inherit' size={20} /> : <ReplayIcon />}
             <span className={styles.name}>Locations</span>
           </Button>
           <Button onClick={regenerateVehicles} color="primary" variant='contained'>
-            {isLoading.vehicles ? <CircularProgress color='inherit' size={20}/> : <ReplayIcon />}
+            {isLoading.vehicles ? <CircularProgress color='inherit' size={20} /> : <ReplayIcon />}
             <span className={styles.name}>Vehicles</span>
           </Button>
         </section>
@@ -72,3 +72,5 @@ export const Regenerator = (props: RegeneratorProps) => {
     </Dialog>
   );
 };
+
+export default Regenerator;

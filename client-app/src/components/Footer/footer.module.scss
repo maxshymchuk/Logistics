@@ -54,9 +54,8 @@
   .company {
     margin: $item-gap 0;
     padding: 0 $item-gap / 2;
-    a {
+    & > * {
       display: block;
-      margin-bottom: $item-gap / 3;
     }
   }
 

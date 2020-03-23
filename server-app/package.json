@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "tsc-watch --onSuccess \"nodemon ./build/app.js",
+    "dev": "tsc-watch --onSuccess \"nodemon ./build/app.js",
+    "start": "node ./build/app.js",
     "test": "jest",
     "compile": "tsc",
     "watch-ts": "tsc -w"

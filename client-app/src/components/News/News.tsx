@@ -7,10 +7,10 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
 import styles from './news.module.scss';
-import { news } from './newsContent';
-import { NewsItem } from './NewsItem/NewsItem';
+import newsContent from './newsContent';
+import NewsItem from './NewsItem/NewsItem';
 
-export const News = () => {
+const News = () => {
   const AUTO_PLAY_MS = 8000;
   const ANIMATION_SPEED_MS = 2000;
   const TABLET_WIDTH_PX = 600;
@@ -43,7 +43,7 @@ export const News = () => {
             arrows
             infinite
           >
-            {news.map((news, index) => (
+            {newsContent.map((news, index) => (
               <NewsItem key={index} {...news} />
             ))}
           </Carousel>
@@ -52,3 +52,5 @@ export const News = () => {
     </div>
   );
 };
+
+export default News;

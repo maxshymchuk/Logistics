@@ -4,24 +4,24 @@ import axios from 'axios';
 import React, { createContext, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import { Menu } from './components/Menu/Menu';
+import Menu from './components/Menu/Menu';
 import { User } from './models/users.models';
 import { Admin } from './pages/Admin/Admin';
-import { Auth } from './pages/Auth/Auth';
-import { Index } from './pages/Index/Index';
+import Auth from './pages/Auth/Auth';
+import Index from './pages/Index/Index';
 import CreateOrder from './pages/Orders/CreateOrder/CreateOrder';
 import TrackOrder from './pages/Orders/TrackOrder/TrackOrder';
-import { Profile } from './pages/Profile/Profile';
+import Profile from './pages/Profile/Profile';
 import { getLoggedUser, logout } from './services/users.service';
 
-axios.defaults.baseURL = "http://localhost:3000";
+axios.defaults.baseURL = 'http://localhost:3000';
 axios.defaults.withCredentials = true;
 
 export const scrollOffset = (el: Element) => {
   const Y_OFFSET = -50;
   const yCoordinate = el.getBoundingClientRect().top + window.pageYOffset; 
   window.scrollTo({ top: yCoordinate + Y_OFFSET, behavior: 'smooth' }); 
-}
+};
 
 export type CallbackContextType = {
   user: User | undefined;
@@ -37,12 +37,16 @@ const defaultLoginContext = {
   user: undefined,
   isLogged: false,
   checkLogin: () => {},
-  logout: async () => await logout()
-}
+  logout: async () => { await logout(); }
+};
 
 export const LoginContext = createContext<ContextType>(defaultLoginContext);
 
 export const App = () => {
+  const [loginState, setLoginState] = useState<ContextType>({
+    ...defaultLoginContext
+  });
+
   const changeState = (newState: CallbackContextType) => {
     setLoginState({
       ...loginState,
@@ -50,11 +54,6 @@ export const App = () => {
       isLogged: newState.isLogged
     });
   };
-
-  const [loginState, setLoginState] = useState<ContextType>({
-    ...defaultLoginContext,
-    checkLogin: changeState
-  });
 
   useEffect(() => {
     (async () => {
@@ -65,8 +64,8 @@ export const App = () => {
         isLogged: !!Object.keys(user).length,
         checkLogin: changeState
       });
-    })()
-  }, [])
+    })();
+  }, []);
   
 
   return (

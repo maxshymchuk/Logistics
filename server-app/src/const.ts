@@ -1,5 +1,7 @@
-export default {
+const CONST = {
   METERS_PER_KILOMETER: 1000,
   HOURS_PER_DAY: 24,
   HOUR_MILLISEC: 60 * 60 * 1000
 };
+
+export default CONST;

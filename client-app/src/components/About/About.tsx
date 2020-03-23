@@ -4,7 +4,7 @@ import { Card } from '@material-ui/core';
 
 import styles from './about.module.scss';
 
-export const About = () => (
+const About = () => (
   <div className={styles.about} id="about">
     <section className={styles.wrapper_about}>
       <h1 className={styles.title}>Why are we special?</h1>
@@ -13,7 +13,7 @@ export const About = () => (
         <div className={styles.text}>
           <h2>First of all, an idea!</h2>
           <p>
-            Call > conversation > acceptance? - sounds old-fashioned.
+            Call &gt; conversation &gt; acceptance? - sounds old-fashioned.
             <Card className={styles.quote}>Acceptance is good, conversation is bad</Card>
             This principle is the basis of the idea, the foundation of innovation.
             <br />
@@ -38,3 +38,5 @@ export const About = () => (
     </section>
   </div>
 );
+
+export default About;

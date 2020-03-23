@@ -1,14 +1,16 @@
-import React from "react";
+import React from 'react';
 
-import styles from "./footer.module.scss";
+import { Link } from '@material-ui/core';
 
-export const Footer = () => {
+import styles from './footer.module.scss';
+
+const Footer = () => {
   return (
     <div className={styles.footer}>
       <section className={styles.wrapper_footer}>
         <div className={styles.content}>
           <div className={styles.description}>
-            <div className={styles.logo}></div>
+            <div className={styles.logo} />
             <p>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate
               mollitia sunt perspiciatis nam sapiente magni similique temporibus
@@ -19,30 +21,42 @@ export const Footer = () => {
           <section className={styles.nav}>
             <div className={styles.links}>
               <article className={styles.title}>Links</article>
-              <a href="/">Home</a>
-              <a href="/#about">About Us</a>
-              <a href="/#service">Service</a>
-              <a href="/#reviews">Reviews</a>
-              <a href="/#news">News</a>
-              <a href="/#contact">Contact</a>
+              <Link color="inherit" href='/#top' underline='none'>
+                Home
+              </Link>
+              <Link color="inherit" href='/#about' underline='none'>
+                About Us
+              </Link>
+              <Link color="inherit" href='/#service' underline='none'>
+                Service
+              </Link>
+              <Link color="inherit" href='/#reviews' underline='none'>
+                Reviews
+              </Link>
+              <Link color="inherit" href='/#news' underline='none'>
+                News
+              </Link>
+              <Link color="inherit" href='/#contact' underline='none'>
+                Contact
+              </Link>
             </div>
             <div className={styles.services}>
               <article className={styles.title}>Services</article>
-              <a href="#">Road Transport</a>
-              <a href="#">Sea Freight</a>
-              <a href="#">Air Freight</a>
-              <a href="#">Logistics</a>
-              <a href="#">Cargo Insurance</a>
-              <a href="#">Warehousing</a>
+              <span>Road Transport</span>
+              <span>Sea Freight</span>
+              <span>Air Freight</span>
+              <span>Logistics</span>
+              <span>Cargo Insurance</span>
+              <span>Warehousing</span>
             </div>
             <div className={styles.company}>
               <article className={styles.title}>Company</article>
-              <a href="#">Careers</a>
-              <a href="#">Our Team</a>
-              <a href="#">Help</a>
-              <a href="#">Branding</a>
-              <a href="#">Awards</a>
-              <a href="#">Leadership</a>
+              <span>Careers</span>
+              <span>Our Team</span>
+              <span>Help</span>
+              <span>Branding</span>
+              <span>Awards</span>
+              <span>Leadership</span>
             </div>
           </section>
           <div className={styles.download}>
@@ -50,8 +64,8 @@ export const Footer = () => {
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
             <article className={styles.subtitle}>Get trackinff app</article>
             <section className={styles.badges}>
-              <div className={styles.google}></div>
-              <div className={styles.apple}></div>
+              <div className={styles.google} />
+              <div className={styles.apple} />
             </section>
           </div>
         </div>
@@ -59,3 +73,5 @@ export const Footer = () => {
     </div>
   );
 };
+
+export default Footer;

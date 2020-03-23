@@ -10,31 +10,31 @@ export const reviewers = [male1, female1, female2, male2, female3, male3, female
 
 export const reviews = [
   {
-    text: "Review 1",
+    text: 'Review 1',
     date: new Date()
   },
   {
-    text: "Review 2",
+    text: 'Review 2',
     date: new Date()
   },
   {
-    text: "Review 3",
+    text: 'Review 3',
     date: new Date()
   },
   {
-    text: "Review 4",
+    text: 'Review 4',
     date: new Date()
   },
   {
-    text: "Review 5",
+    text: 'Review 5',
     date: new Date()
   },
   {
-    text: "Review 6",
+    text: 'Review 6',
     date: new Date()
   },
   {
-    text: "Review 7",
+    text: 'Review 7',
     date: new Date()
   }
 ];

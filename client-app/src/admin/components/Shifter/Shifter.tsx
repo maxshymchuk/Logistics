@@ -2,18 +2,18 @@ import cogoToast from 'cogo-toast';
 import React, { useState } from 'react';
 
 import {
-    Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
-    IconButton, TextField
+  Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
+  TextField
 } from '@material-ui/core';
 
-import { changeTime } from '../../services/shifter.service';
+import changeTime from '../../services/shifter.service';
 import styles from './shifter.module.scss';
 
 type ShifterProps = {
   handleClose: () => void;
-}
+};
 
-export const Shifter = (props: ShifterProps) => {
+const Shifter = (props: ShifterProps) => {
   const [isLoading, setLoading] = useState(false);
   const [value, setValue] = useState(1);
 
@@ -21,10 +21,10 @@ export const Shifter = (props: ShifterProps) => {
     setLoading(true);
     changeTime(value).then((res) => {
       cogoToast.success(res, {
-        position: "bottom-right"
-      })
+        position: 'bottom-right'
+      });
       setLoading(false);
-    })
+    });
   };
 
   const handleClose = () => {
@@ -53,9 +53,12 @@ export const Shifter = (props: ShifterProps) => {
           Close
         </Button>
         <Button onClick={handleChange} color="primary" variant='contained'>
-          {isLoading && <CircularProgress className={styles.progress} color='inherit' size={20} />} Shift
+          {isLoading && <CircularProgress className={styles.progress} color='inherit' size={20} />}
+          Shift
         </Button>
       </DialogActions>
     </Dialog>
   );
 };
+
+export default Shifter;

@@ -6,11 +6,11 @@ import Fab from '@material-ui/core/Fab';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 
-import { Locations } from '../../admin/components/Locations/Locations';
-import { Menu } from '../../admin/components/Menu/Menu';
-import { Orders } from '../../admin/components/Orders/Orders';
-import { Users } from '../../admin/components/Users/Users';
-import { Vehicles } from '../../admin/components/Vehicles/Vehicles';
+import Locations from '../../admin/components/Locations/Locations';
+import Menu from '../../admin/components/Menu/Menu';
+import Orders from '../../admin/components/Orders/Orders';
+import Users from '../../admin/components/Users/Users';
+import Vehicles from '../../admin/components/Vehicles/Vehicles';
 import styles from './admin.module.scss';
 import { LocationsModal } from './Modals/LocationsModal';
 import { UsersModal } from './Modals/UsersModal';
@@ -20,7 +20,7 @@ type TabPanelProps = {
   children?: React.ReactNode;
   index: any;
   value: any;
-}
+};
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -71,25 +71,26 @@ export const Admin = () => {
 
   useEffect(() => {
     setPage(1);
-  }, [tab])
+  }, [tab]);
 
-  const handleModal = (isModal: boolean) => {
-    setModal(isModal);
-    !isModal && setChanges(!changes);
+  const handleModal = (modalState: boolean) => {
+    setModal(modalState);
+    if (!modalState) setChanges(!changes);
   };
 
   const getModal = () => {
     switch (tab) {
-      case 0: return <VehiclesModal handleModal={handleModal} />
-      case 1: return <UsersModal handleModal={handleModal} />
-      case 2: return <LocationsModal handleModal={handleModal} />
+      case 0: return <VehiclesModal handleModal={handleModal} />;
+      case 1: return <UsersModal handleModal={handleModal} />;
+      case 2: return <LocationsModal handleModal={handleModal} />;
+      default: return <></>;
     }
-  }
+  };
 
   return (
     <AdminContext.Provider value={changes}>
       <Card className={classes.header}>
-        <Menu length={length} checkPages={page => setPage(page)}/>
+        <Menu length={length} checkPages={currPage => setPage(currPage)} />
         <Tabs
           value={tab}
           onChange={(e, v) => setTab(v)}

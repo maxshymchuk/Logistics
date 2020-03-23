@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-export async function changeTime(time: number) {
+async function changeTime(time: number): Promise<string> {
   const route = `/time/${time >= 0 ? 'plus' : 'minus'}/${Math.abs(time)}`;
   return (await axios.get(route)).data;
 }
+
+export default changeTime;

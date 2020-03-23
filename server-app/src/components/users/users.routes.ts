@@ -1,5 +1,6 @@
 import { Request, Response, Router } from 'express';
 
+import { UserMongo } from '../../models/users.models';
 import { requiresAdmin, requiresLogin } from '../../utils';
 import * as userService from './users.service';
 
@@ -19,7 +20,13 @@ router.get(
   }
 );
 
-router.post("/", async (req: Request, res: Response) => {
+router.post("/reg", async (req: Request, res: Response) => {
+  const user: UserMongo = { ...req.body, _id: undefined, isAdmin: false };
+  const result = await userService.addUser(user);
+  res.status(result ? 200 : 403).send(result);
+});
+
+router.post("/", requiresAdmin(), async (req: Request, res: Response) => {
   const result = await userService.addUser(req.body);
   res.status(result ? 200 : 403).send(result);
 });

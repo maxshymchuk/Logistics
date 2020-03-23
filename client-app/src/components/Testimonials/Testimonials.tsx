@@ -7,11 +7,11 @@ import { Card } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
-import { ReviewItem } from './ReviewItem/ReviewItem';
+import ReviewItem from './ReviewItem/ReviewItem';
 import styles from './testimonials.module.scss';
 import { reviewers, reviews } from './testimonialsContent';
 
-export const Testimonials = () => {
+const Testimonials = () => {
   return (
     <div className={styles.testimonials} id="reviews">
       <section className={styles.wrapper_testimonials}>
@@ -45,3 +45,5 @@ export const Testimonials = () => {
     </div>
   );
 };
+
+export default Testimonials;

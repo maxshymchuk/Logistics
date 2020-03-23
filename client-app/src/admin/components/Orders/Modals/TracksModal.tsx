@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import {
-    Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow
+  Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow
 } from '@material-ui/core';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -14,11 +14,11 @@ import tableStyles from '../../../styles/table.module.scss';
 type TracksModalProps = {
   tracks: Track[];
   handleModal: () => void;
-}
+};
 
-export const TracksModal = (props: TracksModalProps) => {
+const TracksModal = ({ tracks, handleModal }: TracksModalProps) => {
   const handleClose = () => {
-    props.handleModal();
+    handleModal();
   };
 
   return (
@@ -36,7 +36,7 @@ export const TracksModal = (props: TracksModalProps) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {props.tracks.map((track, index) => (
+              {tracks.map((track, index) => (
                 <TableRow key={index}>
                   <TableCell>{index + 1}</TableCell>
                   <TableCell align="right">{new Date(track.departureDate).toLocaleString()}</TableCell>
@@ -55,4 +55,6 @@ export const TracksModal = (props: TracksModalProps) => {
       </DialogActions>
     </Dialog>
   );
-}
+};
+
+export default TracksModal;

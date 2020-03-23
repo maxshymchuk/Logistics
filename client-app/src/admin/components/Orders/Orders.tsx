@@ -2,8 +2,8 @@ import cogoToast from 'cogo-toast';
 import React, { useEffect, useState } from 'react';
 
 import {
-    Button, CircularProgress, Fade, IconButton, Paper, Table, TableBody, TableCell, TableContainer,
-    TableHead, TableRow
+  Button, CircularProgress, Fade, IconButton, Paper, Table, TableBody, TableCell, TableContainer,
+  TableHead, TableRow
 } from '@material-ui/core';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
@@ -12,25 +12,25 @@ import { Route } from '../../../models/routes.models';
 import { Track } from '../../../models/tracks.models';
 import { getOrdersData, removeOrderById } from '../../../services/orders.service';
 import tableStyles from '../../styles/table.module.scss';
-import { RoutesModal } from './Modals/RoutesModal';
-import { TracksModal } from './Modals/TracksModal';
+import RoutesModal from './Modals/RoutesModal';
+import TracksModal from './Modals/TracksModal';
 
 type OrdersState = {
   orders: Order[]; 
   isLoaded: boolean;
-}
+};
 
 type ModalsState = {
   routes: Route[] | null,
   tracks: Track[] | null
-}
+};
 
 type OrdersProps = {
   page: number;
   checkPages: (length: number) => any
-}
+};
 
-export const Orders = (props: OrdersProps) => {
+const Orders = ({ page, checkPages }: OrdersProps) => {
   const ITEMS_ON_PAGE = 20;
   
   const [modals, setModal] = useState<ModalsState>({
@@ -42,19 +42,19 @@ export const Orders = (props: OrdersProps) => {
   const [state, setState] = useState<OrdersState>({
     orders: [],
     isLoaded: false
-  })
+  });
 
   useEffect(() => {
     (async () => {
       const orders = await getOrdersData();
       setState({ ...state, orders, isLoaded: true });
       setPagesNumber(Math.round(orders.length / ITEMS_ON_PAGE));
-    })()
-  }, [changes])
+    })();
+  }, [changes]);
 
   useEffect(() => {
-    props.checkPages(pagesNumber);
-  }, [pagesNumber])
+    checkPages(pagesNumber);
+  }, [pagesNumber]);
 
   const removeOrder = async (order: Order) => {
     if (order._id) {
@@ -62,7 +62,7 @@ export const Orders = (props: OrdersProps) => {
       setChanges(!changes);
       cogoToast.warn(res, {position: 'bottom-right'});
     }
-  }
+  };
 
   return (
     !state.isLoaded ? (
@@ -82,11 +82,11 @@ export const Orders = (props: OrdersProps) => {
                 <TableCell align="center">Routes</TableCell>
                 <TableCell align="center">Tracks</TableCell>
                 <TableCell align="right">Message</TableCell>
-                <TableCell align="right"></TableCell>
+                <TableCell align="right" />
               </TableRow>
             </TableHead>
             <TableBody>
-              {state.orders.slice((props.page - 1) * ITEMS_ON_PAGE, props.page * ITEMS_ON_PAGE).map((order, index) => (
+              {state.orders.slice((page - 1) * ITEMS_ON_PAGE, page * ITEMS_ON_PAGE).map((order, index) => (
                 <TableRow key={index}>
                   <TableCell component="th" scope="row">
                     {order.status}
@@ -128,4 +128,6 @@ export const Orders = (props: OrdersProps) => {
       </Fade>
     )
   );
-}
+};
+
+export default Orders;

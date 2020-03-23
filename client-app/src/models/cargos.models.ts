@@ -13,4 +13,4 @@ export type Cargo = {
   volume: number;
 };
 
-//https://www.portofantwerp.com/en/types-goods
+// https://www.portofantwerp.com/en/types-goods

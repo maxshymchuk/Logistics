@@ -2,8 +2,8 @@ import cogoToast from 'cogo-toast';
 import React, { useContext, useEffect, useState } from 'react';
 
 import {
-    CircularProgress, Fade, IconButton, Paper, Table, TableBody, TableCell, TableContainer,
-    TableHead, TableRow
+  CircularProgress, Fade, IconButton, Paper, Table, TableBody, TableCell, TableContainer,
+  TableHead, TableRow
 } from '@material-ui/core';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
@@ -16,14 +16,14 @@ import styles from './vehicles.module.scss';
 type VehiclesState = {
   vehicles: Vehicle[]; 
   isLoaded: boolean;
-}
+};
 
 type VehiclesProps = {
   page: number;
   checkPages: (length: number) => any
-}
+};
 
-export const Vehicles = (props: VehiclesProps) => {
+const Vehicles = ({ page, checkPages }: VehiclesProps) => {
   const ITEMS_ON_PAGE = 20;
 
   const [changes, setChanges] = useState(false);
@@ -31,7 +31,7 @@ export const Vehicles = (props: VehiclesProps) => {
   const [state, setState] = useState<VehiclesState>({
     vehicles: [],
     isLoaded: false
-  })
+  });
 
   const context = useContext<boolean>(AdminContext);
 
@@ -40,19 +40,20 @@ export const Vehicles = (props: VehiclesProps) => {
       const vehicles = await getVehiclesData();
       setState({ ...state, vehicles, isLoaded: true });
       setPagesNumber(Math.round(vehicles.length / ITEMS_ON_PAGE));
-    })()
-  }, [changes, context])
+    })();
+  }, [changes, context]);
 
   useEffect(() => {
-    props.checkPages(pagesNumber);
-  }, [pagesNumber])
+    checkPages(pagesNumber);
+  }, [pagesNumber]);
 
   const removeVehicle = async (vehicle: Vehicle) => {
     if (vehicle._id) {
       const res = await removeVehicleById(vehicle._id);
+      setChanges(!changes);
       cogoToast.warn(res, {position: 'bottom-right'});
     }
-  }
+  };
 
   return (
     !state.isLoaded ? (
@@ -66,15 +67,15 @@ export const Vehicles = (props: VehiclesProps) => {
                 <TableCell>Vehicle</TableCell>
                 <TableCell align="right">Arrival Date</TableCell>
                 <TableCell align="right">Destination</TableCell>
-                <TableCell align="right"></TableCell>
+                <TableCell align="right" />
               </TableRow>
             </TableHead>
             <TableBody>
-              {state.vehicles.slice((props.page - 1) * ITEMS_ON_PAGE, props.page * ITEMS_ON_PAGE).map((vehicle, index) => (
+              {state.vehicles.slice((page - 1) * ITEMS_ON_PAGE, page * ITEMS_ON_PAGE).map((vehicle, index) => (
                 <TableRow key={index}>
                   <TableCell component="th" scope="row">
                     <section className={styles.vehicle}>
-                      <div className={styles[vehicle.type]}></div>
+                      <div className={styles[vehicle.type]} />
                       {vehicle.type}
                     </section>
                   </TableCell>
@@ -104,4 +105,6 @@ export const Vehicles = (props: VehiclesProps) => {
       </Fade>
     )
   );
-}
+};
+
+export default Vehicles;

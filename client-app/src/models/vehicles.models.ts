@@ -1,10 +1,10 @@
 import { Location } from './locations.models';
 
 export enum VehicleType {
-  Car = "Car",
-  Plane = "Plane",
-  Ship = "Ship",
-  Train = "Train"
+  Car = 'Car',
+  Plane = 'Plane',
+  Ship = 'Ship',
+  Train = 'Train'
 }
 
 export type Vehicle = {

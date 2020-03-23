@@ -7,28 +7,28 @@ import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import Pagination from '@material-ui/lab/Pagination';
 
-import { Regenerator } from '../Regenerator/Regenerator';
-import { Shifter } from '../Shifter/Shifter';
+import Regenerator from '../Regenerator/Regenerator';
+import Shifter from '../Shifter/Shifter';
 import styles from './menu.module.scss';
 
 type MenuProps = {
   length: number;
   checkPages: (page: number) => any;
-}
+};
 
-export const Menu = (props: MenuProps) => {
+const Menu = ({ length, checkPages }: MenuProps) => {
   const [page, setPage] = useState(1);
   const [isShifter, setShifter] = useState(false);
   const [isRegenerator, setRegenerator] = useState(false);
 
   useEffect(() => {
     setPage(1);
-  }, [props.length]);
+  }, [length]);
 
-  const handleChange = (e: any, page: number) => {
-    setPage(page);
-    props.checkPages(page);
-  }
+  const handleChange = (e: any, pageNumber: number) => {
+    setPage(pageNumber);
+    checkPages(pageNumber);
+  };
 
   return (
     <>
@@ -47,9 +47,9 @@ export const Menu = (props: MenuProps) => {
               Regenerator
             </Button>
           </section>
-          <Fade in={props.length !== 0} timeout={200} unmountOnExit>
+          <Fade in={length !== 0} timeout={200} unmountOnExit>
             <Card className={styles.pagination}>
-              <Pagination color='primary' shape="rounded" count={props.length} page={page} onChange={handleChange} size='small' />
+              <Pagination color='primary' shape="rounded" count={length} page={page} onChange={handleChange} size='small' />
             </Card>
           </Fade>
         </Toolbar>
@@ -57,3 +57,5 @@ export const Menu = (props: MenuProps) => {
     </>
   );
 };
+
+export default Menu;
