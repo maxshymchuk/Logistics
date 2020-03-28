@@ -1,4 +1,4 @@
-import { Location } from './locations.models';
+import { Location } from './location.models';
 
 export enum VehicleType {
   Car = 'Car',

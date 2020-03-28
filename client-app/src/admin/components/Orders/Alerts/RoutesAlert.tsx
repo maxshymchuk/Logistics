@@ -8,15 +8,15 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-import { Route } from '../../../../models/routes.models';
+import { Route } from '../../../../models/route.models';
 import tableStyles from '../../../styles/table.module.scss';
 
-type RoutesModalProps = {
+type RoutesAlertProps = {
   routes: Route[];
   handleModal: () => void;
 };
 
-const RoutesModal = ({ routes, handleModal }: RoutesModalProps) => {
+const RoutesAlert = ({ routes, handleModal }: RoutesAlertProps) => {
   const handleClose = () => {
     handleModal();
   };
@@ -61,4 +61,4 @@ const RoutesModal = ({ routes, handleModal }: RoutesModalProps) => {
   );
 };
 
-export default RoutesModal;
+export default RoutesAlert;

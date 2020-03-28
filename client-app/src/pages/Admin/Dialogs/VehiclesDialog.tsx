@@ -1,4 +1,3 @@
-import cogoToast from 'cogo-toast';
 import React, { useEffect, useState } from 'react';
 
 import DateFnsUtils from '@date-io/date-fns';
@@ -10,25 +9,27 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 
-import { Location } from '../../../models/locations.models';
-import { Vehicle, VehicleType } from '../../../models/vehicles.models';
+import { Location } from '../../../models/location.models';
+import { Message } from '../../../models/message.models';
+import { Vehicle, VehicleType } from '../../../models/vehicle.models';
 import { getLocationsData } from '../../../services/locations.service';
 import { addVehicle } from '../../../services/vehicles.service';
 import styles from './form.module.scss';
 
-export type VehiclesModalState = {
+export type VehiclesDialogState = {
   destination: Location | null;
   arrivalDate: Date;
   type: VehicleType;
 };
 
-export type VehiclesModalProps = {
-  handleModal: (value: boolean) => any;
+export type VehiclesDialogProps = {
+  result: (message: Message<string>) => void;
+  onClose: () => void;
 };
 
-export const VehiclesModal = (props: VehiclesModalProps) => {
+export const VehiclesDialog = ({result, onClose}: VehiclesDialogProps) => {
   const [locations, setLocations] = useState<Location[]>([]);
-  const [state, setState] = useState<VehiclesModalState>({
+  const [state, setState] = useState<VehiclesDialogState>({
     type: VehicleType.Car,
     arrivalDate: new Date(),
     destination: null
@@ -36,21 +37,21 @@ export const VehiclesModal = (props: VehiclesModalProps) => {
 
   useEffect(() => {
     (async () => {
-      const locationsData = await getLocationsData();
+      const locationsData = (await getLocationsData()).data;
       setLocations(locationsData);
     })();
   }, []);
 
   const handleClose = () => {
-    props.handleModal(false);
+    onClose();
   };
 
   const handleSubmit = async () => {
     if (state.destination) {
-      const res = await addVehicle(state as Vehicle);
-      cogoToast.warn(res, {position: 'bottom-right'});
+      const message = await addVehicle(state as Vehicle);
+      result(message);
+      handleClose();
     }
-    handleClose();
   };
 
   return (

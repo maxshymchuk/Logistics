@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 
 import { Button, TextField } from '@material-ui/core';
 
-import { ContextType, LoginContext } from '../../App';
+import { LoginContext } from '../../contexts/LoginContext';
 import { authUser } from '../../services/users.service';
 import styles from './signin.module.scss';
 
@@ -12,12 +12,12 @@ const SignIn = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const context = useContext<ContextType>(LoginContext);
+  const context = useContext(LoginContext);
 
   const handleClick = async () => {
-    const user = await authUser({ username, password });
+    const user = (await authUser({ username, password })).data;
     setLogged(true);
-    context.checkLogin({
+    context.login({
       user,
       isLogged: true
     });

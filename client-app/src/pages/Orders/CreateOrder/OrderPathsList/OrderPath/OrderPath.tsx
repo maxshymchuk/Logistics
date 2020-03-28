@@ -1,20 +1,12 @@
 import React, { Component } from 'react';
 
-import {
-  Avatar,
-  Button,
-  Chip,
-  Collapse,
-  List,
-  ListItem,
-  ListItemText
-} from '@material-ui/core';
+import { Avatar, Button, Chip, Collapse, List, ListItem, ListItemText } from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 
-import { UserPath } from '../../../../../models/locations.models';
+import { UserPath } from '../../../../../models/path.models';
 import styles from './OrderPath.module.scss';
 
 type OrderPathState = {

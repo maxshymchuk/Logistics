@@ -1,18 +1,19 @@
 import axios from 'axios';
 
-import { Vehicle } from '../models/vehicles.models';
+import { Message } from '../models/message.models';
+import { Vehicle } from '../models/vehicle.models';
 
-export async function getVehiclesData(): Promise<Vehicle[]> {
-  const res = (await axios.get('/vehicles')).data;
-  return res;
+export async function getVehiclesData() {
+  const message: Message<Vehicle[]> = (await axios.get('/vehicles')).data;
+  return message;
 }
 
-export async function addVehicle(vehicle: Vehicle): Promise<string> {
-  const res = (await axios.post('/vehicles', vehicle)).data;
-  return res;
+export async function addVehicle(vehicle: Vehicle) {
+  const message: Message<string> = (await axios.post('/vehicles', vehicle)).data;
+  return message;
 }
 
-export async function removeVehicleById(id: string): Promise<string> {
-  const res = (await axios.delete(`/vehicles/${id}`)).data;
-  return res;
+export async function removeVehicleById(id: string) {
+  const message: Message<string> = (await axios.delete(`/vehicles/${id}`)).data;
+  return message;
 }

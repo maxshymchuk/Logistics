@@ -1,4 +1,3 @@
-import cogoToast from 'cogo-toast';
 import React, { useState } from 'react';
 
 import { Button, TextField } from '@material-ui/core';
@@ -7,15 +6,17 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-import { Location } from '../../../models/locations.models';
+import { Location } from '../../../models/location.models';
+import { Message } from '../../../models/message.models';
 import { addLocation } from '../../../services/locations.service';
 import styles from './form.module.scss';
 
-export type LocationsModalProps = {
-  handleModal: (value: boolean) => any;
+export type LocationsDialogProps = {
+  result: (message: Message<string>) => void;
+  onClose: () => void;
 };
 
-export const LocationsModal = (props: LocationsModalProps) => {
+export const LocationsDialog = ({result, onClose}: LocationsDialogProps) => {
   const [state, setState] = useState<Location>({
     name: 'Location',
     coordinates: {
@@ -25,12 +26,12 @@ export const LocationsModal = (props: LocationsModalProps) => {
   });
 
   const handleClose = () => {
-    props.handleModal(false);
+    onClose();
   };
 
   const handleSubmit = async () => {
-    const res = await addLocation(state);
-    cogoToast.warn(res, {position: 'bottom-right'});
+    const message = await addLocation(state);
+    result(message);
     handleClose();
   };
 

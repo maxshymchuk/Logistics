@@ -1,107 +1,90 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { Button, Card, CircularProgress, Divider, TextField } from '@material-ui/core';
-import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
+import { Button, Card, TextField } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import Skeleton from '@material-ui/lab/Skeleton';
 
-import { Location, UserPath } from '../../../models/locations.models';
-import { OrderUser } from '../../../models/orders.models';
+import { Location } from '../../../models/location.models';
+import { OrderUser } from '../../../models/order.models';
+import { UserPath } from '../../../models/path.models';
 import { getLocationsData } from '../../../services/locations.service';
 import { createOrder } from '../../../services/orders.service';
 import styles from './createOrder.module.scss';
+import OrderComplete from './OrderComplete/OrderComplete';
 import OrderPathsList from './OrderPathsList/OrderPathsList';
 
-type CreateOrderState = {
-  locations: Location[];
-  trackNumber: string;
-  isLoaded: boolean;
-  isRoutesShown: boolean;
-  isOrderTaken: boolean;
-  isError: {
-    from: boolean;
-    to: boolean;
-  };
-  input: OrderUser;
-};
+const CreateOrder = () => {
+  const [order, setOrder] = useState<OrderUser>({
+    from: '',
+    to: '',
+    cargos: [],
+    message: ''
+  });
+  const [locations, setLocations] = useState<Location[] | null>(null);
+  const [trackNumber, setTrackNumber] = useState('');
+  const [errors, setErrors] = useState({
+    from: false,
+    to: false
+  });
 
-class CreateOrder extends Component<{}, CreateOrderState> {
-  state: CreateOrderState = {
-    locations: [],
-    trackNumber: '',
+  const [isRoutesShown, setRoutesShown] = useState(false);
+  const [isOrderTaken, setOrderTaken] = useState(false);
 
-    isLoaded: false,
-    isRoutesShown: false,
-    isOrderTaken: false,
-    isError: {
-      from: false,
-      to: false
-    },
+  useEffect(() => {
+    (async () => {
+      const locationsData = (await getLocationsData()).data;
+      setLocations(locationsData);
+    })();
+  }, []);
 
-    input: {
-      from: '',
-      to: '',
-      cargos: [''],
-      message: ''
-    }
-  };
-
-  async componentDidMount() {
-    const locations = await getLocationsData();
-    this.setState({ locations, isLoaded: true });
-  }
-
-  handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const {value} = event.target;
+  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
     const property = event.target.name;
-    this.setState(state => ({
-      input: { ...state.input, [property]: value },
-      isError: { ...state.isError, [property]: false },
-      isRoutesShown: false
-    }));
+    setOrder({ ...order, [property]: value });
+    setRoutesShown(false);
   };
 
-  handleAutocomplete = (event: any, value: Location | null, str: string) => {
+  const handleAutocomplete = (event: any, value: Location | null, str: string) => {
     if (value) {
-      this.setState(state => ({
-        input: { ...state.input, [str]: value.name },
-        isError: { ...state.isError, [str]: false },
-        isRoutesShown: false
-      }));
+      setOrder({ ...order, [str]: value.name });
+      setErrors({ ...errors, [str]: false });
+      setRoutesShown(false);
     }
   };
 
-  showRoutes = () => {
-    this.setState(state => ({
-      isRoutesShown: !!state.input.from && !!state.input.to,
-      isError: {
-        from: !state.input.from,
-        to: !state.input.to
-      }
-    }));
+  const showRoutes = () => {
+    setErrors({
+      from: !order.from,
+      to: !order.to
+    });
+    setRoutesShown(!!order.from && !!order.to);
   };
 
-  takeOrder = async (path: UserPath) => {
-    const trackNumber = await createOrder(path);
-    this.setState(state => ({
-      isOrderTaken: true,
-      trackNumber
-    }));
+  const takeOrder = async (path: UserPath) => {
+    const message = await createOrder(path);
+    setTrackNumber(message.data);
+    setOrderTaken(true);
   };
 
-  render() {
-    return (
-      <Card className={styles.order}>
-        {!this.state.isOrderTaken ? (
-          <form>
+  const resetOrder = () => {
+    setOrderTaken(false);
+    setRoutesShown(false);
+  };
+
+  return (
+    <>
+      {!isOrderTaken ? (
+        <Card className={styles.order}>
+          <form noValidate autoComplete="off">
             <section className={styles.form}>
               <article className={styles.title}>Create order</article>
-              {!this.state.isLoaded ? (
-                <CircularProgress />
-              ) : (
-                <section className={styles.inputs}>
+              <section className={styles.inputs}>
+                {!locations ? (
+                  <Skeleton variant="rect" height={60} />
+                ) : (
                   <Autocomplete
                     id="location_from"
-                    options={this.state.locations}
+                    options={locations}
                     getOptionLabel={(option: Location) => option.name}
                     renderOption={(option: Location) => option.name}
                     renderInput={(params: any) => (
@@ -115,20 +98,24 @@ class CreateOrder extends Component<{}, CreateOrderState> {
                         }}
                       />
                     )}
-                    onChange={(e: any, v: Location | null) =>
-                      this.handleAutocomplete(e, v, 'from')}
+                    onChange={(e: any, v: Location | null) => handleAutocomplete(e, v, 'from')}
                     autoHighlight
                     disableClearable
                   />
+                )}
+                {!locations ? (
+                  <Skeleton variant="rect" height={60} />
+                ) : (
                   <Autocomplete
                     id="location_to"
-                    options={this.state.locations}
+                    options={locations}
                     getOptionLabel={(option: Location) => option.name}
                     renderOption={(option: Location) => option.name}
                     renderInput={(params: any) => (
                       <TextField
                         {...params}
                         label="Choose to location"
+                        name="asdasd"
                         variant="outlined"
                         inputProps={{
                           ...params.inputProps,
@@ -136,47 +123,53 @@ class CreateOrder extends Component<{}, CreateOrderState> {
                         }}
                       />
                     )}
-                    onChange={(e: any, v: Location | null) =>
-                      this.handleAutocomplete(e, v, 'to')}
+                    onChange={(e: any, v: Location | null) => handleAutocomplete(e, v, 'to')}
                     autoHighlight
                     disableClearable
                   />
-                </section>
+                )}
+              </section>
+              {!locations ? (
+                <Skeleton variant="rect" height={60} />
+              ) : (
+                <TextField
+                  name="cargos"
+                  label="Cargos"
+                  variant="outlined"
+                  onChange={handleInput}
+                  fullWidth
+                />
               )}
-              <TextField
-                name="cargos"
-                label="Cargos"
-                variant="outlined"
-                onChange={this.handleInput}
-                fullWidth
-              />
-              <div className={styles.message}>
+              {!locations ? (
+                <Skeleton variant="rect" height={60} />
+              ) : (
                 <TextField
                   name="message"
                   label="Message"
                   variant="outlined"
-                  onChange={this.handleInput}
+                  onChange={handleInput}
                   multiline
                   fullWidth
                 />
-              </div>
-              {this.state.isRoutesShown ? (
+              )}
+              {isRoutesShown ? (
                 <div className={styles.list}>
                   <article className={styles.title}>
                     Choose a suitable route
                   </article>
                   <OrderPathsList
-                    order={this.state.input}
-                    callback={this.takeOrder}
+                    order={order as OrderUser}
+                    callback={takeOrder}
                   />
                 </div>
               ) : (
                 <div className={styles['button-check']}>
-                  {!this.state.isError.from && !this.state.isError.to ? (
+                  {!errors.from && !errors.to ? (
                     <Button
                       variant="outlined"
                       color="primary" 
-                      onClick={this.showRoutes}
+                      onClick={showRoutes}
+                      disabled={!locations}
                       fullWidth
                     >
                       Show possible routes
@@ -185,7 +178,7 @@ class CreateOrder extends Component<{}, CreateOrderState> {
                     <Button
                       variant="outlined"
                       color="secondary"
-                      onClick={this.showRoutes}
+                      onClick={showRoutes}
                       fullWidth
                     >
                       Choose from and to locations
@@ -195,27 +188,12 @@ class CreateOrder extends Component<{}, CreateOrderState> {
               )}
             </section>
           </form>
-        ) : (
-          <>
-            <article className={styles.congrats}>
-              <CheckCircleOutlineOutlinedIcon className={styles.image} />
-              <span className={styles.title}>Order has been created</span>
-            </article>
-            <Divider className={styles.divider} />
-            <section className={styles.track}>
-              <article className={styles.title}>Your track number</article>
-              <span className={styles['track-number']}>
-                {this.state.trackNumber}
-              </span>
-              <span className={styles.help}>
-                Use this code to track your parcels
-              </span>
-            </section>
-          </>
-        )}
-      </Card>
-    );
-  }
-}
+        </Card>
+      ) : (
+        <OrderComplete trackNumber={trackNumber} createNewOrder={resetOrder} />
+      )}
+    </>
+  );
+};
 
 export default CreateOrder;

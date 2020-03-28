@@ -8,15 +8,15 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-import { Track } from '../../../../models/tracks.models';
+import { Track } from '../../../../models/track.models';
 import tableStyles from '../../../styles/table.module.scss';
 
-type TracksModalProps = {
+type TracksAlertProps = {
   tracks: Track[];
   handleModal: () => void;
 };
 
-const TracksModal = ({ tracks, handleModal }: TracksModalProps) => {
+const TracksAlert = ({ tracks, handleModal }: TracksAlertProps) => {
   const handleClose = () => {
     handleModal();
   };
@@ -57,4 +57,4 @@ const TracksModal = ({ tracks, handleModal }: TracksModalProps) => {
   );
 };
 
-export default TracksModal;
+export default TracksAlert;

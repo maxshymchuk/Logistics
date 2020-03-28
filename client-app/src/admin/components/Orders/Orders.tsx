@@ -1,26 +1,27 @@
-import cogoToast from 'cogo-toast';
 import React, { useEffect, useState } from 'react';
 
 import {
-  Button, CircularProgress, Fade, IconButton, Paper, Table, TableBody, TableCell, TableContainer,
-  TableHead, TableRow
+    Button, CircularProgress, Fade, IconButton, Paper, Table, TableBody, TableCell, TableContainer,
+    TableHead, TableRow
 } from '@material-ui/core';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
-import { Order, OrderStatus } from '../../../models/orders.models';
-import { Route } from '../../../models/routes.models';
-import { Track } from '../../../models/tracks.models';
+import Notification from '../../../components/Notification/Notification';
+import { Message } from '../../../models/message.models';
+import { Order, OrderStatus } from '../../../models/order.models';
+import { Route } from '../../../models/route.models';
+import { Track } from '../../../models/track.models';
 import { getOrdersData, removeOrderById } from '../../../services/orders.service';
 import tableStyles from '../../styles/table.module.scss';
-import RoutesModal from './Modals/RoutesModal';
-import TracksModal from './Modals/TracksModal';
+import RoutesAlert from './Alerts/RoutesAlert';
+import TracksAlert from './Alerts/TracksAlert';
 
 type OrdersState = {
   orders: Order[]; 
   isLoaded: boolean;
 };
 
-type ModalsState = {
+type AlertState = {
   routes: Route[] | null,
   tracks: Track[] | null
 };
@@ -33,11 +34,12 @@ type OrdersProps = {
 const Orders = ({ page, checkPages }: OrdersProps) => {
   const ITEMS_ON_PAGE = 20;
   
-  const [modals, setModal] = useState<ModalsState>({
+  const [notifyMessage, setNotifyMessage] = useState<Message<string> | null>(null);
+  const [isAlertOpen, setAlertOpen] = useState<AlertState>({
     routes: null,
     tracks: null
   });
-  const [changes, setChanges] = useState(false);
+  const [isChanged, setChanged] = useState(false);
   const [pagesNumber, setPagesNumber] = useState(0);
   const [state, setState] = useState<OrdersState>({
     orders: [],
@@ -46,11 +48,11 @@ const Orders = ({ page, checkPages }: OrdersProps) => {
 
   useEffect(() => {
     (async () => {
-      const orders = await getOrdersData();
-      setState({ ...state, orders, isLoaded: true });
-      setPagesNumber(Math.round(orders.length / ITEMS_ON_PAGE));
+      const ordersData = (await getOrdersData()).data;
+      setState({ ...state, orders: ordersData, isLoaded: true });
+      setPagesNumber(Math.round(ordersData.length / ITEMS_ON_PAGE));
     })();
-  }, [changes]);
+  }, [isChanged]);
 
   useEffect(() => {
     checkPages(pagesNumber);
@@ -58,75 +60,78 @@ const Orders = ({ page, checkPages }: OrdersProps) => {
 
   const removeOrder = async (order: Order) => {
     if (order._id) {
-      const res = await removeOrderById(order._id);
-      setChanges(!changes);
-      cogoToast.warn(res, {position: 'bottom-right'});
+      const message = await removeOrderById(order._id);
+      setNotifyMessage(message);
+      setChanged(!isChanged);
     }
   };
 
   return (
-    !state.isLoaded ? (
-      <CircularProgress />
-    ) : (
-      <Fade in={state.isLoaded} timeout={200} unmountOnExit>
-        <TableContainer component={Paper} className={tableStyles.table}>
-          {modals.routes && <RoutesModal routes={modals.routes} handleModal={() => setModal({...modals, routes: null})} />}
-          {modals.tracks && <TracksModal tracks={modals.tracks} handleModal={() => setModal({...modals, tracks: null})} />}
-          <Table size="small">
-            <TableHead>
-              <TableRow>
-                <TableCell>Status</TableCell>
-                <TableCell align="right" className={tableStyles.nowrap}>Track Number</TableCell>
-                <TableCell align="right">Username</TableCell>
-                <TableCell align="right">Price</TableCell>
-                <TableCell align="center">Routes</TableCell>
-                <TableCell align="center">Tracks</TableCell>
-                <TableCell align="right">Message</TableCell>
-                <TableCell align="right" />
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {state.orders.slice((page - 1) * ITEMS_ON_PAGE, page * ITEMS_ON_PAGE).map((order, index) => (
-                <TableRow key={index}>
-                  <TableCell component="th" scope="row">
-                    {order.status}
-                  </TableCell>
-                  <TableCell align="right" className={tableStyles.nowrap}>
-                    <span className={tableStyles.code}>{order.trackNumber}</span>
-                  </TableCell>
-                  <TableCell align="right">
-                    {order.username}
-                  </TableCell>
-                  <TableCell align="right">
-                    {order.price}
-                  </TableCell>
-                  <TableCell align="center">
-                    <Button color="primary" onClick={() => setModal({...modals, routes: order.routes})}>Routes</Button>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Button color="primary" onClick={() => setModal({...modals, tracks: order.tracks})}>Tracks</Button>
-                  </TableCell>
-                  <TableCell align="right">
-                    {order.message}
-                  </TableCell>
-                  <TableCell align="right" padding='none'> 
-                    <IconButton size='small' onClick={() => removeOrder(order)}>
-                      <DeleteForeverIcon />
-                    </IconButton>
-                  </TableCell>
+    <>
+      {notifyMessage && <Notification {...notifyMessage} afterClose={() => setNotifyMessage(null)} />}
+      {!state.isLoaded ? (
+        <CircularProgress />
+      ) : (
+        <Fade in={state.isLoaded} timeout={200} unmountOnExit>
+          <TableContainer component={Paper} className={tableStyles.table}>
+            {isAlertOpen.routes && <RoutesAlert routes={isAlertOpen.routes} handleModal={() => setAlertOpen({...isAlertOpen, routes: null})} />}
+            {isAlertOpen.tracks && <TracksAlert tracks={isAlertOpen.tracks} handleModal={() => setAlertOpen({...isAlertOpen, tracks: null})} />}
+            <Table size="small">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Status</TableCell>
+                  <TableCell align="right" className={tableStyles.nowrap}>Track Number</TableCell>
+                  <TableCell align="right">Username</TableCell>
+                  <TableCell align="right">Price</TableCell>
+                  <TableCell align="center">Routes</TableCell>
+                  <TableCell align="center">Tracks</TableCell>
+                  <TableCell align="right">Message</TableCell>
+                  <TableCell align="right" />
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-          <section className={tableStyles.total}>
-            <span>{`${state.orders.length} orders(s)`}</span>
-            <span>{`${state.orders.filter(order => order.status === OrderStatus.Canceled).length} canceled order(s)`}</span>
-            <span>{`${state.orders.filter(order => order.status === OrderStatus.Taken).length} taken order(s)`}</span>
-            <span>{`${state.orders.filter(order => order.status === OrderStatus.Completed).length} completed order(s)`}</span>
-          </section>
-        </TableContainer>
-      </Fade>
-    )
+              </TableHead>
+              <TableBody>
+                {state.orders.slice((page - 1) * ITEMS_ON_PAGE, page * ITEMS_ON_PAGE).map((order, index) => (
+                  <TableRow key={index}>
+                    <TableCell component="th" scope="row">
+                      {order.status}
+                    </TableCell>
+                    <TableCell align="right" className={tableStyles.nowrap}>
+                      <span className={tableStyles.code}>{order.trackNumber}</span>
+                    </TableCell>
+                    <TableCell align="right">
+                      {order.username}
+                    </TableCell>
+                    <TableCell align="right">
+                      {order.price}
+                    </TableCell>
+                    <TableCell align="center">
+                      <Button color="primary" onClick={() => setAlertOpen({...isAlertOpen, routes: order.routes})}>Routes</Button>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Button color="primary" onClick={() => setAlertOpen({...isAlertOpen, tracks: order.tracks})}>Tracks</Button>
+                    </TableCell>
+                    <TableCell align="right">
+                      {order.message}
+                    </TableCell>
+                    <TableCell align="right" padding='none'> 
+                      <IconButton size='small' onClick={() => removeOrder(order)}>
+                        <DeleteForeverIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+            <section className={tableStyles.total}>
+              <span>{`${state.orders.length} orders(s)`}</span>
+              <span>{`${state.orders.filter(order => order.status === OrderStatus.Canceled).length} canceled order(s)`}</span>
+              <span>{`${state.orders.filter(order => order.status === OrderStatus.Taken).length} taken order(s)`}</span>
+              <span>{`${state.orders.filter(order => order.status === OrderStatus.Completed).length} completed order(s)`}</span>
+            </section>
+          </TableContainer>
+        </Fade>
+      )}
+    </>
   );
 };
 

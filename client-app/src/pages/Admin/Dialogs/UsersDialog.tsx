@@ -1,4 +1,3 @@
-import cogoToast from 'cogo-toast';
 import React, { useState } from 'react';
 
 import DateFnsUtils from '@date-io/date-fns';
@@ -9,15 +8,17 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 
-import { User } from '../../../models/users.models';
+import { Message } from '../../../models/message.models';
+import { User } from '../../../models/user.models';
 import { addUser } from '../../../services/users.service';
 import styles from './form.module.scss';
 
 export type UsersModalProps = {
-  handleModal: (value: boolean) => any;
+  result: (message: Message<string>) => void;
+  onClose: () => void;
 };
 
-export const UsersModal = (props: UsersModalProps) => {
+export const UsersDialog = ({result, onClose}: UsersModalProps) => {
   const [state, setState] = useState<User>({
     name: '',
     surname: '',
@@ -30,12 +31,12 @@ export const UsersModal = (props: UsersModalProps) => {
   });
 
   const handleClose = () => {
-    props.handleModal(false);
+    onClose();
   };
 
   const handleSubmit = async () => {
-    const res = await addUser(state);
-    cogoToast.warn(res, {position: 'bottom-right'});
+    const message = await addUser(state);
+    result(message);
     handleClose();
   };
 

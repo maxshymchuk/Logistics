@@ -1,4 +1,4 @@
-import { Route } from './routes.models';
+import { Route } from './route.models';
 
 export enum TrackStatus {
   Pending = 'Pending',

@@ -12,7 +12,7 @@ const About = () => (
       <div className={styles.content}>
         <div className={styles.text}>
           <h2>First of all, an idea!</h2>
-          <p>
+          <div>
             Call &gt; conversation &gt; acceptance? - sounds old-fashioned.
             <Card className={styles.quote}>Acceptance is good, conversation is bad</Card>
             This principle is the basis of the idea, the foundation of innovation.
@@ -20,7 +20,7 @@ const About = () => (
             We tried to make the service unlike the rest.
             <br />
             To do this, we decided:
-          </p>
+          </div>
           <ul>
             <li>Ignore existing transportation giants</li>
             <li>Make it as convenient as possible for a person</li>

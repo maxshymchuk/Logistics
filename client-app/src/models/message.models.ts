@@ -4,7 +4,7 @@ export enum MessageTypes {
   Error = 'Error'
 } 
 
-export type Message = {
+export type Message<T> = {
   messageType: MessageTypes;
-  text: string;
+  data: T;
 };
