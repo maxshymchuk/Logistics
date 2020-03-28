@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, Route, Switch } from 'react-router-dom';
 
 import { Box, Card, Tab, Tabs, Typography, Zoom } from '@material-ui/core';
@@ -11,10 +11,13 @@ import Menu from '../../admin/components/Menu/Menu';
 import Orders from '../../admin/components/Orders/Orders';
 import Users from '../../admin/components/Users/Users';
 import Vehicles from '../../admin/components/Vehicles/Vehicles';
+import Notification from '../../components/Notification/Notification';
+import { AdminContext } from '../../contexts/AdminContext';
+import { Message } from '../../models/message.models';
 import styles from './admin.module.scss';
-import { LocationsModal } from './Modals/LocationsModal';
-import { UsersModal } from './Modals/UsersModal';
-import { VehiclesModal } from './Modals/VehiclesModal';
+import { LocationsDialog } from './Dialogs/LocationsDialog';
+import { UsersDialog } from './Dialogs/UsersDialog';
+import { VehiclesDialog } from './Dialogs/VehiclesDialog';
 
 type TabPanelProps = {
   children?: React.ReactNode;
@@ -53,9 +56,7 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
-export const AdminContext = createContext(false);
-
-export const Admin = () => {
+const Admin = () => {
   const classes = useStyles();
 
   const paths = ['/admin/vehicles', '/admin/users', '/admin/locations', '/admin/orders'];
@@ -63,32 +64,35 @@ export const Admin = () => {
   const [page, setPage] = useState(1);
   const [length, setLength] = useState(0);
 
-  const [changes, setChanges] = useState(false);
-  const [isModal, setModal] = useState(false);
+  const [isDialogOpen, setDialogOpen] = useState(false);
+  const [dialogResult, setDialogResult] = useState<Message<string> | null>(null);
   const [tab, setTab] = useState(
     paths.indexOf(window.location.pathname)
   );
+
+  const [isChanged, setChanged] = useState(false);
 
   useEffect(() => {
     setPage(1);
   }, [tab]);
 
-  const handleModal = (modalState: boolean) => {
-    setModal(modalState);
-    if (!modalState) setChanges(!changes);
-  };
+  const setResult = (result: Message<string>) => {
+    setDialogResult(result);
+    setChanged(!isChanged);
+  }
 
   const getModal = () => {
     switch (tab) {
-      case 0: return <VehiclesModal handleModal={handleModal} />;
-      case 1: return <UsersModal handleModal={handleModal} />;
-      case 2: return <LocationsModal handleModal={handleModal} />;
+      case 0: return <VehiclesDialog result={(result) => setResult(result)} onClose={() => setDialogOpen(false)} />;
+      case 1: return <UsersDialog result={(result) => setResult(result)} onClose={() => setDialogOpen(false)} />;
+      case 2: return <LocationsDialog result={(result) => setResult(result)} onClose={() => setDialogOpen(false)} />;
       default: return <></>;
     }
   };
 
   return (
-    <AdminContext.Provider value={changes}>
+    <AdminContext.Provider value={{ isChanged }}>
+      {dialogResult && <Notification {...dialogResult} afterClose={() => setDialogResult(null)} />}
       <Card className={classes.header}>
         <Menu length={length} checkPages={currPage => setPage(currPage)} />
         <Tabs
@@ -129,11 +133,13 @@ export const Admin = () => {
         </Switch>
       </section>
       <Zoom in={tab !== 3} timeout={200} unmountOnExit>
-        <Fab className={classes.fab} color="primary" onClick={() => handleModal(true)}>
+        <Fab className={classes.fab} color="primary" onClick={() => setDialogOpen(true)}>
           <AddIcon />
         </Fab>
       </Zoom>
-      {isModal && getModal()}
+      {isDialogOpen && getModal()}
     </AdminContext.Provider>
   );
 };
+
+export default Admin;

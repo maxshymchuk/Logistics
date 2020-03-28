@@ -6,7 +6,7 @@ import { HashLink } from 'react-router-hash-link';
 import Carousel from '@brainhubeu/react-carousel';
 import { Button } from '@material-ui/core';
 
-import { scrollOffset } from '../../App';
+import smoothScroll from '../../helpers/smoothScroll';
 import styles from './header.module.scss';
 
 const Header = () => (
@@ -21,13 +21,11 @@ const Header = () => (
       <div className={styles.layer}>
         <article className={styles.title}>
           We Provide The Best
-          {' '}
           <br />
           Transport & Logistics Service
         </article>
         <article className={styles.subtitle}>
           Fast. Effective. Comfortable. Simple.
-          {' '}
           <br />
           Sounds powerful, doesn&apos;t it?
         </article>
@@ -36,7 +34,7 @@ const Header = () => (
           variant="contained"
           className={styles.button}
           component={HashLink}
-          scroll={scrollOffset}
+          scroll={smoothScroll}
           to="/#about"
         >
           Let&apos;s find out how we did it

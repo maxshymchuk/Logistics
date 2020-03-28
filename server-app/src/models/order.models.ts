@@ -1,8 +1,9 @@
-import * as mongoose from "mongoose";
-import { Location } from "./locations.models";
-import { Track } from "./tracks.models";
-import { Route } from "./routes.models";
-import { orderSchema } from "../schemas/orders.schemas";
+import * as mongoose from 'mongoose';
+
+import { orderSchema } from '../schemas/order.schemas';
+import { Location } from './location.models';
+import { Route } from './route.models';
+import { Track } from './track.models';
 
 export const orderModel = mongoose.model<OrderMongo>("orders", orderSchema);
 

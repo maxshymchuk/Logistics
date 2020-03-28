@@ -1,12 +1,10 @@
 @import "../../../styles/variables.scss";
+@import "../../../styles/mixins.scss";
 
 .order {
-  width: $default-card-width;
+  max-width: $default-card-width;
   margin: 0 auto;
   padding: $item-gap;
-  .divider {
-    margin: $item-gap 0;
-  }
 }
 
 .form {
@@ -21,43 +19,12 @@
 }
 
 .title {
-  font-size: 2rem;
+  @include title;
+  text-align: left;
 }
 
 .list,
 .cargos {
   display: grid;
   grid-gap: $item-gap;
-}
-
-.congrats {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  .title {
-    font-size: 1.5rem;
-    padding-left: $item-gap;
-  }
-  .image {
-    font-size: 5rem;
-  }
-}
-
-.track {
-  text-align: center;
-  .title {
-    font-size: 2rem;
-  }
-  .track-number {
-    display: block;
-    padding: $item-gap 0;
-    color: $accent-color;
-    font-weight: bold;
-    font-size: 2.5rem;
-    font-family: $font-monospace;
-  }
-  .help {
-    display: block;
-    font-size: 0.8rem;
-  }
 }

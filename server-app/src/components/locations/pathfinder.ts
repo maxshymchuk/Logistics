@@ -1,4 +1,4 @@
-import { PathfinderInput } from "../../models/locations.models";
+import { PathfinderInput } from '../../models/location.models';
 
 export function pathfinder(params: PathfinderInput) {
   let { numVertices, startVertex, endVertex, edges } = params;

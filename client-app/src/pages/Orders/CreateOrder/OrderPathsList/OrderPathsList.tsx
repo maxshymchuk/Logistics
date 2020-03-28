@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 
 import { Card, LinearProgress, List } from '@material-ui/core';
 
-import { UserPath } from '../../../../models/locations.models';
-import { OrderUser } from '../../../../models/orders.models';
+import { OrderUser } from '../../../../models/order.models';
+import { UserPath } from '../../../../models/path.models';
 import { getOrderPaths } from '../../../../services/orders.service';
 import OrderPath from './OrderPath/OrderPath';
 import styles from './OrderPathsList.module.scss';
@@ -28,9 +28,9 @@ OrderPathsListState
   };
 
   async componentDidMount() {
-    const paths = await getOrderPaths(this.props.order);
+    const pathsData = (await getOrderPaths(this.props.order)).data;
     this.setState(state => ({
-      paths,
+      paths: pathsData,
       isLoaded: true
     }));
   }

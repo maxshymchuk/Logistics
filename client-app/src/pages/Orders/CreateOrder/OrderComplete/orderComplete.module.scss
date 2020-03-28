@@ -1,0 +1,59 @@
+@import "../../../../styles/variables.scss";
+@import "../../../../styles/mixins.scss";
+
+.content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  background: url('../../../../assets/order/congratulation.svg') no-repeat center center;
+  background-size: 700px 120%;
+  @media screen and (max-width: $container-tablet-width) {
+    background: url('../../../../assets/order/congratulation-mobile.svg') no-repeat center center;
+    background-size: 400px 450px;
+  }
+}
+
+.congratulation {
+  text-align: center;
+  margin: auto;
+}
+
+.title {
+  @include title;
+}
+
+.subtitle {
+  @include subtitle;
+}
+
+.buttons {
+  margin-top: $item-gap;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  @media screen and (max-width: $container-tablet-width) {
+    display: grid;
+    grid-gap: $item-gap / 2;
+    justify-content: center;
+  }
+}
+
+.track {
+  text-align: center;
+  .track_number {
+    display: block;
+    padding: $item-gap / 2 0;
+    color: $accent-color;
+    font-weight: bold;
+    font-size: 2rem;
+    font-family: $font-monospace;
+  }
+  .help {
+    display: block;
+    margin: $item-gap / 2 0;
+    font-size: 0.8rem;
+  }
+}

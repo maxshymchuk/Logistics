@@ -6,32 +6,32 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import Skeleton from '@material-ui/lab/Skeleton';
 
 import Notification from '../../components/Notification/Notification';
-import { Message } from '../../models/messages.models';
-import { Order } from '../../models/orders.models';
-import { User } from '../../models/users.models';
+import { Message } from '../../models/message.models';
+import { Order } from '../../models/order.models';
+import { User } from '../../models/user.models';
 import { getOrdersByUsername } from '../../services/orders.service';
 import { getLoggedUser } from '../../services/users.service';
 import TrackOrderInfo from '../Orders/TrackOrder/TrackOrderInfo/TrackOrderInfo';
-import { SettingsModal } from './Modal/SettingsModal';
 import styles from './profile.module.scss';
+import { SettingsDialog } from './SettingsDialog/SettingsDialog';
 
 const Profile = () => {
   const [orders, setOrders] = useState<Order[] | null>(null);
   const [user, setUser] = useState<User | null>(null);
 
   const [isSettingsOpen, setSettingsOpen] = useState(false);
-  const [settingsResult, setSettingsResult] = useState<Message | null>(null);
+  const [settingsResult, setSettingsResult] = useState<Message<string> | null>(null);
 
-  const [changes, setChanges] = useState(false);
+  const [isChanged, setChanged] = useState(false);
 
   useEffect(() => {
     (async () => {
-      const loggedUser = await getLoggedUser();
-      const userOrders = await getOrdersByUsername();
-      setUser(loggedUser);
-      setOrders(userOrders);
+      const loggedUserMsg = await getLoggedUser();
+      const userOrdersMsg = await getOrdersByUsername();
+      setUser(loggedUserMsg.data);
+      setOrders(userOrdersMsg.data);
     })();
-  }, [changes]);
+  }, [isChanged]);
 
   const showOrders = () => {
     return orders?.length ? (
@@ -43,13 +43,13 @@ const Profile = () => {
         Sorry, but you have no orders yet
         <SentimentVeryDissatisfiedIcon className={styles.smile} fontSize='large' />
       </p>
-    )
-  }
+    );
+  };
 
   return (
     <>
       {settingsResult && <Notification {...settingsResult} afterClose={() => setSettingsResult(null)} />}
-      {isSettingsOpen && <SettingsModal result={(result) => {setChanges(!changes); setSettingsResult(result);}} onClose={() => setSettingsOpen(false)} />}
+      {isSettingsOpen && <SettingsDialog result={(result) => {setChanged(!isChanged); setSettingsResult(result);}} onClose={() => setSettingsOpen(false)} />}
       <div className={styles.wrapper_profile}>
         <div className={styles.profile}>
           {user ? (

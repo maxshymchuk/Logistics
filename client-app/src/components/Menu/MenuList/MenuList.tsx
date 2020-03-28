@@ -4,7 +4,8 @@ import { HashLink as Link } from 'react-router-hash-link';
 import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
 
-import { LoginContext, scrollOffset } from '../../../App';
+import { LoginContext } from '../../../contexts/LoginContext';
+import smoothScroll from '../../../helpers/smoothScroll';
 import styles from './menuList.module.scss';
 
 type MenuListProps = {
@@ -30,19 +31,19 @@ const MenuList = ({ direction, callback }: MenuListProps) => {
             </Button>
           )}
       </LoginContext.Consumer>
-      <Button onClick={runCallback} color="inherit" component={Link} scroll={scrollOffset} to='/#top'>
+      <Button onClick={runCallback} color="inherit" component={Link} scroll={smoothScroll} to='/#top'>
         Home
       </Button>
-      <Button onClick={runCallback} color="inherit" component={Link} scroll={scrollOffset} to='/#about'>
+      <Button onClick={runCallback} color="inherit" component={Link} scroll={smoothScroll} to='/#about'>
         About
       </Button>
-      <Button onClick={runCallback} color="inherit" component={Link} scroll={scrollOffset} to='/#service'>
+      <Button onClick={runCallback} color="inherit" component={Link} scroll={smoothScroll} to='/#service'>
         Service
       </Button>
-      <Button onClick={runCallback} color="inherit" component={Link} scroll={scrollOffset} to='/#reviews'>
+      <Button onClick={runCallback} color="inherit" component={Link} scroll={smoothScroll} to='/#reviews'>
         Reviews
       </Button>
-      <Button onClick={runCallback} color="inherit" component={Link} scroll={scrollOffset} to='/#news'>
+      <Button onClick={runCallback} color="inherit" component={Link} scroll={smoothScroll} to='/#news'>
         News
       </Button>
       {callback && (

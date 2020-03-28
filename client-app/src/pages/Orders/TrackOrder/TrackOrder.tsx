@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 import { Button, Card, LinearProgress, TextField } from '@material-ui/core';
 
-import { Order } from '../../../models/orders.models';
+import { Order } from '../../../models/order.models';
 import { getOrderByTrackNumber } from '../../../services/orders.service';
 import styles from './trackOrder.module.scss';
 import TrackOrderInfo from './TrackOrderInfo/TrackOrderInfo';
@@ -35,11 +35,11 @@ class TrackOrder extends Component<{}, TrackOrderState> {
       isClicked: true
     }));
     try {
-      const res = await getOrderByTrackNumber(this.state.trackNumber);
+      const order = (await getOrderByTrackNumber(this.state.trackNumber)).data;
       this.setState(state => ({
         isTrackFound: true,
         isClicked: false,
-        order: res
+        order
         // trackNumber: ''
       }));
     } catch (err) {

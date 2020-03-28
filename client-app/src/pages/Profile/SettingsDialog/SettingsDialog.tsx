@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import DateFnsUtils from '@date-io/date-fns';
 import {
-  Button, CircularProgress, FormControl, IconButton, Input, InputAdornment, InputLabel, TextField
+    Button, CircularProgress, FormControl, IconButton, Input, InputAdornment, InputLabel, TextField
 } from '@material-ui/core';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -13,25 +13,25 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 
-import { Message } from '../../../models/messages.models';
-import { User } from '../../../models/users.models';
+import { Message } from '../../../models/message.models';
+import { User } from '../../../models/user.models';
 import { getLoggedUser, updateUser } from '../../../services/users.service';
-import styles from './settingsModal.module.scss';
+import styles from './settingsDialog.module.scss';
 
 export type SettingsModalProps = {
-  result: (message: Message) => void;
+  result: (message: Message<string>) => void;
   onClose: () => void;
 };
 
-export const SettingsModal = ({ result, onClose }: SettingsModalProps) => {
+export const SettingsDialog = ({ result, onClose }: SettingsModalProps) => {
   const [isUpdating, setUpdating] = useState(false);
   const [isPasswordOpen, setPasswordOpen] = useState(true);
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     (async () => {
-      const loggedUser = await getLoggedUser();
-      setUser(loggedUser);
+      const loggedUserMsg = await getLoggedUser();
+      setUser(loggedUserMsg.data);
     })();
   }, []);
 
@@ -42,11 +42,10 @@ export const SettingsModal = ({ result, onClose }: SettingsModalProps) => {
   const handleUpdate = async () => {
     setUpdating(true);
     if (user) {
-      updateUser(user).then((message) => {
-        setUpdating(false);
-        result(message);
-        handleClose();
-      });
+      const message = await updateUser(user);
+      setUpdating(false);
+      result(message);
+      handleClose();
     }
   };
 

@@ -1,19 +1,12 @@
 import React, { Component } from 'react';
 
-import {
-  Button,
-  Card,
-  Collapse,
-  List,
-  ListItem,
-  ListItemText
-} from '@material-ui/core';
+import { Button, Card, Collapse, List, ListItem, ListItemText } from '@material-ui/core';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 
-import { Order, OrderStatus } from '../../../../models/orders.models';
-import { Route } from '../../../../models/routes.models';
-import { Track } from '../../../../models/tracks.models';
+import { Order, OrderStatus } from '../../../../models/order.models';
+import { Route } from '../../../../models/route.models';
+import { Track } from '../../../../models/track.models';
 import styles from './trackOrderInfo.module.scss';
 
 type TrackOrderInfoProps = {

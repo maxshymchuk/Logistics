@@ -8,7 +8,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import PhoneInTalkIcon from '@material-ui/icons/PhoneInTalk';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 
-import { ContextType, LoginContext } from '../../App';
+import { LoginContext } from '../../contexts/LoginContext';
 import styles from './menu.module.scss';
 import MenuList from './MenuList/MenuList';
 
@@ -32,13 +32,9 @@ const Menu = () => {
 
   const [isDrawerOpened, handleDrawer] = useState(false);
 
-  const context = useContext<ContextType>(LoginContext);
+  const context = useContext(LoginContext);
 
   const handleLogout = async () => {
-    context.checkLogin({
-      user: undefined,
-      isLogged: false
-    });
     await context.logout();
   };
 

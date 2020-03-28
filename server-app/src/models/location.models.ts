@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
 
-import { locationSchema, mapSchema } from '../schemas/locations.schemas';
-import { VehicleType } from './vehicles.models';
+import { locationSchema, mapSchema } from '../schemas/location.schemas';
+import { VehicleType } from './vehicle.models';
 
 export const locationModel = mongoose.model<LocationMongo>(
   "locations",
