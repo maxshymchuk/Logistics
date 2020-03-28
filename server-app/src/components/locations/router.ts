@@ -1,10 +1,10 @@
-import CONSTS from "../../const";
-import { MapType, mapModel, Path } from "../../models/locations.models";
-import { VehicleType, VehicleSpeed } from "../../models/vehicles.models";
-import { pathfinder } from "./pathfinder";
-import { Route } from "../../models/routes.models";
-import { getLocationByName } from "./locations.service";
-import { calculatePrice } from "./calculator";
+import CONSTS from '../../const';
+import { Location, mapModel, MapType, Path } from '../../models/location.models';
+import { Route } from '../../models/route.models';
+import { VehicleSpeed, VehicleType } from '../../models/vehicle.models';
+import { calculatePrice } from './calculator';
+import { getLocationByName } from './locations.service';
+import { pathfinder } from './pathfinder';
 
 function getMapVehicle(mapType: MapType) {
   switch (mapType) {
@@ -18,8 +18,10 @@ function getMapVehicle(mapType: MapType) {
 }
 
 export async function getDistanceBetween(from: string, to: string) {
-  const point1 = (await getLocationByName(from)).coordinates;
-  const point2 = (await getLocationByName(to)).coordinates;
+  const locationFromMsg = await getLocationByName(from);
+  const locationToMsg = await getLocationByName(to);
+  const point1 = (locationFromMsg.data as Location).coordinates;
+  const point2 = (locationToMsg.data as Location).coordinates;
   const EARTH_RADIUS = 6371e3;
   const PI_DEGREES = 180;
   const angle1 = (point1.lat * Math.PI) / PI_DEGREES;

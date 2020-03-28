@@ -11,8 +11,7 @@ import * as order from './src/components/orders/orders.routes';
 import * as time from './src/components/time/time.routes';
 import * as user from './src/components/users/users.routes';
 import * as vehicle from './src/components/vehicles/vehicles.routes';
-import { userModel, UserMongo } from './src/models/users.models';
-import { requiresAdmin, requiresLogin } from './src/utils';
+import { userModel, UserMongo } from './src/models/user.models';
 
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");

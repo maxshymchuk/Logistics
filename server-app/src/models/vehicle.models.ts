@@ -1,6 +1,7 @@
-import * as mongoose from "mongoose";
-import { Location } from "./locations.models";
-import { vehicleSchema } from "../schemas/vehicles.schemas";
+import * as mongoose from 'mongoose';
+
+import { vehicleSchema } from '../schemas/vehicle.schemas';
+import { Location } from './location.models';
 
 export const vehicleModel = mongoose.model<VehicleMongo>(
   "vehicles",

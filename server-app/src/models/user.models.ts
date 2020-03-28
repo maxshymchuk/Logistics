@@ -1,5 +1,6 @@
-import * as mongoose from "mongoose";
-import { userSchema } from "../schemas/users.schemas";
+import * as mongoose from 'mongoose';
+
+import { userSchema } from '../schemas/user.schemas';
 
 export const userModel = mongoose.model<UserMongo>("users", userSchema);
 

@@ -1,6 +1,7 @@
 import CONSTS from '../../const';
-import { orderModel } from '../../models/orders.models';
-import { vehicleModel } from '../../models/vehicles.models';
+import { errorMsg, successMsg } from '../../helpers/messages';
+import { orderModel } from '../../models/order.models';
+import { vehicleModel } from '../../models/vehicle.models';
 import { moveDate } from '../../utils';
 import { updateOrders } from '../orders/orders.service';
 
@@ -31,13 +32,18 @@ async function moveOrdersTimeOn(interval: number) {
 }
 
 export async function moveTimeOn(days: number) {
-  const interval = Math.sign(days) * CONSTS.HOURS_PER_DAY;
-  for (let i = 0; i < Math.abs(days); i++) {
-    await moveVehiclesTimeOn(interval);
-    await moveOrdersTimeOn(interval);
-    await updateOrders();
+  try {
+    const interval = Math.sign(days) * CONSTS.HOURS_PER_DAY;
+    for (let i = 0; i < Math.abs(days); i++) {
+      await moveVehiclesTimeOn(interval);
+      await moveOrdersTimeOn(interval);
+      await updateOrders();
+    }
+    const result = days >= 0
+      ? `Plus ${Math.abs(days)} day(s)`
+      : `Minus ${Math.abs(days)} day(s)`
+    return successMsg(result);
+  } catch (err) {
+    return errorMsg(`Error while moving time (${err})`);
   }
-  return days >= 0
-    ? `Plus ${Math.abs(days)} day(s)`
-    : `Minus ${Math.abs(days)} day(s)`;
 }

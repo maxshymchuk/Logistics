@@ -7,25 +7,24 @@ export const router = Router();
 
 router.get("/", requiresLogin(), async (req: Request, res: Response) => {
   const result = await locationService.getLocations();
-  res.status(result ? 200 : 404).send(result);
+  res.send(result);
 });
 
 router.get("/regen", requiresAdmin(), async (req: Request, res: Response) => {
-  await locationService.regenerateLocations();
-  await locationService.regenerateMaps();
-  res.status(200).send("Locations and maps regenerated");
+  const locationsMsg = await locationService.regenerateLocations();
+  const mapsMsg = await locationService.regenerateMaps();
+  const result = `${locationsMsg.data}\n${mapsMsg.data}`;
+  res.send(result);
 });
 
 router.get("/:location_name", requiresLogin(), async (req: Request, res: Response) => {
-  const result = await locationService.getLocationByName(
-    req.params.location_name
-  );
-  res.status(result ? 200 : 404).send(result);
+  const result = await locationService.getLocationByName(req.params.location_name);
+  res.send(result);
 });
 
 router.post("/", requiresAdmin(), async (req: Request, res: Response) => {
   const result = await locationService.addLocation(req.body);
-  res.status(result ? 200 : 404).send(result);
+  res.send(result);
 });
 
 router.delete(
@@ -33,6 +32,6 @@ router.delete(
   requiresAdmin(),
   async (req: Request, res: Response) => {
     const result = await locationService.deleteLocationById(req.params.location_id);
-    res.status(result ? 200 : 403).send(result);
+    res.send(result);
   }
 );
