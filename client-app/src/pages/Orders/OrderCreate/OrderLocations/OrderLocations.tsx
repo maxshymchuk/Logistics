@@ -37,7 +37,7 @@ const OrderLocations = ({ resultLocations }: OrderLocationsProps) => {
   return (
     <form className={styles.locations} noValidate autoComplete="off">
       {!locations ? (
-        <Skeleton variant="rect" height={60} />
+        <Skeleton variant="rect" height={40} />
       ) : (
         <Autocomplete
           id="location_from"
@@ -49,6 +49,7 @@ const OrderLocations = ({ resultLocations }: OrderLocationsProps) => {
               {...params}
               label="From"
               variant="outlined"
+              size="small"
               inputProps={{
                 ...params.inputProps,
                 autoComplete: 'new-password'
@@ -61,7 +62,7 @@ const OrderLocations = ({ resultLocations }: OrderLocationsProps) => {
         />
       )}
       {!locations ? (
-        <Skeleton variant="rect" height={60} />
+        <Skeleton variant="rect" height={40} />
       ) : (
         <Autocomplete
           id="location_to"
@@ -74,6 +75,7 @@ const OrderLocations = ({ resultLocations }: OrderLocationsProps) => {
               label="To"
               name="asdasd"
               variant="outlined"
+              size="small"
               inputProps={{
                 ...params.inputProps,
                 autoComplete: 'new-password'

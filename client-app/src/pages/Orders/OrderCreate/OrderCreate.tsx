@@ -32,7 +32,7 @@ const OrderCreate = () => {
   const [isRoutesShown, setRoutesShown] = useState(false);
   const [isOrderTaken, setOrderTaken] = useState(false);
 
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(1);
   const [stepSubtitles, setStepSubtitles] = useState<StepSubtitleType | null>(null);
 
   const stepTitles = [
@@ -97,7 +97,7 @@ const OrderCreate = () => {
   const getStepComponent = (step: number) => {
     switch (step) {
       case 0: return <OrderLocations resultLocations={(locations) => setOrder({ ...order, locations })} />;
-      case 1: return <OrderCargo />;
+      case 1: return <OrderCargo resultCargo={(cargo) => setOrder({ ...order, cargo })} />;
       case 2: return <div></div>//<OrderPathsList order={order as OrderUser} callback={takeOrder} />;
       case 3: return <OrderPay />;
       case 4: return <div></div>;
@@ -130,7 +130,7 @@ const OrderCreate = () => {
               </StepLabel>
               <StepContent>
                 {getStepComponent(index)}
-                <div>
+                <div className={styles.buttons}>
                   <Button
                     disabled={activeStep === 0}
                     onClick={handleBack}

@@ -3,6 +3,9 @@
 
 .order_wrapper {
   @include wrapper;
+  @media screen and (max-width: $container-tablet-width) {
+    padding: 0;
+  }
 }
 
 .form {
@@ -35,4 +38,8 @@
 .cargos {
   display: grid;
   grid-gap: $item-gap;
+}
+
+.buttons {
+  margin-top: $item-gap;
 }

@@ -1,9 +1,9 @@
 export enum CargoType {
-  Container,
-  Liquid,
-  Dry,
-  Breakbulk,
-  RoRo
+  Container = 'Container',
+  Liquid = 'Liquid',
+  Dry = 'Dry',
+  Breakbulk = 'Breakbulk',
+  RoRo = 'RoRo'
 }
 
 export type Cargo = {

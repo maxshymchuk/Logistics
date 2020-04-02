@@ -1,2 +1,103 @@
 @import "../../../../../styles/variables.scss";
 @import "../../../../../styles/mixins.scss";
+
+@mixin background {
+  width: 20px;
+  height: 20px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.order_item:not(:last-child) {
+  border-bottom: 1px solid #00000011;
+}
+
+.order_item {
+  display: flex;
+  align-items: center;
+  padding: 0 $item-gap;
+
+  .Breakbulk,
+  .Dry,
+  .Liquid,
+  .RoRo,
+  .Container {
+    @include background;
+    min-width: 30px;
+    height: 30px;
+    margin: 10px 0;
+    margin-right: $item-gap / 2;
+  }
+  .Breakbulk {
+    background-image: url('../../../../../assets/cargo/breakbulk.svg');
+  }
+  .Dry {
+    background-image: url('../../../../../assets/cargo/dry.svg');
+  }
+  .Liquid {
+    background-image: url('../../../../../assets/cargo/liquid.svg');
+  }
+  .Container {
+    background-image: url('../../../../../assets/cargo/container.svg');
+  }
+  .RoRo {
+    background-image: url('../../../../../assets/cargo/roro.svg');
+  }
+}
+
+.description_group {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  overflow: hidden;
+  .description {
+    line-height: 40px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    @media screen and (max-width: $container-tablet-width) {
+      overflow-x: auto;
+      text-overflow: initial;
+    }
+  }
+}
+
+.mass,
+.volume {
+  display: flex;
+  align-items: center;
+  &:before {
+    content: '';
+    padding: 0 $item-gap / 2;
+    @include background;
+  }
+}
+
+.mass {
+  &:before {
+    background-image: url('../../../../../assets/cargo/mass.svg');
+  }
+  &:after {
+    content: "kg";
+    @media screen and (max-width: $container-tablet-width) {
+      content: "";
+    }
+  }
+}
+
+.volume {
+  padding-left: $item-gap;
+  @media screen and (max-width: $container-tablet-width) {
+    padding: 0;
+  }
+  &:before {
+    background-image: url('../../../../../assets/cargo/volume.svg');
+  }
+  &:after {
+    content: "m3";
+    @media screen and (max-width: $container-tablet-width) {
+      content: "";
+    }
+  }
+}

@@ -27,7 +27,7 @@ type Departure = {
 
 export type OrderUser = {
   locations: Segment | null;
-  cargos: Cargo[];
+  cargo: Cargo[];
   route: Route | null;
   departure: Departure | null;
   message: string;
@@ -36,7 +36,7 @@ export type OrderUser = {
 
 export const defaultOrderUser: OrderUser = {
   locations: null,
-  cargos: [],
+  cargo: [],
   route: null,
   departure: null,
   message: '',
