@@ -1,0 +1,9 @@
+@import "../../../../styles/variables.scss";
+@import "../../../../styles/mixins.scss";
+
+.locations {
+  display: grid;
+  grid-gap: $item-gap;
+  grid-template-columns: repeat(auto-fit, 200px);
+  margin-bottom: $item-gap;
+}

@@ -12,7 +12,7 @@ export type LoginContextType = LoginContextState & {
   logout: () => void;
 };
 
-export const defaultLoginState = {
+export const defaultLoginState: LoginContextState = {
   user: undefined,
   isLogged: false
 };

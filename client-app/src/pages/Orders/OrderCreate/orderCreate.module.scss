@@ -1,10 +1,8 @@
 @import "../../../styles/variables.scss";
 @import "../../../styles/mixins.scss";
 
-.order {
-  max-width: $default-card-width;
-  margin: 0 auto;
-  padding: $item-gap;
+.order_wrapper {
+  @include wrapper;
 }
 
 .form {
@@ -19,8 +17,18 @@
 }
 
 .title {
-  @include title;
-  text-align: left;
+  display: block;
+  font-size: 1.1rem;
+}
+
+.subtitle {
+  display: block;
+  font-weight: normal;
+  line-height: 1em;
+  height: 1em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .list,

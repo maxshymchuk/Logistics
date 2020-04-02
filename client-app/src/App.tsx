@@ -9,7 +9,7 @@ import { defaultLoginState, LoginContext, LoginContextState } from './contexts/L
 import Admin from './pages/Admin/Admin';
 import Auth from './pages/Auth/Auth';
 import Index from './pages/Index/Index';
-import CreateOrder from './pages/Orders/CreateOrder/CreateOrder';
+import OrderCreate from './pages/Orders/OrderCreate/OrderCreate';
 import TrackOrder from './pages/Orders/TrackOrder/TrackOrder';
 import Profile from './pages/Profile/Profile';
 import { getLoggedUser, logoutUser } from './services/users.service';
@@ -56,7 +56,7 @@ const App = () => {
           <Route exact path="/" component={Index} />
           <Route exact path="/login" component={Auth} />
           <Route exact path="/profile" component={Profile} />
-          <Route exact path="/create" component={CreateOrder} />
+          <Route exact path="/create" component={OrderCreate} />
           <Route exact path="/track" component={TrackOrder} />
           {/* <Route path="*" component={TrackOrder} /> */}
         </Switch>

@@ -8,3 +8,8 @@ export type Location = {
   name: string;
   coordinates: Coordinate;
 };
+
+export type Segment = {
+  from: Location;
+  to: Location;
+}

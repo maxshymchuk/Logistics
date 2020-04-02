@@ -1,3 +1,5 @@
+import { Cargo } from './cargo.models';
+import { Location, Segment } from './location.models';
 import { Route } from './route.models';
 import { Track } from './track.models';
 
@@ -18,9 +20,25 @@ export type Order = {
   trackNumber: string;
 };
 
+type Departure = {
+  place: Location;
+  time: Date;
+}
+
 export type OrderUser = {
-  from: string;
-  to: string;
-  cargos: string[];
+  locations: Segment | null;
+  cargos: Cargo[];
+  route: Route | null;
+  departure: Departure | null;
   message: string;
+  isPaid: boolean;
 };
+
+export const defaultOrderUser: OrderUser = {
+  locations: null,
+  cargos: [],
+  route: null,
+  departure: null,
+  message: '',
+  isPaid: false
+}

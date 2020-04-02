@@ -1,0 +1,34 @@
+@import "../../../../styles/variables.scss";
+@import "../../../../styles/mixins.scss";
+
+.payment {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.payment_card {
+  margin: 0 auto;
+  padding-right: $item-gap;
+  margin-bottom: $item-gap;
+  @media screen and (max-width: $container-tablet-width) {
+    display: none;
+  }
+}
+
+.form {
+  flex: 40%;
+  display: flex;
+  flex-direction: column;
+}
+
+.input {
+  height: 50px;
+}
+
+.exp_cvc {
+  display: flex;
+  justify-content: space-between;
+  .input:first-child {
+    margin-right: $item-gap;
+  }
+}
