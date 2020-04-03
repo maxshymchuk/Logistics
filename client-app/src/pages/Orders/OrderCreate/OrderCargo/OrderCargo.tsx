@@ -9,49 +9,56 @@ import OrderCargoItem from './OrderCargoItem/OrderCargoItem';
 
 type OrderCargoProps = {
   resultCargo: (cargo: Cargo[]) => void;
-}
+};
 
 type OrderCargoState = {
   category: CargoType | null,
   description: string | null,
   mass: number | null,
   volume: number | null
-}
+};
+
+const defaultCargoState = {
+  category: null,
+  description: null,
+  mass: null,
+  volume: null
+};
 
 const OrderCargo = ({ resultCargo }: OrderCargoProps) => {
   const [cargoList, setCargoList] = useState<Cargo[]>([]);
-  const [state, setState] = useState<OrderCargoState>({
-    category: null,
-    description: null,
-    mass: null,
-    volume: null
-  });
+  const [state, setState] = useState<OrderCargoState>(defaultCargoState);
 
   useEffect(() => {
     resultCargo(cargoList);
-  }, [cargoList])
-
-  const addCargo = () => {
-    if (isValidated()) {
-      setCargoList([ ...cargoList, state as Cargo ]);
-    }
-  }
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setState({ ...state, [name]: value });
-  }
+  }, [cargoList]);
 
   const isValidated = () => {
-    if (!!(state.description && state.mass && state.volume && state.category)) {
+    if (state.description && state.mass && state.volume && state.category) {
       if (state.volume < 0 || state.mass < 0) return false;
       return true;
     }
     return false;
-  }
+  };
+
+  const addCargo = () => {
+    if (isValidated()) {
+      setCargoList([ ...cargoList, state as Cargo ]);
+      setState(defaultCargoState);
+    }
+  };
+
+  const deleteCargo = (id: number) => {
+    setCargoList((list) => list.filter((el, index) => index !== id ));
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setState({ ...state, [name]: value });
+  };
 
   return (
-    <div className={styles.cargo}>
+    <>
       <Paper className={styles.controls}>
         <TextField
           className={styles.description}
@@ -59,6 +66,7 @@ const OrderCargo = ({ resultCargo }: OrderCargoProps) => {
           variant="outlined"
           label="Description"
           size="small"
+          value={state.description || ''}
           onChange={handleChange}
         />
         <div className={styles.additional}>
@@ -69,6 +77,7 @@ const OrderCargo = ({ resultCargo }: OrderCargoProps) => {
             label="Mass"
             size="small"
             type="number"
+            value={state.mass || ''}
             onChange={handleChange}
           />
           <TextField
@@ -78,6 +87,7 @@ const OrderCargo = ({ resultCargo }: OrderCargoProps) => {
             label="Volume"
             size="small"
             type="number"
+            value={state.volume || ''}
             onChange={handleChange}
           />
           <Autocomplete
@@ -97,6 +107,7 @@ const OrderCargo = ({ resultCargo }: OrderCargoProps) => {
                 }}
               />
             )}
+            value={state.category}
             onChange={(e: React.ChangeEvent<{}>, category: CargoType | null) => category && setState({ ...state, category })}
             autoHighlight
             disableClearable
@@ -113,12 +124,12 @@ const OrderCargo = ({ resultCargo }: OrderCargoProps) => {
           Add
         </Button>
       </Paper>
-      <Paper>
+      <Paper className={styles.cargo_list}>
         {cargoList.map((cargo, index) => (
-          <OrderCargoItem key={index} {...cargo} />
+          <OrderCargoItem key={index} id={index} cargo={cargo} handleDelete={deleteCargo} />
         ))}
       </Paper>
-    </div>
+    </>
   );
 };
 

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-import { Card, LinearProgress, List } from '@material-ui/core';
+import { LinearProgress, List, Paper } from '@material-ui/core';
 
-import { OrderUser } from '../../../../models/order.models';
+import { OrderPaths, OrderUser } from '../../../../models/order.models';
 import { UserPath } from '../../../../models/path.models';
 import { getOrderPaths } from '../../../../services/orders.service';
 import OrderPath from './OrderPath/OrderPath';
@@ -26,13 +26,21 @@ const OrderPathsList = ({ order, callback }: CreateOrderPathsProps) => {
 
   useEffect(() => {
     (async () => {
-      const pathsData = (await getOrderPaths(order)).data;
-      setState({
-        paths: pathsData,
-        isLoaded: true
-      });
+      if (order.locations) {
+        const orderUser: OrderPaths = {
+          from: order.locations?.from.name,
+          to: order.locations?.to.name,
+          cargo: order.cargo,
+          message: order.message
+        };
+        const pathsData = (await getOrderPaths(orderUser)).data;
+        setState({
+          paths: pathsData,
+          isLoaded: true
+        });
+      }
     })();
-  }, [])
+  }, []);
 
   return (
     <>
@@ -41,16 +49,16 @@ const OrderPathsList = ({ order, callback }: CreateOrderPathsProps) => {
       ) : (
         <>
           {state.paths.map((path, index) => (
-            <Card key={index}>
+            <Paper className={styles.path_item} key={index}>
               <List component="nav" disablePadding>
                 <OrderPath userPath={path} callback={callback} />
               </List>
-            </Card>
+            </Paper>
           ))}
         </>
       )}
     </>
   );
-}
+};
 
 export default OrderPathsList;

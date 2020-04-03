@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 
 import {
-    CircularProgress, Fade, IconButton, Paper, Table, TableBody, TableCell, TableContainer,
-    TableHead, TableRow
+  CircularProgress, Fade, IconButton, Paper, Table, TableBody, TableCell, TableContainer,
+  TableHead, TableRow
 } from '@material-ui/core';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
@@ -35,7 +35,7 @@ const Users = ({ page, checkPages }: UsersProps) => {
     isLoaded: false
   });
 
-  const context = useContext(AdminContext);
+  const { isChanged: isChangedContext } = useContext(AdminContext);
 
   useEffect(() => {
     (async () => {
@@ -43,7 +43,7 @@ const Users = ({ page, checkPages }: UsersProps) => {
       setState({ ...state, users: usersData, isLoaded: true });
       setLength(Math.round(usersData.length / ITEMS_ON_PAGE));
     })();
-  }, [isChanged, context.isChanged]);
+  }, [isChanged, isChangedContext]);
 
   useEffect(() => {
     checkPages(length);

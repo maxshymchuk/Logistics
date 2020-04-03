@@ -23,7 +23,14 @@ export type Order = {
 type Departure = {
   place: Location;
   time: Date;
-}
+};
+
+export type OrderPaths = {
+  from: string;
+  to: string;
+  cargo: Cargo[];
+  message: string;
+};
 
 export type OrderUser = {
   locations: Segment | null;
@@ -41,4 +48,4 @@ export const defaultOrderUser: OrderUser = {
   departure: null,
   message: '',
   isPaid: false
-}
+};

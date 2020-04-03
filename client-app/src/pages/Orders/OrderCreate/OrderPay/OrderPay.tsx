@@ -12,7 +12,7 @@ type OrderPayState = {
   expiry: string;
   name: string;
   number: string;
-}
+};
 
 type FocusType = 'number' | 'name' | 'cvc' | 'expiry' | undefined;
 
@@ -29,7 +29,7 @@ const OrderPay = () => {
     const { name, value } = e.target;
     setFocus(name as FocusType);
     setCardInfo({ ...cardInfo, [name]: value });
-  }
+  };
 
   return (
     <div className={styles.payment}>

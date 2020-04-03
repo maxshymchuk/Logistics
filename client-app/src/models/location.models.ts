@@ -12,4 +12,4 @@ export type Location = {
 export type Segment = {
   from: Location;
   to: Location;
-}
+};

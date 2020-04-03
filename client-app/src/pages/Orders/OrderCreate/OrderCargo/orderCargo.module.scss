@@ -5,8 +5,8 @@
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  margin-bottom: $item-gap;
   padding: $item-gap $item-gap / 2;
+  margin-bottom: $item-gap;
 
   .description,
   .mass,
@@ -42,4 +42,10 @@
     width: 80px;
     min-width: 80px;
   }
+}
+
+.cargo_list {
+  $cargo-item-height: 50px;
+  overflow-y: auto;
+  max-height: ($cargo-item-height + 1) * 6;
 }

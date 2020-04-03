@@ -23,14 +23,11 @@ enum Steps {
 
 type StepSubtitleType = {
   [key: number]: string;
-}
+};
 
 const OrderCreate = () => {
   const [order, setOrder] = useState<OrderUser>(defaultOrderUser);
   const [trackNumber, setTrackNumber] = useState('');
-
-  const [isRoutesShown, setRoutesShown] = useState(false);
-  const [isOrderTaken, setOrderTaken] = useState(false);
 
   const [activeStep, setActiveStep] = useState(1);
   const [stepSubtitles, setStepSubtitles] = useState<StepSubtitleType | null>(null);
@@ -43,19 +40,11 @@ const OrderCreate = () => {
     'Enter the time and place where to pick up the cargo'
   ];
 
-  // const showRoutes = () => {
-  //   setErrors({
-  //     from: !order.from,
-  //     to: !order.to
-  //   });
-  //   setRoutesShown(!!order.from && !!order.to);
-  // };
-
   const setSubtitle = (step: number, subtitle: string) => {
     setStepSubtitles((prev) => {
       return { ...prev, [step]: subtitle };
     });
-  }
+  };
 
   useEffect(() => {
     setSubtitle(activeStep, '');
@@ -72,18 +61,13 @@ const OrderCreate = () => {
         setSubtitle(Steps.Cargo, 'Cargo');
         break;
       }
+      default: break;
     }
   }, [activeStep]);
 
   const takeOrder = async (path: UserPath) => {
     const message = await createOrder(path);
     setTrackNumber(message.data);
-    setOrderTaken(true);
-  };
-
-  const resetOrder = () => {
-    setOrderTaken(false);
-    setRoutesShown(false);
   };
 
   const handleNext = () => {
@@ -98,20 +82,20 @@ const OrderCreate = () => {
     switch (step) {
       case 0: return <OrderLocations resultLocations={(locations) => setOrder({ ...order, locations })} />;
       case 1: return <OrderCargo resultCargo={(cargo) => setOrder({ ...order, cargo })} />;
-      case 2: return <div></div>//<OrderPathsList order={order as OrderUser} callback={takeOrder} />;
+      case 2: return <OrderPathsList order={order as OrderUser} callback={takeOrder} />;
       case 3: return <OrderPay />;
-      case 4: return <div></div>;
-      default: return <div></div>
+      case 4: return <div />;
+      default: return <div />;
     }
-  }
+  };
 
   const getButtonState = () => {
     if (activeStep === Steps.Locations) {
-      return !order.locations
-    } else {
-      return false;
-    }
-  }
+      return !order.locations;
+    } 
+    return false;
+    
+  };
 
   return (
     <div className={styles.order_wrapper}>
@@ -152,7 +136,7 @@ const OrderCreate = () => {
         })}
       </Stepper>
       {activeStep === stepTitles.length && (
-        <OrderComplete trackNumber={trackNumber} createNewOrder={resetOrder} />
+        <OrderComplete trackNumber={trackNumber} createNewOrder={() => {}} />
       )}
       {/* {!isOrderTaken ? (
         <Card className={styles.order}>
@@ -163,8 +147,8 @@ const OrderCreate = () => {
                 <Skeleton variant="rect" height={60} />
               ) : (
                 <TextField
-                  name="cargos"
-                  label="Cargos"
+                  name="cargo"
+                  label="Cargo"
                   variant="outlined"
                   onChange={handleInput}
                   fullWidth

@@ -9,15 +9,15 @@
   background-size: contain;
 }
 
-.order_item:not(:last-child) {
-  border-bottom: 1px solid #00000011;
-}
-
 .order_item {
   display: flex;
   align-items: center;
   padding: 0 $item-gap;
 
+  &:not(:last-child) {
+    border-bottom: 1px solid #00000011;
+  }
+  
   .Breakbulk,
   .Dry,
   .Liquid,
@@ -87,7 +87,7 @@
 }
 
 .volume {
-  padding-left: $item-gap;
+  padding: 0 $item-gap;
   @media screen and (max-width: $container-tablet-width) {
     padding: 0;
   }

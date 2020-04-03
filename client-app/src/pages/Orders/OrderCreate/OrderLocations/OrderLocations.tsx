@@ -10,7 +10,7 @@ import styles from './orderLocations.module.scss';
 
 type OrderLocationsProps = {
   resultLocations: (segment: Segment) => void;
-}
+};
 
 const OrderLocations = ({ resultLocations }: OrderLocationsProps) => {
   const [locations, setLocations] = useState<Location[] | null>(null);
@@ -29,7 +29,7 @@ const OrderLocations = ({ resultLocations }: OrderLocationsProps) => {
       const segment: Segment = {
         from: fromLocation,
         to: toLocation
-      }
+      };
       resultLocations(segment);
     }
   }, [fromLocation, toLocation]);

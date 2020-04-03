@@ -1,3 +1,4 @@
+import { Cargo } from './cargo.models';
 import { VehicleType } from './vehicle.models';
 
 export type Path = {
@@ -14,5 +15,5 @@ export type UserPath = {
   distance: number;
   timeInterval: number;
   message: string;
-  cargos: string[];
+  cargo: Cargo[];
 };

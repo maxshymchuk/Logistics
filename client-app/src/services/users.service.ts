@@ -37,7 +37,7 @@ export async function getLoggedUser() {
 }
 
 export async function logoutUser() {
-  const message: Message<string> = (await axios.get('/logout')).data
+  const message: Message<string> = (await axios.get('/logout')).data;
   await message;
 }
 

@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as qs from 'qs';
 
 import { Message } from '../models/message.models';
-import { Order, OrderUser } from '../models/order.models';
+import { Order, OrderPaths } from '../models/order.models';
 import { UserPath } from '../models/path.models';
 
 export async function getOrdersData() {
@@ -15,7 +15,7 @@ export async function getOrdersByUsername() {
   return message;
 }
 
-export async function getOrderPaths(order: OrderUser) {
+export async function getOrderPaths(order: OrderPaths) {
   const params = qs.stringify(order);
   const message: Message<UserPath[]> = (await axios.get(`orders/paths/${params}`)).data;
   return message;

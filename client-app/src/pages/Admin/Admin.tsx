@@ -79,7 +79,7 @@ const Admin = () => {
   const setResult = (result: Message<string>) => {
     setDialogResult(result);
     setChanged(!isChanged);
-  }
+  };
 
   const getModal = () => {
     switch (tab) {

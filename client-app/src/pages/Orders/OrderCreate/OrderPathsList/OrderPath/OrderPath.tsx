@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Avatar, Button, Chip, Collapse, List, ListItem, ListItemText } from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
@@ -87,8 +87,8 @@ const OrderPath = ({ userPath, callback }: OrderPathProps) => {
                   </span>
                 </ListItemText>
                 <List className={styles.list} disablePadding>
-                  {routes.routes.map((route, index) => (
-                    <ListItemText key={index}>{route}</ListItemText>
+                  {routes.routes.map((route, labelIndex) => (
+                    <ListItemText key={labelIndex}>{route}</ListItemText>
                   ))}
                 </List>
               </ListItem>
@@ -98,6 +98,6 @@ const OrderPath = ({ userPath, callback }: OrderPathProps) => {
       </Collapse>
     </>
   );
-}
+};
 
 export default OrderPath;
