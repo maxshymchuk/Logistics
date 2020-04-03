@@ -1,0 +1,44 @@
+@import "../../styles/variables.scss";
+@import "../../styles/mixins.scss";
+
+.error_wrapper {
+  @include wrapper;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  // justify-content: center;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: url('../../assets/robots/claptrap.png') left 90% no-repeat;
+  background-size: 60%;
+}
+
+.message {
+  margin-top: 120px;
+  .title {
+    text-align: right;
+    font-size: 8rem;
+    font-weight: bold;
+  }
+  .subtitle {
+    text-align: right;
+  }
+}
+
+.quote {
+  width: 50%;
+  text-align: right;
+  position: absolute;
+  bottom: 60px;
+  right: $item-gap;
+  font-size: 1.4rem;
+  font-style: italic;
+  &:before,
+  &:after {
+    content: "''";
+    font-size: 1.5rem;
+  }
+}
