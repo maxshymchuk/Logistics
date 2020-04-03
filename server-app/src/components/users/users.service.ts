@@ -1,4 +1,4 @@
-import { errorResponse, successResponse } from '../../helpers/messages';
+import { errorResponse, successResponse } from '../../helpers/response';
 import { User, userModel, UserMongo } from '../../models/user.models';
 
 async function findUserById(id: string) {

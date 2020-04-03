@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 
-import { errorResponse, successResponse } from '../../helpers/messages';
+import { errorResponse, successResponse } from '../../helpers/response';
 import {
     Location, locationModel, Map, mapModel, MapType, MapTypes, Path, PathInput
 } from '../../models/location.models';

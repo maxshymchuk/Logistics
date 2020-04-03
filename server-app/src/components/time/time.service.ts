@@ -1,5 +1,5 @@
 import CONSTS from '../../const';
-import { errorResponse, successResponse } from '../../helpers/messages';
+import { errorResponse, successResponse } from '../../helpers/response';
 import { orderModel } from '../../models/order.models';
 import { vehicleModel } from '../../models/vehicle.models';
 import { moveDate } from '../../utils';

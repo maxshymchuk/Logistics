@@ -1,15 +1,14 @@
 import * as qs from 'qs';
 
-import { errorResponse, successResponse } from '../../helpers/messages';
+import { errorResponse, successResponse } from '../../helpers/response';
 import { Location, UserPath } from '../../models/location.models';
-import { MessageTypes, Response } from '../../models/message.models';
+import { MessageType } from '../../models/message.models';
 import {
     Order, orderModel, OrderMongo, OrderStatus, UserOrderInput
 } from '../../models/order.models';
 import { Route } from '../../models/route.models';
 import { Track, TrackStatus } from '../../models/track.models';
 import { User } from '../../models/user.models';
-import { VehicleMongo } from '../../models/vehicle.models';
 import { createPaths, getLocationByName } from '../locations/locations.service';
 import { assignVehicle, getNearestVehicle } from '../vehicles/vehicles.service';
 
@@ -152,7 +151,7 @@ async function createRoutes(userPath: UserPath) {
     const locations: Location[] = [];
     for (let route of path.routes) {
       const locationResponse = await getLocationByName(route);
-      if (locationResponse.messageType === MessageTypes.Error) {
+      if (locationResponse.messageType === MessageType.Error) {
         throw locationResponse.message
       }
       const location = locationResponse.data;
@@ -164,7 +163,7 @@ async function createRoutes(userPath: UserPath) {
         locations[i],
         date
       );
-      if (nearestVehicleResponse.messageType === MessageTypes.Error) {
+      if (nearestVehicleResponse.messageType === MessageType.Error) {
         throw nearestVehicleResponse.message;
       }
       const nearestVehicle = nearestVehicleResponse.data;
@@ -172,7 +171,7 @@ async function createRoutes(userPath: UserPath) {
         nearestVehicle,
         locations[i + 1]
       );
-      if (assignedVehicleResponse.messageType === MessageTypes.Error) {
+      if (assignedVehicleResponse.messageType === MessageType.Error) {
         throw assignedVehicleResponse.message;
       }
       const assignedVehicle = assignedVehicleResponse.data;

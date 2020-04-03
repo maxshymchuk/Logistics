@@ -1,6 +1,6 @@
-import { errorResponse, successResponse } from '../../helpers/messages';
+import { errorResponse, successResponse } from '../../helpers/response';
 import { Location } from '../../models/location.models';
-import { MessageTypes } from '../../models/message.models';
+import { MessageType } from '../../models/message.models';
 import {
     Vehicle, vehicleModel, VehicleMongo, VehicleSpeed, VehicleType, VehicleTypes
 } from '../../models/vehicle.models';
@@ -92,7 +92,7 @@ export async function regenerateVehicles() {
   const VEHICLES_NUMBER = 1000;
   try {
     const locationsResponse = await getLocations();
-    if (locationsResponse.messageType === MessageTypes.Error) {
+    if (locationsResponse.messageType === MessageType.Error) {
       throw locationsResponse.message;
     }
     const locations = locationsResponse.data;

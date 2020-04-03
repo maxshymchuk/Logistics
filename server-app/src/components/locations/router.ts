@@ -1,6 +1,6 @@
 import CONSTS from '../../const';
-import { Location, mapModel, MapType, Path } from '../../models/location.models';
-import { MessageTypes } from '../../models/message.models';
+import { mapModel, MapType, Path } from '../../models/location.models';
+import { MessageType } from '../../models/message.models';
 import { Route } from '../../models/route.models';
 import { VehicleSpeed, VehicleType } from '../../models/vehicle.models';
 import { calculatePrice } from './calculator';
@@ -21,10 +21,10 @@ function getMapVehicle(mapType: MapType) {
 export async function getDistanceBetween(from: string, to: string) {
   const locationFromResponse = await getLocationByName(from);
   const locationToResponse = await getLocationByName(to);
-  if (locationFromResponse.messageType === MessageTypes.Error) {
+  if (locationFromResponse.messageType === MessageType.Error) {
     throw locationFromResponse.message;
   }
-  if (locationToResponse.messageType === MessageTypes.Error) {
+  if (locationToResponse.messageType === MessageType.Error) {
     throw locationToResponse.message;
   }
   const point1 = locationFromResponse.data.coordinates;
