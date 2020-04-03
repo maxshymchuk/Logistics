@@ -8,13 +8,13 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 
-import { Message } from '../../../models/message.models';
+import { ServerResponse } from '../../../models/message.models';
 import { User } from '../../../models/user.models';
 import { addUser } from '../../../services/users.service';
 import styles from './form.module.scss';
 
 export type UsersModalProps = {
-  result: (message: Message<string>) => void;
+  result: (response: ServerResponse) => void;
   onClose: () => void;
 };
 
@@ -35,8 +35,8 @@ export const UsersDialog = ({result, onClose}: UsersModalProps) => {
   };
 
   const handleSubmit = async () => {
-    const message = await addUser(state);
-    result(message);
+    const response = await addUser(state);
+    result(response);
     handleClose();
   };
 

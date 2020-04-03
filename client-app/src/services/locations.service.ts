@@ -1,19 +1,19 @@
 import axios from 'axios';
 
 import { Location } from '../models/location.models';
-import { Message } from '../models/message.models';
+import { ServerResponse } from '../models/message.models';
 
 export async function getLocationsData() {
-  const message: Message<Location[]> = (await axios.get('/locations')).data;
-  return message;
+  const response: ServerResponse<Location[]> = (await axios.get('/locations')).data;
+  return response;
 }
 
 export async function addLocation(location: Location) {
-  const message: Message<string> = (await axios.post('/locations', location)).data;
-  return message;
+  const response: ServerResponse<null> = (await axios.post('/locations', location)).data;
+  return response;
 }
 
 export async function removeLocationById(id: string) {
-  const message: Message<string> = (await axios.delete(`/locations/${id}`)).data;
-  return message;
+  const response: ServerResponse<null> = (await axios.delete(`/locations/${id}`)).data;
+  return response;
 }

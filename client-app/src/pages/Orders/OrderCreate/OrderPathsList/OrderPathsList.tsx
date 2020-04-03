@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { LinearProgress, List, Paper } from '@material-ui/core';
 
+import { MessageType } from '../../../../models/message.models';
 import { OrderPaths, OrderUser } from '../../../../models/order.models';
 import { UserPath } from '../../../../models/path.models';
 import { getOrderPaths } from '../../../../services/orders.service';
@@ -33,11 +34,15 @@ const OrderPathsList = ({ order, callback }: CreateOrderPathsProps) => {
           cargo: order.cargo,
           message: order.message
         };
-        const pathsData = (await getOrderPaths(orderUser)).data;
-        setState({
-          paths: pathsData,
-          isLoaded: true
-        });
+        const pathsResponse = await getOrderPaths(orderUser);
+        if (pathsResponse.messageType === MessageType.Error) {
+
+        } else if (pathsResponse.data instanceof Array) {
+          setState({
+            paths: pathsResponse.data,
+            isLoaded: true
+          });
+        }
       }
     })();
   }, []);

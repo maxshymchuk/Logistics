@@ -6,7 +6,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import Skeleton from '@material-ui/lab/Skeleton';
 
 import Notification from '../../components/Notification/Notification';
-import { Message } from '../../models/message.models';
+import { ServerResponse } from '../../models/message.models';
 import { Order } from '../../models/order.models';
 import { User } from '../../models/user.models';
 import { getOrdersByUsername } from '../../services/orders.service';
@@ -20,16 +20,16 @@ const Profile = () => {
   const [user, setUser] = useState<User | null>(null);
 
   const [isSettingsOpen, setSettingsOpen] = useState(false);
-  const [settingsResult, setSettingsResult] = useState<Message<string> | null>(null);
+  const [settingsResult, setSettingsResult] = useState<ServerResponse<any> | null>(null);
 
   const [isChanged, setChanged] = useState(false);
 
   useEffect(() => {
     (async () => {
-      const loggedUserMsg = await getLoggedUser();
-      const userOrdersMsg = await getOrdersByUsername();
-      setUser(loggedUserMsg.data);
-      setOrders(userOrdersMsg.data);
+      const loggedUserResponse = await getLoggedUser();
+      const userOrdersResponse = await getOrdersByUsername();
+      setUser(loggedUserResponse.data);
+      setOrders(userOrdersResponse.data);
     })();
   }, [isChanged]);
 

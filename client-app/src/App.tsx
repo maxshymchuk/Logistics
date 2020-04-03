@@ -8,6 +8,7 @@ import Menu from './components/Menu/Menu';
 import { defaultLoginState, LoginContext, LoginContextState } from './contexts/LoginContext';
 import Admin from './pages/Admin/Admin';
 import Auth from './pages/Auth/Auth';
+import ErrorPage from './pages/ErrorPage/ErrorPage';
 import Index from './pages/Index/Index';
 import OrderCreate from './pages/Orders/OrderCreate/OrderCreate';
 import TrackOrder from './pages/Orders/TrackOrder/TrackOrder';
@@ -49,16 +50,17 @@ const App = () => {
     <LoginContext.Provider value={{...loginState, login, logout}}>
       <Router>
         <Switch>
-          <Route path="/admin" component={Admin} />
+          <Route path="/admin" component={undefined} />
           <Route path="/" component={Menu} />
         </Switch>
         <Switch>
+          <Route path="/admin" component={Admin} />
           <Route exact path="/" component={Index} />
           <Route exact path="/login" component={Auth} />
           <Route exact path="/profile" component={Profile} />
           <Route exact path="/create" component={OrderCreate} />
           <Route exact path="/track" component={TrackOrder} />
-          {/* <Route path="*" component={TrackOrder} /> */}
+          <Route path="*" component={ErrorPage} />
         </Switch>
       </Router>
     </LoginContext.Provider>

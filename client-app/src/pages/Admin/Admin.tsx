@@ -13,7 +13,7 @@ import Users from '../../admin/components/Users/Users';
 import Vehicles from '../../admin/components/Vehicles/Vehicles';
 import Notification from '../../components/Notification/Notification';
 import { AdminContext } from '../../contexts/AdminContext';
-import { Message } from '../../models/message.models';
+import { ServerResponse } from '../../models/message.models';
 import styles from './admin.module.scss';
 import { LocationsDialog } from './Dialogs/LocationsDialog';
 import { UsersDialog } from './Dialogs/UsersDialog';
@@ -65,7 +65,7 @@ const Admin = () => {
   const [length, setLength] = useState(0);
 
   const [isDialogOpen, setDialogOpen] = useState(false);
-  const [dialogResult, setDialogResult] = useState<Message<string> | null>(null);
+  const [dialogResult, setDialogResult] = useState<ServerResponse | null>(null);
   const [tab, setTab] = useState(
     paths.indexOf(window.location.pathname)
   );
@@ -76,7 +76,7 @@ const Admin = () => {
     setPage(1);
   }, [tab]);
 
-  const setResult = (result: Message<string>) => {
+  const setResult = (result: ServerResponse<any>) => {
     setDialogResult(result);
     setChanged(!isChanged);
   };

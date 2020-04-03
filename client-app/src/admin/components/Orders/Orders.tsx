@@ -7,7 +7,7 @@ import {
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 import Notification from '../../../components/Notification/Notification';
-import { Message } from '../../../models/message.models';
+import { MessageType, ServerResponse } from '../../../models/message.models';
 import { Order, OrderStatus } from '../../../models/order.models';
 import { Route } from '../../../models/route.models';
 import { Track } from '../../../models/track.models';
@@ -34,7 +34,7 @@ type OrdersProps = {
 const Orders = ({ page, checkPages }: OrdersProps) => {
   const ITEMS_ON_PAGE = 20;
   
-  const [notifyMessage, setNotifyMessage] = useState<Message<string> | null>(null);
+  const [notifyMessage, setNotifyMessage] = useState<ServerResponse<any> | null>(null);
   const [isAlertOpen, setAlertOpen] = useState<AlertState>({
     routes: null,
     tracks: null
@@ -48,9 +48,13 @@ const Orders = ({ page, checkPages }: OrdersProps) => {
 
   useEffect(() => {
     (async () => {
-      const ordersData = (await getOrdersData()).data;
-      setState({ ...state, orders: ordersData, isLoaded: true });
-      setPagesNumber(Math.round(ordersData.length / ITEMS_ON_PAGE));
+      const ordersResponse = await getOrdersData();
+      if (ordersResponse.messageType === MessageType.Error) {
+        setNotifyMessage(ordersResponse);
+      } else if (ordersResponse.data instanceof Array) {
+        setState({ ...state, orders: ordersResponse.data, isLoaded: true });
+        setPagesNumber(Math.round(ordersResponse.data.length / ITEMS_ON_PAGE));
+      }
     })();
   }, [isChanged]);
 
@@ -60,8 +64,8 @@ const Orders = ({ page, checkPages }: OrdersProps) => {
 
   const removeOrder = async (order: Order) => {
     if (order._id) {
-      const message = await removeOrderById(order._id);
-      setNotifyMessage(message);
+      const response = await removeOrderById(order._id);
+      setNotifyMessage(response);
       setChanged(!isChanged);
     }
   };

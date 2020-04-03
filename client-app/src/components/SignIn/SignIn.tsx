@@ -4,6 +4,9 @@ import { Redirect } from 'react-router-dom';
 import { Button, TextField } from '@material-ui/core';
 
 import { LoginContext } from '../../contexts/LoginContext';
+import isOfType from '../../helpers/typeGuard';
+import { MessageType } from '../../models/message.models';
+import { User } from '../../models/user.models';
 import { authUser } from '../../services/users.service';
 import styles from './signin.module.scss';
 
@@ -15,12 +18,16 @@ const SignIn = () => {
   const context = useContext(LoginContext);
 
   const handleClick = async () => {
-    const user = (await authUser({ username, password })).data;
-    setLogged(true);
-    context.login({
-      user,
-      isLogged: true
-    });
+    const userResponse = await authUser({ username, password });
+    if (userResponse.messageType === MessageType.Error) {
+
+    } else if (isOfType<User>(userResponse.data, 'username')) {
+      setLogged(true);
+      context.login({
+        user: userResponse.data,
+        isLogged: true
+      });
+    }
   };
 
   return (

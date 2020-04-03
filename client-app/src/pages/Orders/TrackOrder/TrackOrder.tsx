@@ -35,13 +35,13 @@ class TrackOrder extends Component<{}, TrackOrderState> {
       isClicked: true
     }));
     try {
-      const order = (await getOrderByTrackNumber(this.state.trackNumber)).data;
-      this.setState(state => ({
-        isTrackFound: true,
-        isClicked: false,
-        order
-        // trackNumber: ''
-      }));
+      // const order = (await getOrderByTrackNumber(this.state.trackNumber)).data;
+      // this.setState(state => ({
+      //   isTrackFound: true,
+      //   isClicked: false,
+      //   order
+      //   // trackNumber: ''
+      // }));
     } catch (err) {
       this.setState(state => ({
         isClicked: false,

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import DateFnsUtils from '@date-io/date-fns';
 import {
-  Button, CircularProgress, FormControl, IconButton, Input, InputAdornment, InputLabel, TextField
+    Button, CircularProgress, FormControl, IconButton, Input, InputAdornment, InputLabel, TextField
 } from '@material-ui/core';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -13,13 +13,14 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 
-import { Message } from '../../../models/message.models';
+import isOfType from '../../../helpers/typeGuard';
+import { MessageType, ServerResponse } from '../../../models/message.models';
 import { User } from '../../../models/user.models';
 import { getLoggedUser, updateUser } from '../../../services/users.service';
 import styles from './settingsDialog.module.scss';
 
 export type SettingsModalProps = {
-  result: (message: Message<string>) => void;
+  result: (response: ServerResponse<User | null>) => void;
   onClose: () => void;
 };
 
@@ -28,23 +29,28 @@ export const SettingsDialog = ({ result, onClose }: SettingsModalProps) => {
   const [isPasswordOpen, setPasswordOpen] = useState(true);
   const [user, setUser] = useState<User | null>(null);
 
-  useEffect(() => {
-    (async () => {
-      const loggedUserMsg = await getLoggedUser();
-      setUser(loggedUserMsg.data);
-    })();
-  }, []);
-
   const handleClose = () => {
     onClose();
   };
 
+  useEffect(() => {
+    (async () => {
+      const loggedUserResponse = await getLoggedUser();
+      if (loggedUserResponse.messageType === MessageType.Error) {
+        result(loggedUserResponse);
+        handleClose();
+      } else if (isOfType<User>(loggedUserResponse.data, 'username')) {
+        setUser(loggedUserResponse.data);
+      }
+    })();
+  }, []);
+
   const handleUpdate = async () => {
     setUpdating(true);
     if (user) {
-      const message = await updateUser(user);
+      const response = await updateUser(user);
       setUpdating(false);
-      result(message);
+      result(response);
       handleClose();
     }
   };

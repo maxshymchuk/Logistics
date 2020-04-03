@@ -7,12 +7,12 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 import { Location } from '../../../models/location.models';
-import { Message } from '../../../models/message.models';
+import { ServerResponse } from '../../../models/message.models';
 import { addLocation } from '../../../services/locations.service';
 import styles from './form.module.scss';
 
 export type LocationsDialogProps = {
-  result: (message: Message<string>) => void;
+  result: (response: ServerResponse) => void;
   onClose: () => void;
 };
 
@@ -30,8 +30,8 @@ export const LocationsDialog = ({result, onClose}: LocationsDialogProps) => {
   };
 
   const handleSubmit = async () => {
-    const message = await addLocation(state);
-    result(message);
+    const response = await addLocation(state);
+    result(response);
     handleClose();
   };
 

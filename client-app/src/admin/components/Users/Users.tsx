@@ -8,7 +8,7 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 import Notification from '../../../components/Notification/Notification';
 import { AdminContext } from '../../../contexts/AdminContext';
-import { Message } from '../../../models/message.models';
+import { MessageType, ServerResponse } from '../../../models/message.models';
 import { User } from '../../../models/user.models';
 import { getUsersData, removeUserById } from '../../../services/users.service';
 import tableStyles from '../../styles/table.module.scss';
@@ -27,7 +27,7 @@ type UsersProps = {
 const Users = ({ page, checkPages }: UsersProps) => {
   const ITEMS_ON_PAGE = 20;
 
-  const [notifyMessage, setNotifyMessage] = useState<Message<string> | null>(null);
+  const [notifyMessage, setNotifyMessage] = useState<ServerResponse<any> | null>(null);
   const [isChanged, setChanged] = useState(false);
   const [length, setLength] = useState(0);
   const [state, setState] = useState<UsersState>({
@@ -39,9 +39,13 @@ const Users = ({ page, checkPages }: UsersProps) => {
 
   useEffect(() => {
     (async () => {
-      const usersData = (await getUsersData()).data;
-      setState({ ...state, users: usersData, isLoaded: true });
-      setLength(Math.round(usersData.length / ITEMS_ON_PAGE));
+      const usersResponse = await getUsersData();
+      if (usersResponse.messageType === MessageType.Error) {
+        setNotifyMessage(usersResponse);
+      } else if (usersResponse.data instanceof Array) {
+        setState({ ...state, users: usersResponse.data, isLoaded: true });
+        setLength(Math.round(usersResponse.data.length / ITEMS_ON_PAGE));
+      }
     })();
   }, [isChanged, isChangedContext]);
 
@@ -51,8 +55,8 @@ const Users = ({ page, checkPages }: UsersProps) => {
 
   const removeUser = async (user: User) => {
     if (user._id) {
-      const message = await removeUserById(user._id);
-      setNotifyMessage(message);
+      const response = await removeUserById(user._id);
+      setNotifyMessage(response);
       setChanged(!isChanged);
     }
   };

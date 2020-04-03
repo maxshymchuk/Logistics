@@ -1,9 +1,13 @@
 import axios from 'axios';
 
-export async function regenVehicles(): Promise<string> {
-  return (await axios.get('vehicles/regen')).data;
+import { ServerResponse } from '../../models/message.models';
+
+export async function regenVehicles() {
+  const response: ServerResponse = (await axios.get('vehicles/regen')).data;
+  return response;
 }
 
-export async function regenLocations(): Promise<string> {
-  return (await axios.get('locations/regen')).data;
+export async function regenLocations() {
+  const response: ServerResponse = (await axios.get('locations/regen')).data;
+  return response;
 }

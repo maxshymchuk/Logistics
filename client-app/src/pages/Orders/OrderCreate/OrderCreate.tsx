@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Step, StepContent, StepLabel, Stepper } from '@material-ui/core';
 import Collapse from '@material-ui/core/Collapse';
 
+import { MessageType } from '../../../models/message.models';
 import { defaultOrderUser, OrderUser } from '../../../models/order.models';
 import { UserPath } from '../../../models/path.models';
 import { createOrder } from '../../../services/orders.service';
@@ -29,7 +30,7 @@ const OrderCreate = () => {
   const [order, setOrder] = useState<OrderUser>(defaultOrderUser);
   const [trackNumber, setTrackNumber] = useState('');
 
-  const [activeStep, setActiveStep] = useState(1);
+  const [activeStep, setActiveStep] = useState(0);
   const [stepSubtitles, setStepSubtitles] = useState<StepSubtitleType | null>(null);
 
   const stepTitles = [
@@ -66,8 +67,12 @@ const OrderCreate = () => {
   }, [activeStep]);
 
   const takeOrder = async (path: UserPath) => {
-    const message = await createOrder(path);
-    setTrackNumber(message.data);
+    const response = await createOrder(path);
+    if (response.messageType === MessageType.Error) {
+      
+    } else if (typeof response.data === 'string') {
+      setTrackNumber(response.data);
+    }
   };
 
   const handleNext = () => {

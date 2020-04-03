@@ -1,4 +1,3 @@
-import cogoToast from 'cogo-toast';
 import React, { useState } from 'react';
 
 import {
@@ -6,6 +5,8 @@ import {
   TextField
 } from '@material-ui/core';
 
+import Notification from '../../../components/Notification/Notification';
+import { ServerResponse } from '../../../models/message.models';
 import changeTime from '../../services/shifter.service';
 import styles from './shifter.module.scss';
 
@@ -16,15 +17,13 @@ type ShifterProps = {
 const Shifter = (props: ShifterProps) => {
   const [isLoading, setLoading] = useState(false);
   const [value, setValue] = useState(1);
-
+  const [dialogResult, setDialogResult] = useState<ServerResponse | null>(null);
+  
   const handleChange = async () => {
     setLoading(true);
-    changeTime(value).then((res) => {
-      cogoToast.success(res, {
-        position: 'bottom-right'
-      });
-      setLoading(false);
-    });
+    const result = await changeTime(value);
+    setDialogResult(result);
+    setLoading(false);
   };
 
   const handleClose = () => {
@@ -33,6 +32,7 @@ const Shifter = (props: ShifterProps) => {
 
   return (
     <Dialog open onClose={handleClose} scroll='body' maxWidth='xs' fullWidth>
+      {dialogResult && <Notification {...dialogResult} afterClose={() => setDialogResult(null)} />}
       <DialogTitle>Time Shifter</DialogTitle>
       <DialogContent>
         <DialogContentText>

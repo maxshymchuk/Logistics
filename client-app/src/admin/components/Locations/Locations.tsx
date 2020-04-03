@@ -9,7 +9,7 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import Notification from '../../../components/Notification/Notification';
 import { AdminContext } from '../../../contexts/AdminContext';
 import { Location } from '../../../models/location.models';
-import { Message } from '../../../models/message.models';
+import { MessageType, ServerResponse } from '../../../models/message.models';
 import { getLocationsData, removeLocationById } from '../../../services/locations.service';
 import tableStyles from '../../styles/table.module.scss';
 
@@ -26,7 +26,7 @@ type LocationsProps = {
 const Locations = ({ page, checkPages }: LocationsProps) => {
   const ITEMS_ON_PAGE = 20;
 
-  const [notifyMessage, setNotifyMessage] = useState<Message<string> | null>(null);
+  const [notifyMessage, setNotifyMessage] = useState<ServerResponse<any> | null>(null);
   const [isChanged, setChanged] = useState(false);
   const [pagesNumber, setPagesNumber] = useState(0);
   const [state, setState] = useState<LocationsState>({
@@ -38,9 +38,13 @@ const Locations = ({ page, checkPages }: LocationsProps) => {
 
   useEffect(() => {
     (async () => {
-      const locationsData = (await getLocationsData()).data;
-      setState({ ...state, locations: locationsData, isLoaded: true });
-      setPagesNumber(Math.round(locationsData.length / ITEMS_ON_PAGE));
+      const locationsResponse = await getLocationsData();
+      if (locationsResponse.messageType === MessageType.Error) {
+        setNotifyMessage(locationsResponse);
+      } else if (locationsResponse.data instanceof Array) {
+        setState({ ...state, locations: locationsResponse.data, isLoaded: true });
+        setPagesNumber(Math.round(locationsResponse.data.length / ITEMS_ON_PAGE));
+      }
     })();
   }, [isChanged, isChangedContext]);
 
@@ -50,8 +54,8 @@ const Locations = ({ page, checkPages }: LocationsProps) => {
 
   const removeLocation = async (location: Location) => {
     if (location._id) {
-      const message = await removeLocationById(location._id);
-      setNotifyMessage(message);
+      const response = await removeLocationById(location._id);
+      setNotifyMessage(response);
       setChanged(!isChanged);
     }
   };

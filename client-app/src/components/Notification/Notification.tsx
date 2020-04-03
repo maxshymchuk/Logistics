@@ -3,11 +3,11 @@ import React, { useState } from 'react';
 import { Snackbar } from '@material-ui/core';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 
-import { MessageTypes } from '../../models/message.models';
+import { MessageType } from '../../models/message.models';
 
 type NotificationProps = {
-  messageType: MessageTypes;
-  data: any;
+  messageType: MessageType;
+  message: string;
   afterClose?: () => void;
 };
 
@@ -15,7 +15,7 @@ function Alert(props: AlertProps) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-const Notification = ({ messageType, data, afterClose }: NotificationProps) => {
+const Notification = ({ messageType, message, afterClose }: NotificationProps) => {
   const [open, setOpen] = useState(true);
 
   const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
@@ -27,9 +27,8 @@ const Notification = ({ messageType, data, afterClose }: NotificationProps) => {
 
   const getSeverity = () => {
     switch (messageType) {
-      case MessageTypes.Error: return 'error';
-      case MessageTypes.Warning: return 'warning';
-      case MessageTypes.Success: return 'success';
+      case MessageType.Error: return 'error';
+      case MessageType.Success: return 'success';
       default: return 'error';
     }
   };
@@ -37,7 +36,7 @@ const Notification = ({ messageType, data, afterClose }: NotificationProps) => {
   return (
     <Snackbar open={open} autoHideDuration={2000} onClose={handleClose} onExited={() => afterClose && afterClose()}>
       <Alert onClose={handleClose} severity={getSeverity()}>
-        {data.toString()}
+        {message.toString()}
       </Alert>
     </Snackbar>
   );
