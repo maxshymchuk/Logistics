@@ -15,6 +15,13 @@ export enum VehicleType {
   Train = "Train"
 }
 
+export const VehicleTypes: VehicleType[] = [
+  VehicleType.Car,
+  VehicleType.Plane,
+  VehicleType.Ship,
+  VehicleType.Train
+]
+
 export enum VehiclePriceRatio {
   Car = 1.2,
   Plane = 5,

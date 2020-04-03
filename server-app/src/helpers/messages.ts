@@ -1,13 +1,15 @@
-import { Message, MessageTypes } from '../models/message.models';
+import { MessageTypes, Response } from '../models/message.models';
 
-export function successMsg<T>(data: T = null): Message<T> {
+export function successResponse<T = null>(message: string, data: T = null): Response<T> {
   return {
-    messageType: MessageTypes.Success, data: data ?? null
+    messageType: MessageTypes.Success, 
+    message, data: data ?? null
   }
 }
 
-export function errorMsg<T>(data: T): Message<T> {
+export function errorResponse<T = null>(message: string, data: T = null): Response<T> {
   return {
-    messageType: MessageTypes.Error, data: data ?? null
+    messageType: MessageTypes.Error,
+    message, data: data ?? null
   }
 }

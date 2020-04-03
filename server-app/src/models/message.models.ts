@@ -3,7 +3,8 @@ export enum MessageTypes {
   Error = 'Error'
 } 
 
-export type Message<T> = {
+export type Response<T> = {
   messageType: MessageTypes;
-  data: T;
+  message: string;
+  data: T | null;
 }

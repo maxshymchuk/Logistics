@@ -7,7 +7,7 @@ import { vehicleSchema } from './vehicle.schemas';
 export const routeSchema = new mongoose.Schema({
   startLocation: locationSchema,
   endLocation: locationSchema,
-  cargos: [String],
+  cargo: [String],
   departureDate: Date,
   vehicle: vehicleSchema
 });

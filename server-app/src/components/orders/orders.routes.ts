@@ -1,5 +1,6 @@
 import { Request, Response, Router } from 'express';
 
+import { isOfType } from '../../helpers/typeGuard';
 import { User } from '../../models/user.models';
 import { requiresAdmin, requiresLogin } from '../../utils';
 import * as orderService from './orders.service';
@@ -15,8 +16,8 @@ router.get(
   '/:request',
   requiresLogin(),
   async (req: Request, res: Response, next: any) => {
-    if (req.params.request === 'username') {
-      const result = await orderService.getOrdersByUsername((req.user as User).username);
+    if (req.params.request === 'username' && isOfType<User>(req.user, 'username')) {
+      const result = await orderService.getOrdersByUsername(req.user.username);
       res.send(result);
     } else next();
   },
@@ -37,8 +38,10 @@ router.get("/paths/:path_params", requiresLogin(), async (req: Request, res: Res
 });
 
 router.post("/", requiresLogin(), async (req: Request, res: Response) => {
-  const result = await orderService.addOrder((req.user as User), req.body);
-  res.send(result);
+  if (isOfType<User>(req.user, 'username')) {
+    const result = await orderService.addOrder(req.user, req.body);
+    res.send(result);
+  }
 });
 
 router.put("/:order_id", requiresLogin(), async (req: Request, res: Response) => {

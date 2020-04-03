@@ -17,4 +17,6 @@ export enum CargoTypePriceRatio {
 export type Cargo = {
   description: string;
   category: CargoType;
+  mass: number;
+  volume: number;
 };
