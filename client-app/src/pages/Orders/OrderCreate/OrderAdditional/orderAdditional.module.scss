@@ -1,3 +1,6 @@
 @import "../../../../styles/variables.scss";
 @import "../../../../styles/mixins.scss";
 
+.additional {
+  margin: $item-gap 0 2 * $item-gap 0;
+}

@@ -9,6 +9,7 @@ import styles from './orderCargo.module.scss';
 import OrderCargoItem from './OrderCargoItem/OrderCargoItem';
 
 type OrderCargoProps = {
+  list: Cargo[];
   resultCargo: (cargo: Cargo[]) => void;
 };
 
@@ -26,9 +27,13 @@ const defaultCargoState = {
   volume: null
 };
 
-const OrderCargo = ({ resultCargo }: OrderCargoProps) => {
+const OrderCargo = ({ list, resultCargo }: OrderCargoProps) => {
   const [cargoList, setCargoList] = useState<Cargo[]>([]);
   const [state, setState] = useState<OrderCargoState>(defaultCargoState);
+
+  useEffect(() => {
+    setCargoList(list);
+  }, [])
 
   useEffect(() => {
     resultCargo(cargoList);

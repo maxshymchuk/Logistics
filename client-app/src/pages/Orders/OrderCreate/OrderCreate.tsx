@@ -8,6 +8,7 @@ import { MessageType } from '../../../models/message.models';
 import { defaultOrderUser, OrderUser } from '../../../models/order.models';
 import { UserPath } from '../../../models/path.models';
 import { createOrder } from '../../../services/orders.service';
+import OrderAdditional from './OrderAdditional/OrderAdditional';
 import OrderCargo from './OrderCargo/OrderCargo';
 import OrderComplete from './OrderComplete/OrderComplete';
 import styles from './orderCreate.module.scss';
@@ -78,6 +79,7 @@ const OrderCreate = () => {
         break;
       }
       case Steps.Additional: {
+        setOrder({ ...order, isPaid: true });
         setSubtitle(Steps.Payment, 'Payed');
         break;
       }
@@ -105,10 +107,10 @@ const OrderCreate = () => {
   const getStepComponent = (step: number) => {
     switch (step) {
       case Steps.Locations: return <OrderLocations resultLocations={(locations) => setOrder({ ...order, locations })} />;
-      case Steps.Cargo: return <OrderCargo resultCargo={(cargo) => setOrder({ ...order, cargo })} />;
+      case Steps.Cargo: return <OrderCargo list={order.cargo} resultCargo={(cargo) => setOrder({ ...order, cargo })} />;
       case Steps.Path: return <OrderPathsList order={order} resultPath={(path) => setOrder({ ...order, path})} />;
       case Steps.Payment: return order.path?.price ? <OrderPayment price={order.path?.price} /> : 'Undefined Price';
-      case Steps.Additional: return <div />;
+      case Steps.Additional: return <OrderAdditional message={order.message} resultMessage={(message) => setOrder({ ...order, message })} />;
       default: return <div />;
     }
   };
