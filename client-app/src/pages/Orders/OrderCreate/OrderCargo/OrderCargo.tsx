@@ -28,12 +28,8 @@ const defaultCargoState = {
 };
 
 const OrderCargo = ({ list, resultCargo }: OrderCargoProps) => {
-  const [cargoList, setCargoList] = useState<Cargo[]>([]);
+  const [cargoList, setCargoList] = useState<Cargo[]>(list);
   const [state, setState] = useState<OrderCargoState>(defaultCargoState);
-
-  useEffect(() => {
-    setCargoList(list);
-  }, []);
 
   useEffect(() => {
     resultCargo(cargoList);

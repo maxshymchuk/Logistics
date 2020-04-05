@@ -3,8 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { Button, Step, StepContent, StepLabel, Stepper } from '@material-ui/core';
 import Collapse from '@material-ui/core/Collapse';
 
+import Notification from '../../../components/Notification/Notification';
 import { cargoTypes } from '../../../models/cargo.models';
-import { MessageType } from '../../../models/message.models';
+import { MessageType, ServerResponse } from '../../../models/message.models';
 import { defaultOrderUser, OrderUser } from '../../../models/order.models';
 import { UserPath } from '../../../models/path.models';
 import { createOrder } from '../../../services/orders.service';
@@ -21,7 +22,8 @@ enum Steps {
   Cargo,
   Path,
   Payment,
-  Additional
+  Additional,
+  Finish
 }
 
 type StepSubtitleType = {
@@ -34,6 +36,10 @@ const OrderCreate = () => {
 
   const [activeStep, setActiveStep] = useState(0);
   const [stepSubtitles, setStepSubtitles] = useState<StepSubtitleType | null>(null);
+
+  const [isOrderTaken, setOrderTaken] = useState(false);
+
+  const [dialogResult, setDialogResult] = useState<ServerResponse<string> | null>(null);
 
   const stepTitles = [
     'Enter start and end locations', 
@@ -83,6 +89,16 @@ const OrderCreate = () => {
         setSubtitle(Steps.Payment, 'Payed');
         break;
       }
+      case Steps.Finish: {
+        if (order.path) {
+          const path: UserPath = {
+            ...order.path,
+            message: order.message
+          };
+          takeOrder(path);
+        }
+        break;
+      }
       default: break;
     }
   }, [activeStep]);
@@ -90,10 +106,19 @@ const OrderCreate = () => {
   const takeOrder = async (path: UserPath) => {
     const response = await createOrder(path);
     if (response.messageType === MessageType.Error) {
-      
+      setDialogResult(response);
     } else if (typeof response.data === 'string') {
       setTrackNumber(response.data);
+      setOrderTaken(true);
     }
+  };
+
+  const resetOrder = () => {
+    setOrder(defaultOrderUser);
+    setActiveStep(0);
+    setOrderTaken(false);
+    setStepSubtitles(null);
+    setTrackNumber('');
   };
 
   const handleNext = () => {
@@ -121,50 +146,52 @@ const OrderCreate = () => {
     } 
     if (activeStep === Steps.Path) {
       return !order.path;
-    } 
+    }
     return false;
   };
 
   return (
     <div className={styles.order_wrapper}>
-      <Stepper activeStep={activeStep} orientation="vertical">
-        {stepTitles.map((label, index) => {
-          const stepSubtitle = stepSubtitles && stepSubtitles[index];
-          return (
-            <Step key={label}>
-              <StepLabel>
-                <span className={styles.title}>{label}</span>
-                <Collapse in={!!stepSubtitle}>
-                  <span className={styles.subtitle}>
-                    {stepSubtitle}
-                  </span>
-                </Collapse>
-              </StepLabel>
-              <StepContent>
-                {getStepComponent(index)}
-                <div className={styles.buttons}>
-                  <Button
-                    disabled={activeStep === 0}
-                    onClick={handleBack}
-                  >
-                    Back
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleNext}
-                    disabled={getButtonState()}
-                  >
-                    {activeStep === stepTitles.length - 1 ? 'Finish' : 'Next'}
-                  </Button>
-                </div>
-              </StepContent>
-            </Step>
-          );
-        })}
-      </Stepper>
-      {activeStep === stepTitles.length && (
-        <OrderComplete trackNumber={trackNumber} createNewOrder={() => {}} />
+      {dialogResult && <Notification {...dialogResult} afterClose={() => setDialogResult(null)} />}
+      {!isOrderTaken ? (
+        <Stepper activeStep={activeStep} orientation="vertical">
+          {stepTitles.map((label, index) => {
+            const stepSubtitle = stepSubtitles && stepSubtitles[index];
+            return (
+              <Step key={label}>
+                <StepLabel>
+                  <span className={styles.title}>{label}</span>
+                  <Collapse in={!!stepSubtitle}>
+                    <span className={styles.subtitle}>
+                      {stepSubtitle}
+                    </span>
+                  </Collapse>
+                </StepLabel>
+                <StepContent>
+                  {getStepComponent(index)}
+                  <div className={styles.buttons}>
+                    <Button
+                      disabled={activeStep === 0}
+                      onClick={handleBack}
+                    >
+                      Back
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleNext}
+                      disabled={getButtonState()}
+                    >
+                      {activeStep === stepTitles.length - 1 ? 'Finish' : 'Next'}
+                    </Button>
+                  </div>
+                </StepContent>
+              </Step>
+            );
+          })}
+        </Stepper>
+      ) : (
+        <OrderComplete trackNumber={trackNumber} createNewOrder={resetOrder} />
       )}
     </div>
   );

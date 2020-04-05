@@ -12,15 +12,14 @@ type OrderAdditionalProps = {
 };
 
 const OrderAdditional = ({ message, resultMessage }: OrderAdditionalProps) => {
-  const [messageText, setMessageText] = useState('');
+  const [messageText, setMessageText] = useState(message);
 
   useEffect(() => {
-    setMessageText(message);
-  }, []);
+    resultMessage(messageText);
+  }, [messageText]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMessageText(event.target.value);
-    resultMessage(messageText);
   };
 
   return (
