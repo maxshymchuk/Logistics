@@ -12,8 +12,9 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 
-import isOfType from '../../../helpers/typeGuard';
+import { isOfType } from '../../../helpers/typeGuard';
 import { MessageType, ServerResponse } from '../../../models/message.models';
 import { User } from '../../../models/user.models';
 import { getLoggedUser, updateUser } from '../../../services/users.service';
@@ -54,6 +55,13 @@ export const SettingsDialog = ({ result, onClose }: SettingsModalProps) => {
       handleClose();
     }
   };
+
+  const handleDate = (date: MaterialUiPickersDate) => {
+    const newDate = date?.getTime();
+    if (user && typeof newDate === 'number') {
+      setUser({ ...user, birthday: new Date(newDate) });
+    }
+  }
 
   const handleClickShowPassword = () => {
     setPasswordOpen(!isPasswordOpen);
@@ -116,7 +124,7 @@ export const SettingsDialog = ({ result, onClose }: SettingsModalProps) => {
                   <DatePicker 
                     label="Birthday" 
                     value={user.birthday} 
-                    onChange={date => setUser({ ...user, birthday: date as Date })}
+                    onChange={handleDate}
                   />
                 </MuiPickersUtilsProvider>
               ) : (

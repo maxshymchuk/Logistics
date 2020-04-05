@@ -73,7 +73,6 @@ const OrderLocations = ({ resultLocations }: OrderLocationsProps) => {
             <TextField
               {...params}
               label="To"
-              name="asdasd"
               variant="outlined"
               size="small"
               inputProps={{

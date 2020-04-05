@@ -1,5 +1,9 @@
 @import "../../../../styles/variables.scss";
 
+.paths_list {
+  margin: $item-gap 0 2 * $item-gap 0;
+}
+
 .path_item {
   margin-bottom: $item-gap;
 }

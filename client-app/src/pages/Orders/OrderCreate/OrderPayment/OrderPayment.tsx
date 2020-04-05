@@ -7,7 +7,11 @@ import { TextField } from '@material-ui/core';
 
 import styles from './orderPayment.module.scss';
 
-type OrderPayState = {
+type OrderPaymentProps = {
+  price: number;
+}
+
+type OrderPaymentState = {
   cvc: string;
   expiry: string;
   name: string;
@@ -16,8 +20,8 @@ type OrderPayState = {
 
 type FocusType = 'number' | 'name' | 'cvc' | 'expiry' | undefined;
 
-const OrderPay = () => {
-  const [cardInfo, setCardInfo] = useState<OrderPayState>({
+const OrderPayment = ({ price }: OrderPaymentProps) => {
+  const [cardInfo, setCardInfo] = useState<OrderPaymentState>({
     cvc: '',
     expiry: '',
     name: '',
@@ -43,17 +47,20 @@ const OrderPay = () => {
         />
       </div>
       <form className={styles.form} noValidate autoComplete='off'>
+        <article className={styles.title}>
+          {price}
+        </article>
         <TextField
           className={styles.input}
           name="number"
-          placeholder="Card Number"
+          label="Card Number"
           onChange={handleInputChange}
           fullWidth
         />
         <TextField
           className={styles.input}
           name="name"
-          placeholder="Name"
+          label="Name"
           onChange={handleInputChange}
           fullWidth
         />
@@ -61,14 +68,14 @@ const OrderPay = () => {
           <TextField
             className={styles.input}
             name="expiry"
-            placeholder="Valid Thru"
+            label="Valid Thru"
             onChange={handleInputChange}
             fullWidth
           />
           <TextField
             className={styles.input}
             name="cvc"
-            placeholder="CVC"
+            label="CVC"
             onChange={handleInputChange}
             fullWidth
           />
@@ -78,4 +85,4 @@ const OrderPay = () => {
   );
 };
 
-export default OrderPay;
+export default OrderPayment;

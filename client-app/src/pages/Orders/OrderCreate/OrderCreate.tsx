@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Step, StepContent, StepLabel, Stepper } from '@material-ui/core';
 import Collapse from '@material-ui/core/Collapse';
 
+import { cargoTypes } from '../../../models/cargo.models';
 import { MessageType } from '../../../models/message.models';
 import { defaultOrderUser, OrderUser } from '../../../models/order.models';
 import { UserPath } from '../../../models/path.models';
@@ -12,14 +13,14 @@ import OrderComplete from './OrderComplete/OrderComplete';
 import styles from './orderCreate.module.scss';
 import OrderLocations from './OrderLocations/OrderLocations';
 import OrderPathsList from './OrderPathsList/OrderPathsList';
-import OrderPay from './OrderPay/OrderPay';
+import OrderPayment from './OrderPayment/OrderPayment';
 
 enum Steps {
   Locations, 
   Cargo,
-  Route,
+  Path,
   Payment,
-  Departure
+  Additional
 }
 
 type StepSubtitleType = {
@@ -38,7 +39,7 @@ const OrderCreate = () => {
     'Enter cargo', 
     'Choose suitable route', 
     'Pay for the order',
-    'Enter the time and place where to pick up the cargo'
+    'Enter additional information'
   ];
 
   const setSubtitle = (step: number, subtitle: string) => {
@@ -54,12 +55,30 @@ const OrderCreate = () => {
         setOrder({ ...order, locations: null });
         break;
       }
-      case Steps.Locations + 1: {
+      case Steps.Cargo: {
         setSubtitle(Steps.Locations, `${order.locations?.from.name} – ${order.locations?.to.name}`);
         break;
       }
-      case Steps.Cargo + 1: {
-        setSubtitle(Steps.Cargo, 'Cargo');
+      case Steps.Path: {
+        const cargoTypesNumber = cargoTypes.map((type) => {
+          return order.cargo.filter(cargo => cargo.category === type).length
+        })
+        const cargoList = cargoTypesNumber.filter(number => number).map((number, index) => {
+          return `${number} ${cargoTypes[index].toLowerCase()}`;
+        })
+        setSubtitle(Steps.Cargo, cargoList.length ? cargoList.join(', ') : 'No cargos');
+        break;
+      }
+      case Steps.Payment: {
+        const routes = order.path?.paths.map(path => {
+          const routesLength = path.routes.length;
+          return `${path.routes[0]} – ${path.routes[routesLength - 1]} (${path.vehicle})`;
+        })
+        setSubtitle(Steps.Path, `${routes?.join(', ')}`);
+        break;
+      }
+      case Steps.Additional: {
+        setSubtitle(Steps.Payment, 'Payed');
         break;
       }
       default: break;
@@ -85,11 +104,11 @@ const OrderCreate = () => {
 
   const getStepComponent = (step: number) => {
     switch (step) {
-      case 0: return <OrderLocations resultLocations={(locations) => setOrder({ ...order, locations })} />;
-      case 1: return <OrderCargo resultCargo={(cargo) => setOrder({ ...order, cargo })} />;
-      case 2: return <OrderPathsList order={order as OrderUser} callback={takeOrder} />;
-      case 3: return <OrderPay />;
-      case 4: return <div />;
+      case Steps.Locations: return <OrderLocations resultLocations={(locations) => setOrder({ ...order, locations })} />;
+      case Steps.Cargo: return <OrderCargo resultCargo={(cargo) => setOrder({ ...order, cargo })} />;
+      case Steps.Path: return <OrderPathsList order={order} resultPath={(path) => setOrder({ ...order, path})} />;
+      case Steps.Payment: return order.path?.price ? <OrderPayment price={order.path?.price} /> : 'Undefined Price';
+      case Steps.Additional: return <div />;
       default: return <div />;
     }
   };
@@ -98,8 +117,10 @@ const OrderCreate = () => {
     if (activeStep === Steps.Locations) {
       return !order.locations;
     } 
+    if (activeStep === Steps.Path) {
+      return !order.path;
+    } 
     return false;
-    
   };
 
   return (
@@ -143,74 +164,6 @@ const OrderCreate = () => {
       {activeStep === stepTitles.length && (
         <OrderComplete trackNumber={trackNumber} createNewOrder={() => {}} />
       )}
-      {/* {!isOrderTaken ? (
-        <Card className={styles.order}>
-          <form noValidate autoComplete="off">
-            <section className={styles.form}>
-              <article className={styles.title}>Create order</article>
-              {!locations ? (
-                <Skeleton variant="rect" height={60} />
-              ) : (
-                <TextField
-                  name="cargo"
-                  label="Cargo"
-                  variant="outlined"
-                  onChange={handleInput}
-                  fullWidth
-                />
-              )}
-              {!locations ? (
-                <Skeleton variant="rect" height={60} />
-              ) : (
-                <TextField
-                  name="message"
-                  label="Message"
-                  variant="outlined"
-                  onChange={handleInput}
-                  multiline
-                  fullWidth
-                />
-              )}
-              {isRoutesShown ? (
-                <div className={styles.list}>
-                  <article className={styles.title}>
-                    Choose a suitable route
-                  </article>
-                  <OrderPathsList
-                    order={order as OrderUser}
-                    callback={takeOrder}
-                  />
-                </div>
-              ) : (
-                <div className={styles['button-check']}>
-                  {!errors.from && !errors.to ? (
-                    <Button
-                      variant="outlined"
-                      color="primary" 
-                      onClick={showRoutes}
-                      disabled={!locations}
-                      fullWidth
-                    >
-                      Show possible routes
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="outlined"
-                      color="secondary"
-                      onClick={showRoutes}
-                      fullWidth
-                    >
-                      Choose from and to locations
-                    </Button>
-                  )}
-                </div>
-              )}
-            </section>
-          </form>
-        </Card>
-      ) : (
-        <OrderComplete trackNumber={trackNumber} createNewOrder={resetOrder} />
-      )} */}
     </div>
   );
 };

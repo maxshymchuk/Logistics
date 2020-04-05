@@ -6,6 +6,14 @@ export enum CargoType {
   RoRo = 'RoRo'
 }
 
+export const cargoTypes = [
+  CargoType.Container,
+  CargoType.Liquid,
+  CargoType.Dry,
+  CargoType.Breakbulk,
+  CargoType.RoRo
+]
+
 export type Cargo = {
   description: string;
   category: CargoType;

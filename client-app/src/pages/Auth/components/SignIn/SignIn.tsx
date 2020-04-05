@@ -4,7 +4,7 @@ import { Redirect } from 'react-router-dom';
 import { Button, TextField } from '@material-ui/core';
 
 import { LoginContext } from '../../../../contexts/LoginContext';
-import isOfType from '../../../../helpers/typeGuard';
+import { isOfType } from '../../../../helpers/typeGuard';
 import { MessageType } from '../../../../models/message.models';
 import { User } from '../../../../models/user.models';
 import { authUser } from '../../../../services/users.service';

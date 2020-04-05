@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { Avatar, Button, Chip, Collapse, List, ListItem, ListItemText } from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
@@ -6,6 +6,7 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 
+import { PathsContext } from '../../../../../contexts/PathsContext';
 import { UserPath } from '../../../../../models/path.models';
 import styles from './OrderPath.module.scss';
 
@@ -15,15 +16,27 @@ type OrderPathState = {
 };
 
 type OrderPathProps = {
+  isSelected: boolean;
   userPath: UserPath;
-  callback: any;
+  onSelect: (path: UserPath | null) => void;
 };
 
-const OrderPath = ({ userPath, callback }: OrderPathProps) => {
+const OrderPath = ({ userPath, isSelected, onSelect }: OrderPathProps) => {
+  const [isSelectedPath, setSelectedPath] = useState(false);
   const [state, setState] = useState<OrderPathState>({
     isLoaded: false,
     isPathOpen: false
   });
+
+  const { isSelectChanged } = useContext(PathsContext);
+
+  useEffect(() => {
+    setSelectedPath(isSelected);
+  }, [isSelectChanged])
+
+  useEffect(() => {
+    onSelect(isSelectedPath ? userPath : null);
+  }, [isSelectedPath])
 
   const handleClick = () => {
     setState({
@@ -34,7 +47,7 @@ const OrderPath = ({ userPath, callback }: OrderPathProps) => {
 
   const handleOrder = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    callback(userPath);
+    setSelectedPath(true);
   };
 
   const getHoursStr = (hours: number) => {
@@ -63,11 +76,11 @@ const OrderPath = ({ userPath, callback }: OrderPathProps) => {
             style={{ cursor: 'pointer' }}
             avatar={<Avatar>$</Avatar>}
             color="primary"
-            label={userPath.price.toFixed(2)}
+            label={userPath.price}
           />
         </ListItemText>
         <Button
-          variant="contained"
+          variant={isSelectedPath ? "contained" : "outlined"}
           color="primary"
           onClick={handleOrder}
         >

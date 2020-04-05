@@ -1,12 +1,15 @@
 @import "../../../../styles/variables.scss";
 @import "../../../../styles/mixins.scss";
 
+.cargo {
+  margin: $item-gap 0;
+}
+
 .controls {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   padding: $item-gap $item-gap / 2;
-  margin-bottom: $item-gap;
 
   .description,
   .mass,
@@ -45,6 +48,7 @@
 }
 
 .cargo_list {
+  margin-top: $item-gap;
   $cargo-item-height: 50px;
   overflow-y: auto;
   max-height: ($cargo-item-height + 1) * 6;

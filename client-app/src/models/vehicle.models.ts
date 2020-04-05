@@ -7,6 +7,13 @@ export enum VehicleType {
   Train = 'Train'
 }
 
+export const vehicleTypes = [
+  VehicleType.Car,
+  VehicleType.Plane,
+  VehicleType.Ship,
+  VehicleType.Train
+]
+
 export type Vehicle = {
   _id?: string;
   destination: Location;

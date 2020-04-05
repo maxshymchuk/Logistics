@@ -4,12 +4,28 @@
 .payment {
   display: flex;
   flex-wrap: wrap;
+  margin-bottom: 2 * $item-gap;
+}
+
+.title {
+  @include title;
+  text-align: left;
+  color: $accent-color;
+  &:before {
+    content: "Price: ";
+    color: initial;
+    font-size: 1.2rem;
+  }
+  &:after {
+    content: "$";
+    color: initial;
+    font-size: 1.2rem;
+  }
 }
 
 .payment_card {
-  margin: 0 auto;
+  margin-top: $item-gap;
   padding-right: $item-gap;
-  margin-bottom: $item-gap;
   @media screen and (max-width: $container-tablet-width) {
     display: none;
   }
@@ -17,8 +33,10 @@
 
 .form {
   flex: 40%;
+  max-width: 400px;
   display: flex;
   flex-direction: column;
+  margin-top: $item-gap;
 }
 
 .input {

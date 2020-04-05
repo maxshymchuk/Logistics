@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Paper, TextField } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
+import { isOfType } from '../../../../helpers/typeGuard';
 import { Cargo, CargoType } from '../../../../models/cargo.models';
 import styles from './orderCargo.module.scss';
 import OrderCargoItem from './OrderCargoItem/OrderCargoItem';
@@ -35,15 +36,14 @@ const OrderCargo = ({ resultCargo }: OrderCargoProps) => {
 
   const isValidated = () => {
     if (state.description && state.mass && state.volume && state.category) {
-      if (state.volume < 0 || state.mass < 0) return false;
-      return true;
+      return (state.volume >= 0 && state.mass > 0);
     }
     return false;
   };
 
   const addCargo = () => {
-    if (isValidated()) {
-      setCargoList([ ...cargoList, state as Cargo ]);
+    if (isValidated() && isOfType<Cargo>(state, 'category')) {
+      setCargoList([ ...cargoList, state]);
       setState(defaultCargoState);
     }
   };
@@ -58,7 +58,7 @@ const OrderCargo = ({ resultCargo }: OrderCargoProps) => {
   };
 
   return (
-    <>
+    <section className={styles.cargo}>
       <Paper className={styles.controls}>
         <TextField
           className={styles.description}
@@ -129,7 +129,7 @@ const OrderCargo = ({ resultCargo }: OrderCargoProps) => {
           <OrderCargoItem key={index} id={index} cargo={cargo} handleDelete={deleteCargo} />
         ))}
       </Paper>
-    </>
+    </section>
   );
 };
 
