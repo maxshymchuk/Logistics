@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { Button, Card } from '@material-ui/core';
 
-import SignIn from '../../../components/SignIn/SignIn';
+import SignIn from '../../Auth/components/SignIn/SignIn';
 import styles from './error403.module.scss';
 
 const quotes = [

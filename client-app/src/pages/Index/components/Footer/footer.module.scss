@@ -1,5 +1,5 @@
-@import "../../styles/variables.scss";
-@import "../../styles/mixins.scss";
+@import "../../../../styles/variables.scss";
+@import "../../../../styles/mixins.scss";
 
 .footer {
   background-color: $secondary-color;
@@ -72,12 +72,12 @@
   }
 
   .google {
-    background: url("../../assets/badges/google.svg") no-repeat center center;
+    background: url("../../../../assets/badges/google.svg") no-repeat center center;
     background-size: contain;
   }
 
   .apple {
-    background: url("../../assets/badges/apple.svg") no-repeat center center;
+    background: url("../../../../assets/badges/apple.svg") no-repeat center center;
     background-size: contain;
   }
 }

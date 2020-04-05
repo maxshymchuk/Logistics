@@ -6,7 +6,7 @@ import { HashLink } from 'react-router-hash-link';
 import Carousel from '@brainhubeu/react-carousel';
 import { Button } from '@material-ui/core';
 
-import smoothScroll from '../../helpers/smoothScroll';
+import smoothScroll from '../../../../helpers/smoothScroll';
 import styles from './header.module.scss';
 
 const Header = () => (

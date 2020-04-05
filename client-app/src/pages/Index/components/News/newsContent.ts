@@ -1,7 +1,7 @@
-import newsImage1 from '../../assets/news/1.jpg';
-import newsImage2 from '../../assets/news/2.jpg';
-import newsImage3 from '../../assets/news/3.jpg';
-import newsImage4 from '../../assets/news/4.jpg';
+import newsImage1 from '../../../../assets/news/1.jpg';
+import newsImage2 from '../../../../assets/news/2.jpg';
+import newsImage3 from '../../../../assets/news/3.jpg';
+import newsImage4 from '../../../../assets/news/4.jpg';
 
 export default [
   {

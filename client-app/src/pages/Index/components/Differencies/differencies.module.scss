@@ -1,5 +1,5 @@
-@import "../../styles/variables.scss";
-@import "../../styles/mixins.scss";
+@import "../../../../styles/variables.scss";
+@import "../../../../styles/mixins.scss";
 
 .differencies {
   @include section;
@@ -23,7 +23,7 @@
     display: flex;
     flex-wrap: wrap;
     margin: 0 auto;
-    background: url("../../assets/differencies/delivery.png") no-repeat right
+    background: url("../../../../assets/index/differencies/delivery.png") no-repeat right
       center;
     background-size: contain;
   }
@@ -58,19 +58,19 @@
       background-repeat: no-repeat;
     }
     &:nth-child(1) .image {
-      background-image: url("../../assets/differencies/clock.svg");
+      background-image: url("../../../../assets/index/differencies/clock.svg");
       background-size: contain;
     }
     &:nth-child(2) .image {
-      background-image: url("../../assets/differencies/cargo.svg");
+      background-image: url("../../../../assets/index/differencies/cargo.svg");
       background-size: contain;
     }
     &:nth-child(3) .image {
-      background-image: url("../../assets/differencies/place.svg");
+      background-image: url("../../../../assets/index/differencies/place.svg");
       background-size: contain;
     }
     &:nth-child(4) .image {
-      background-image: url("../../assets/differencies/credit-card.svg");
+      background-image: url("../../../../assets/index/differencies/credit-card.svg");
       background-size: contain;
     }
   }

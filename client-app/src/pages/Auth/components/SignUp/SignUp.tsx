@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 
 import { Button, TextField } from '@material-ui/core';
 
-import { UserSignUp } from '../../models/user.models';
-import { regUser } from '../../services/users.service';
+import { UserSignUp } from '../../../../models/user.models';
+import { regUser } from '../../../../services/users.service';
 import styles from './signup.module.scss';
 
 const SignUp = () => {
