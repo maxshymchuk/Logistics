@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose';
 
 import { orderSchema } from '../schemas/order.schemas';
+import { Cargo } from './cargo.models';
 import { Location } from './location.models';
 import { Route } from './route.models';
 import { Track } from './track.models';
@@ -21,20 +22,21 @@ export interface Order {
   status: OrderStatus;
   routes: Route[];
   trackNumber: string;
+  isPaid: boolean;
 }
 
 export type UserOrder = {
   from: Location;
   to: Location;
   who: string;
-  cargos: string[];
+  cargo: Cargo[];
   message: string;
 };
 
 export type UserOrderInput = {
   from: string;
   to: string;
-  cargos: string[];
+  cargo: Cargo[];
   message: string;
 };
 

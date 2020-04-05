@@ -8,10 +8,12 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 
+import { isOfType } from '../../../helpers/typeGuard';
 import { Location } from '../../../models/location.models';
-import { Message } from '../../../models/message.models';
-import { Vehicle, VehicleType } from '../../../models/vehicle.models';
+import { MessageType, ServerResponse } from '../../../models/message.models';
+import { Vehicle, VehicleType, vehicleTypes } from '../../../models/vehicle.models';
 import { getLocationsData } from '../../../services/locations.service';
 import { addVehicle } from '../../../services/vehicles.service';
 import styles from './form.module.scss';
@@ -23,7 +25,7 @@ export type VehiclesDialogState = {
 };
 
 export type VehiclesDialogProps = {
-  result: (message: Message<string>) => void;
+  result: (response: ServerResponse<Location[] | null>) => void;
   onClose: () => void;
 };
 
@@ -35,22 +37,38 @@ export const VehiclesDialog = ({result, onClose}: VehiclesDialogProps) => {
     destination: null
   });
 
-  useEffect(() => {
-    (async () => {
-      const locationsData = (await getLocationsData()).data;
-      setLocations(locationsData);
-    })();
-  }, []);
-
   const handleClose = () => {
     onClose();
   };
 
+  useEffect(() => {
+    (async () => {
+      const locationsResponse = await getLocationsData();
+      if (locationsResponse.messageType === MessageType.Error) {
+        result(locationsResponse);
+        handleClose();
+      } else if (locationsResponse.data instanceof Array) {
+        setLocations(locationsResponse.data);
+      }
+    })();
+  }, []);
+
   const handleSubmit = async () => {
-    if (state.destination) {
-      const message = await addVehicle(state as Vehicle);
-      result(message);
+    if (state.destination && isOfType<Vehicle>(state, 'type')) {
+      const response = await addVehicle(state);
+      result(response);
       handleClose();
+    }
+  };
+
+  const handleSelect = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setState({...state, type: event.target.value as VehicleType});
+  };
+
+  const handleDate = (date: MaterialUiPickersDate) => {
+    const newDate = date?.getTime();
+    if (typeof newDate === 'number') {
+      setState({...state, arrivalDate: new Date(newDate) });
     }
   };
 
@@ -66,9 +84,9 @@ export const VehiclesDialog = ({result, onClose}: VehiclesDialogProps) => {
                 labelId="vehicles_label" 
                 labelWidth={55} 
                 value={state.type}
-                onChange={e => setState({...state, type: e.target.value as VehicleType})}
+                onChange={handleSelect}
               >
-                {Object.keys(VehicleType).map((vehicle, index) => (
+                {vehicleTypes.map((vehicle, index) => (
                   <MenuItem key={index} value={vehicle}>{vehicle}</MenuItem>
                 ))}
               </Select>
@@ -79,7 +97,7 @@ export const VehiclesDialog = ({result, onClose}: VehiclesDialogProps) => {
                 label="Arrival Date & Time" 
                 inputVariant="outlined" 
                 value={state.arrivalDate} 
-                onChange={date => setState({...state, arrivalDate: date as Date})}
+                onChange={handleDate}
               />
             </MuiPickersUtilsProvider>
             <Autocomplete

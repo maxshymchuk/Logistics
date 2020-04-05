@@ -1,10 +1,10 @@
-export enum MessageTypes {
+export enum MessageType {
   Success = 'Success',
-  Warning = 'Warning',
   Error = 'Error'
 } 
 
-export type Message<T> = {
-  messageType: MessageTypes;
-  data: T;
+export type ServerResponse<T = null> = {
+  messageType: MessageType;
+  message: string;
+  data: T | null;
 };

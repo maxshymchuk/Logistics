@@ -1,10 +1,18 @@
 export enum CargoType {
-  Container,
-  Liquid,
-  Dry,
-  Breakbulk,
-  RoRo
+  Container = 'Container',
+  Liquid = 'Liquid',
+  Dry = 'Dry',
+  Breakbulk = 'Breakbulk',
+  RoRo = 'RoRo'
 }
+
+export const cargoTypes = [
+  CargoType.Container,
+  CargoType.Liquid,
+  CargoType.Dry,
+  CargoType.Breakbulk,
+  CargoType.RoRo
+];
 
 export type Cargo = {
   description: string;

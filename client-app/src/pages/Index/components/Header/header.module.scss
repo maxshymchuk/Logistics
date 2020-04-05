@@ -1,0 +1,84 @@
+@import '../../../../styles/variables.scss';
+@import '../../../../styles/mixins.scss';
+
+.header {
+  width: 100%;
+  height: 100vh;
+  background-size: cover;
+  position: absolute;
+  top: 0;
+  backdrop-filter: blur(0.8);
+}
+
+.layer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  color: #fff;
+  box-sizing: border-box;
+
+  .title {
+    @include title;
+    padding: $item-gap;
+    padding-left: 10%;
+    margin-right: auto;
+    text-align: left;
+    background-color: $accent-color;
+    @media screen and (max-width: $container-tablet-width) {
+      padding: 0 10%;
+      background-color: transparent;
+    }
+  }
+
+  .subtitle {
+    @include subtitle;
+    max-width: 600px;
+    padding: $item-gap 0;
+    padding-left: 10%;
+    margin-right: 10%;
+  }
+
+  .button {
+    width: 400px;
+    color: #fff;
+    margin-left: 10%;
+    font-size: 1.2rem;
+    @media screen and (max-width: $container-tablet-width) {
+      margin: 0 10%;
+      width: 80%;
+      font-size: inherit;
+    }
+  }
+}
+
+.airplane,
+.train,
+.truck,
+.ship {
+  width: 100%;
+  height: 100vh;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  filter: brightness(0.5);
+}
+
+.airplane {
+  background-image: url('../../../../assets/index/header/airplane.jpg');
+}
+
+.train {
+  background-image: url('../../../../assets/index/header/train.jpg');
+}
+
+.ship {
+  background-image: url('../../../../assets/index/header/ship.jpg');
+}
+
+.truck {
+  background-image: url('../../../../assets/index/header/truck.jpg');
+}

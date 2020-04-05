@@ -1,4 +1,3 @@
-import cogoToast from 'cogo-toast';
 import React, { useState } from 'react';
 
 import {
@@ -6,6 +5,8 @@ import {
 } from '@material-ui/core';
 import ReplayIcon from '@material-ui/icons/Replay';
 
+import Notification from '../../../components/Notification/Notification';
+import { ServerResponse } from '../../../models/message.models';
 import { regenLocations, regenVehicles } from '../../services/regenerator.service';
 import styles from './regenerator.module.scss';
 
@@ -14,6 +15,7 @@ type RegeneratorProps = {
 };
 
 const Regenerator = (props: RegeneratorProps) => {
+  const [dialogResult, setDialogResult] = useState<ServerResponse | null>(null);
   const [isLoading, setLoading] = useState({
     locations: false,
     vehicles: false
@@ -21,22 +23,16 @@ const Regenerator = (props: RegeneratorProps) => {
 
   const regenerateLocations = async () => {
     setLoading({...isLoading, locations: true});
-    regenLocations().then((res) => {
-      cogoToast.success(res, {
-        position: 'bottom-right'
-      });
-      setLoading({...isLoading, locations: false});
-    });
+    const result = await regenLocations();
+    setDialogResult(result);
+    setLoading({...isLoading, locations: false});
   };
 
   const regenerateVehicles = async () => {
     setLoading({...isLoading, vehicles: true});
-    regenVehicles().then((res) => {
-      cogoToast.success(res, {
-        position: 'bottom-right'
-      });
-      setLoading({...isLoading, vehicles: false});
-    });
+    const result = await regenVehicles();
+    setDialogResult(result);
+    setLoading({...isLoading, vehicles: false});
   };
 
   const handleClose = () => {
@@ -45,6 +41,7 @@ const Regenerator = (props: RegeneratorProps) => {
 
   return (
     <Dialog open onClose={handleClose} scroll='body' maxWidth='xs' fullWidth>
+      {dialogResult && <Notification {...dialogResult} afterClose={() => setDialogResult(null)} />}
       <DialogTitle>Regenerator</DialogTitle>
       <DialogContent>
         <DialogContentText>

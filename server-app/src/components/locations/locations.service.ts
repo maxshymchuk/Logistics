@@ -1,10 +1,10 @@
 import * as fs from 'fs';
 
-import { errorMsg, successMsg } from '../../helpers/messages';
+import { errorResponse, successResponse } from '../../helpers/response';
 import {
-    Location, locationModel, Map, mapModel, MapType, Path, PathInput
+    Location, locationModel, Map, mapModel, MapType, MapTypes, Path, PathInput
 } from '../../models/location.models';
-import { Message } from '../../models/message.models';
+import { Response } from '../../models/message.models';
 import { getAirplaneRoutes, getRoutes } from './router';
 
 async function findLocationById(id: string) {
@@ -18,27 +18,27 @@ export async function getLocations() {
     const result = locations.sort((a: Location, b: Location) =>
       a.name > b.name ? 1 : -1
     );
-    return successMsg(result);
+    return successResponse('Success', result);
   } catch (err) {
-    return errorMsg(`Error while getting locations (${err})`);
+    return errorResponse(`Error while getting locations (${err})`);
   }
 }
 
 export async function addLocation(location: Location) {
   try {
     await locationModel.create(location);
-    return successMsg(`Location "${location.name}" successfully added`);
+    return successResponse(`Location "${location.name}" successfully added`);
   } catch (err) {
-    return errorMsg(`Error while adding location (${err})`);
+    return errorResponse(`Error while adding location (${err})`);
   }
 }
 
 export async function getLocationByName(name: string) {
   try {
     const location = await locationModel.findOne({ name })
-    return successMsg(location);
+    return successResponse('Success', location);
   } catch (err) {
-    return errorMsg(`Error while searching location (${err})`);
+    return errorResponse(`Error while searching location (${err})`);
   }
 }
 
@@ -48,9 +48,11 @@ export async function createPaths(pathInput: PathInput) {
   if (from !== to) {
     const airplaneRoutes = await getAirplaneRoutes(from, to);
     paths.push(airplaneRoutes);
-    for (let mapType in MapType) {
-      const path = await getRoutes(from, to, mapType as MapType);
-      path.length && paths.push(path);
+    for (let mapType of MapTypes) {
+      const path = await getRoutes(from, to, mapType);
+      if (path.length) {
+        paths.push(path);
+      }
     }
   }
   return paths;
@@ -64,9 +66,9 @@ export async function regenerateLocations() {
     for (let city of cities) {
       await locationModel.create(city);
     }
-    return successMsg('Successful regeneration of locations');
+    return successResponse('Successful regeneration of locations');
   } catch (err) {
-    return errorMsg(`Error while regenerating locations (${err})`);
+    return errorResponse(`Error while regenerating locations (${err})`);
   }
 }
 
@@ -78,22 +80,22 @@ export async function regenerateMaps() {
     for (let map of maps) {
       await mapModel.create(map);
     }
-    return successMsg('Successful regeneration of maps');
+    return successResponse('Successful regeneration of maps');
   } catch (err) {
-    return errorMsg(`Error while regenerating maps (${err})`);
+    return errorResponse(`Error while regenerating maps (${err})`);
   }
 }
 
-export async function deleteLocationById(id: string): Promise<Message<string>> {
+export async function deleteLocationById(id: string): Promise<Response<string>> {
   try {
     const location = await findLocationById(id);
     if (location) {
       await locationModel.findByIdAndDelete(id);
-      return successMsg(`Successful delete of "${location.name}" (${id})`);
+      return successResponse(`Successful delete of "${location.name}" (${id})`);
     } else {
-      return errorMsg(`Cannot find location to delete (${id})`);
+      return errorResponse(`Cannot find location to delete (${id})`);
     }
   } catch (err) {
-    return errorMsg(`Error while deleting location (${err})`);
+    return errorResponse(`Error while deleting location (${err})`);
   }
 }

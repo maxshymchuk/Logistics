@@ -11,9 +11,8 @@ router.get("/", requiresLogin(), async (req: Request, res: Response) => {
 });
 
 router.get("/regen", requiresAdmin(), async (req: Request, res: Response) => {
-  const locationsMsg = await locationService.regenerateLocations();
-  const mapsMsg = await locationService.regenerateMaps();
-  const result = `${locationsMsg.data}\n${mapsMsg.data}`;
+  const result = await locationService.regenerateLocations();
+  await locationService.regenerateMaps();
   res.send(result);
 });
 

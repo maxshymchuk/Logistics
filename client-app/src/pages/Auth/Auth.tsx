@@ -3,9 +3,9 @@ import SwipeableViews from 'react-swipeable-views';
 
 import { Box, Card, Tab, Tabs, Typography } from '@material-ui/core';
 
-import SignIn from '../../components/SignIn/SignIn';
-import SignUp from '../../components/SignUp/SignUp';
 import styles from './auth.module.scss';
+import SignIn from './components/SignIn/SignIn';
+import SignUp from './components/SignUp/SignUp';
 
 interface TabPanelProps {
   children?: React.ReactNode;

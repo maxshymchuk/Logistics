@@ -5,11 +5,13 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import Menu from './components/Menu/Menu';
+import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import { defaultLoginState, LoginContext, LoginContextState } from './contexts/LoginContext';
 import Admin from './pages/Admin/Admin';
 import Auth from './pages/Auth/Auth';
+import Error404 from './pages/ErrorPages/Error404/Error404';
 import Index from './pages/Index/Index';
-import CreateOrder from './pages/Orders/CreateOrder/CreateOrder';
+import OrderCreate from './pages/Orders/OrderCreate/OrderCreate';
 import TrackOrder from './pages/Orders/TrackOrder/TrackOrder';
 import Profile from './pages/Profile/Profile';
 import { getLoggedUser, logoutUser } from './services/users.service';
@@ -49,16 +51,17 @@ const App = () => {
     <LoginContext.Provider value={{...loginState, login, logout}}>
       <Router>
         <Switch>
-          <Route path="/admin" component={Admin} />
+          <Route path="/admin" component={undefined} />
           <Route path="/" component={Menu} />
         </Switch>
         <Switch>
+          <PrivateRoute path="/admin" component={Admin} />
           <Route exact path="/" component={Index} />
           <Route exact path="/login" component={Auth} />
-          <Route exact path="/profile" component={Profile} />
-          <Route exact path="/create" component={CreateOrder} />
+          <PrivateRoute exact path="/profile" component={Profile} />
+          <PrivateRoute exact path="/create" component={OrderCreate} />
           <Route exact path="/track" component={TrackOrder} />
-          {/* <Route path="*" component={TrackOrder} /> */}
+          <Route path="*" component={Error404} />
         </Switch>
       </Router>
     </LoginContext.Provider>

@@ -1,15 +1,14 @@
 import * as qs from 'qs';
 
-import { errorMsg, successMsg } from '../../helpers/messages';
+import { errorResponse, successResponse } from '../../helpers/response';
 import { Location, UserPath } from '../../models/location.models';
-import { Message, MessageTypes } from '../../models/message.models';
+import { MessageType } from '../../models/message.models';
 import {
     Order, orderModel, OrderMongo, OrderStatus, UserOrderInput
 } from '../../models/order.models';
 import { Route } from '../../models/route.models';
 import { Track, TrackStatus } from '../../models/track.models';
 import { User } from '../../models/user.models';
-import { VehicleMongo } from '../../models/vehicle.models';
 import { createPaths, getLocationByName } from '../locations/locations.service';
 import { assignVehicle, getNearestVehicle } from '../vehicles/vehicles.service';
 
@@ -28,12 +27,12 @@ export async function getOrders() {
   try {
     const orders = await orderModel.find();
     if (orders.length) {
-      return successMsg<Order[]>(orders);
+      return successResponse<Order[]>('Success', orders);
     } else {
-      return errorMsg<string>('Cannot find orders');
+      return errorResponse<string>('Cannot find orders');
     }
   } catch (err) {
-    return errorMsg<string>(`Error while getting orders (${err})`);
+    return errorResponse<string>(`Error while getting orders (${err})`);
   }
 }
 
@@ -41,12 +40,12 @@ export async function getOrderById(id: string) {
   try {
     const order = await findOrderById(id);
     if (order) {
-      return successMsg<Order>(order);
+      return successResponse<Order>('Success', order);
     } else {
-      return errorMsg<string>('Cannot find order');
+      return errorResponse<string>('Cannot find order');
     }
   } catch (err) {
-    return errorMsg<string>(`Error while searching order (${err})`);
+    return errorResponse<string>(`Error while searching order (${err})`);
   }
 }
 
@@ -54,12 +53,12 @@ export async function getOrderByTrackNumber(trackNumber: string) {
   try {
     const order = await orderModel.findOne({ trackNumber });
     if (order) {
-      return successMsg<Order>(order);
+      return successResponse<Order>('Success', order);
     } else {
-      return errorMsg<string>('Cannot find order');
+      return errorResponse<string>('Cannot find order');
     }
   } catch (err) {
-    return errorMsg<string>(`Error while searching order (${err})`);
+    return errorResponse<string>(`Error while searching order (${err})`);
   }
 }
 
@@ -67,19 +66,19 @@ export async function getOrdersByUsername(username: string) {
   try {
     const orders = await orderModel.find({ username });
     if (orders.length) {
-      return successMsg<Order[]>(orders);
+      return successResponse<Order[]>('Success', orders);
     } else {
-      return errorMsg<string>('Cannot find orders');
+      return errorResponse<string>('Cannot find orders');
     }
   } catch (err) {
-    return errorMsg<string>(`Error while getting orders (${err})`);
+    return errorResponse<string>(`Error while getting orders (${err})`);
   }
 }
 
 export async function getOrderPaths(orderParams: string) {
   try {
     const userOrderInput: UserOrderInput = qs.parse(orderParams);
-    const { from, to, message, cargos } = userOrderInput;
+    const { from, to, message, cargo } = userOrderInput;
     const pathsList = await createPaths({ from, to });
     const userPaths: UserPath[] = [];
     for (let i = 0; i < pathsList.length; i++) {
@@ -95,22 +94,21 @@ export async function getOrderPaths(orderParams: string) {
       const timeInterval = paths
         .map(path => path.timeInterval)
         .reduce((acc, cur) => (acc += cur), 0);
-      userPaths.push({ cargos, message, price, distance, timeInterval, paths });
+      userPaths.push({ cargo, message, price: +price.toFixed(2), distance, timeInterval, paths, isPaid: true });
     }
     if (userPaths.length) {
-      return successMsg<UserPath[]>(userPaths);
+      return successResponse<UserPath[]>('Success', userPaths);
     } else {
-      return errorMsg<string>('Cannot create paths');
+      return errorResponse<string>('Cannot create paths');
     }
   } catch (err) {
-    return errorMsg<string>(`Error while creating paths (${err})`);
+    return errorResponse<string>(`Error while creating paths (${err})`);
   }
 }
 
 function createTrack(route: Route) {
   const today = new Date();
-  const status =
-    route.departureDate <= today ? TrackStatus.Transit : TrackStatus.Pending;
+  const status = route.departureDate <= today ? TrackStatus.Transit : TrackStatus.Pending;
   const track: Track = {
     status, route,
     departureDate: route.departureDate,
@@ -140,9 +138,9 @@ export async function updateOrders() {
       }
       await orderModel.updateOne({ _id: order._id }, order);
     }
-    return successMsg<string>(`Successful orders update`);
+    return successResponse<string>(`Successful orders update`);
   } catch (err) {
-    return errorMsg<string>(`Error while updating orders (${err})`);
+    return errorResponse<string>(`Error while updating orders (${err})`);
   }
 }
 
@@ -152,43 +150,40 @@ async function createRoutes(userPath: UserPath) {
   for (let path of userPath.paths) {
     const locations: Location[] = [];
     for (let route of path.routes) {
-      const locationMsg = await getLocationByName(route);
-      if (locationMsg.messageType === MessageTypes.Error) {
-        throw locationMsg.data
-      } else {
-        const location = locationMsg.data as Location;
-        locations.push(location);
+      const locationResponse = await getLocationByName(route);
+      if (locationResponse.messageType === MessageType.Error) {
+        throw locationResponse.message
       }
+      const location = locationResponse.data;
+      locations.push(location);
     }
     for (let i = 0; i < locations.length - 1; i++) {
-      const nearestVehicleMsg = await getNearestVehicle(
+      const nearestVehicleResponse = await getNearestVehicle(
         path.vehicle,
         locations[i],
         date
       );
-      if (nearestVehicleMsg.messageType === MessageTypes.Error) {
-        throw nearestVehicleMsg.data;
-      } else {
-        const nearestVehicle = nearestVehicleMsg.data as VehicleMongo;
-        const assignedVehicleMsg = await assignVehicle(
-          nearestVehicle,
-          locations[i + 1]
-        );
-        if (assignedVehicleMsg.messageType === MessageTypes.Error) {
-          throw assignedVehicleMsg.data;
-        } else {
-          const assignedVehicle = assignedVehicleMsg.data as VehicleMongo;
-          date = assignedVehicle.arrivalDate;
-          const route: Route = {
-            startLocation: locations[i],
-            endLocation: locations[i + 1],
-            cargos: userPath.cargos,
-            departureDate: nearestVehicle.arrivalDate,
-            vehicle: assignedVehicle
-          };
-          routes.push(route);
-        }
+      if (nearestVehicleResponse.messageType === MessageType.Error) {
+        throw nearestVehicleResponse.message;
       }
+      const nearestVehicle = nearestVehicleResponse.data;
+      const assignedVehicleResponse = await assignVehicle(
+        nearestVehicle,
+        locations[i + 1]
+      );
+      if (assignedVehicleResponse.messageType === MessageType.Error) {
+        throw assignedVehicleResponse.message;
+      }
+      const assignedVehicle = assignedVehicleResponse.data;
+      date = assignedVehicle.arrivalDate;
+      const route: Route = {
+        startLocation: locations[i],
+        endLocation: locations[i + 1],
+        cargo: userPath.cargo,
+        departureDate: nearestVehicle.arrivalDate,
+        vehicle: assignedVehicle
+      };
+      routes.push(route);
     }
   }
   return routes;
@@ -204,12 +199,13 @@ export async function addOrder(user: User, path: UserPath) {
       username: user.username,
       price: path.price,
       status: OrderStatus.Taken,
-      routes, trackNumber
+      isPaid: path.isPaid,
+      routes, trackNumber, 
     };
     await orderModel.create(order);
-    return successMsg<string>(trackNumber);
+    return successResponse('Successful create of order', trackNumber);
   } catch (err) {
-    return errorMsg<string>(`Error while adding order (${err})`);
+    return errorResponse(`Error while adding order (${err})`);
   }
 }
 
@@ -218,12 +214,12 @@ export async function deleteOrderById(id: string) {
     const foundOrder = await findOrderById(id);
     if (foundOrder) {
       await orderModel.findByIdAndDelete(id);
-      return successMsg<string>(`Successful delete of "${foundOrder.trackNumber}" (${id})`);
+      return successResponse(`Successful delete of "${foundOrder.trackNumber}" (${id})`);
     } else {
-      return errorMsg<string>(`Cannot find order to delete (${id})`);
+      return errorResponse(`Cannot find order to delete (${id})`);
     }
   } catch (err) {
-    return errorMsg<string>(`Error while deleting order (${err})`);
+    return errorResponse(`Error while deleting order (${err})`);
   }
 }
 
@@ -232,11 +228,11 @@ export async function updateOrder(order: OrderMongo) {
     const foundOrder = await findOrderById(order._id);
     if (foundOrder) {
       await orderModel.updateOne({ _id: order._id }, order);
-      return successMsg<string>(`Successful update of "${order.trackNumber}" (${order._id})`);
+      return successResponse<string>(`Successful update of "${order.trackNumber}" (${order._id})`);
     } else {
-      return errorMsg<string>(`Cannot find order to update (${order._id})`);
+      return errorResponse<string>(`Cannot find order to update (${order._id})`);
     }
   } catch (err) {
-    return errorMsg<string>(`Error while updating order (${err})`);
+    return errorResponse<string>(`Error while updating order (${err})`);
   }
 }

@@ -1,14 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
 
 import {
-    CircularProgress, Fade, IconButton, Paper, Table, TableBody, TableCell, TableContainer,
-    TableHead, TableRow
+  CircularProgress, Fade, IconButton, Paper, Table, TableBody, TableCell, TableContainer,
+  TableHead, TableRow
 } from '@material-ui/core';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 import Notification from '../../../components/Notification/Notification';
 import { AdminContext } from '../../../contexts/AdminContext';
-import { Message } from '../../../models/message.models';
+import { MessageType, ServerResponse } from '../../../models/message.models';
 import { Vehicle, VehicleType } from '../../../models/vehicle.models';
 import { getVehiclesData, removeVehicleById } from '../../../services/vehicles.service';
 import tableStyles from '../../styles/table.module.scss';
@@ -27,7 +27,7 @@ type VehiclesProps = {
 const Vehicles = ({ page, checkPages }: VehiclesProps) => {
   const ITEMS_ON_PAGE = 20;
 
-  const [notifyMessage, setNotifyMessage] = useState<Message<string> | null>(null);
+  const [notifyMessage, setNotifyMessage] = useState<ServerResponse<any> | null>(null);
   const [isChanged, setChanged] = useState(false);
   const [pagesNumber, setPagesNumber] = useState(0);
   const [state, setState] = useState<VehiclesState>({
@@ -35,15 +35,19 @@ const Vehicles = ({ page, checkPages }: VehiclesProps) => {
     isLoaded: false
   });
 
-  const context = useContext(AdminContext);
+  const { isChanged: isChangedContext } = useContext(AdminContext);
 
   useEffect(() => {
     (async () => {
-      const vehiclesData = (await getVehiclesData()).data;
-      setState({ ...state, vehicles: vehiclesData, isLoaded: true });
-      setPagesNumber(Math.round(vehiclesData.length / ITEMS_ON_PAGE));
+      const vehiclesResponse = await getVehiclesData();
+      if (vehiclesResponse.messageType === MessageType.Error) {
+        setNotifyMessage(vehiclesResponse);
+      } else if (vehiclesResponse.data instanceof Array) {
+        setState({ ...state, vehicles: vehiclesResponse.data, isLoaded: true });
+        setPagesNumber(Math.round(vehiclesResponse.data.length / ITEMS_ON_PAGE));
+      }
     })();
-  }, [isChanged, context.isChanged]);
+  }, [isChanged, isChangedContext]);
 
   useEffect(() => {
     checkPages(pagesNumber);
@@ -51,8 +55,8 @@ const Vehicles = ({ page, checkPages }: VehiclesProps) => {
 
   const removeVehicle = async (vehicle: Vehicle) => {
     if (vehicle._id) {
-      const message = await removeVehicleById(vehicle._id);
-      setNotifyMessage(message);
+      const response = await removeVehicleById(vehicle._id);
+      setNotifyMessage(response);
       setChanged(!isChanged);
     }
   };

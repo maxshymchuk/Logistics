@@ -1,0 +1,55 @@
+@import "../../../../styles/variables.scss";
+@import "../../../../styles/mixins.scss";
+
+.cargo {
+  margin: $item-gap 0;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: $item-gap $item-gap / 2;
+
+  .description,
+  .mass,
+  .volume,
+  .category {
+    flex-grow: 1;
+    margin: 0 $item-gap / 2;
+    margin-bottom: $item-gap;
+  }
+
+  .description {
+    width: 40%;
+  }
+
+  .button {
+    margin: 0 $item-gap / 2;
+  }
+}
+
+.additional {
+  display: flex;
+  flex-grow: 1;
+  min-width: 350px;
+  width: 50%;
+  flex-wrap: wrap;
+  @media screen and (max-width: $container-tablet-width) {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .mass,
+  .volume {
+    width: 80px;
+    min-width: 80px;
+  }
+}
+
+.cargo_list {
+  margin-top: $item-gap;
+  $cargo-item-height: 50px;
+  overflow-y: auto;
+  max-height: ($cargo-item-height + 1) * 6;
+}

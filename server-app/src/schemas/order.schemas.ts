@@ -1,5 +1,6 @@
 import * as mongoose from 'mongoose';
 
+import { cargoSchema } from './cargo.schemas';
 import { locationSchema } from './location.schemas';
 import { vehicleSchema } from './vehicle.schemas';
 
@@ -7,7 +8,7 @@ import { vehicleSchema } from './vehicle.schemas';
 export const routeSchema = new mongoose.Schema({
   startLocation: locationSchema,
   endLocation: locationSchema,
-  cargos: [String],
+  cargo: [cargoSchema],
   departureDate: Date,
   vehicle: vehicleSchema
 });
@@ -27,5 +28,6 @@ export const orderSchema = new mongoose.Schema({
   price: Number,
   status: String,
   routes: [routeSchema],
-  trackNumber: String
+  trackNumber: String,
+  isPaid: Boolean
 });

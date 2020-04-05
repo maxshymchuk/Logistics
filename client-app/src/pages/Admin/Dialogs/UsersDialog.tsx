@@ -7,14 +7,15 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 
-import { Message } from '../../../models/message.models';
+import { ServerResponse } from '../../../models/message.models';
 import { User } from '../../../models/user.models';
 import { addUser } from '../../../services/users.service';
 import styles from './form.module.scss';
 
 export type UsersModalProps = {
-  result: (message: Message<string>) => void;
+  result: (response: ServerResponse) => void;
   onClose: () => void;
 };
 
@@ -35,9 +36,16 @@ export const UsersDialog = ({result, onClose}: UsersModalProps) => {
   };
 
   const handleSubmit = async () => {
-    const message = await addUser(state);
-    result(message);
+    const response = await addUser(state);
+    result(response);
     handleClose();
+  };
+
+  const handleDate = (date: MaterialUiPickersDate) => {
+    const newDate = date?.getTime();
+    if (typeof newDate === 'number') {
+      setState({...state, birthday: new Date(newDate) });
+    }
   };
 
   return (
@@ -63,7 +71,7 @@ export const UsersDialog = ({result, onClose}: UsersModalProps) => {
                 label="Birthday" 
                 inputVariant="outlined" 
                 value={state.birthday} 
-                onChange={date => setState({...state, birthday: date as Date})}
+                onChange={handleDate}
               />
             </MuiPickersUtilsProvider>
             <TextField

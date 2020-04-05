@@ -1,5 +1,5 @@
 import CONSTS from '../../const';
-import { errorMsg, successMsg } from '../../helpers/messages';
+import { errorResponse, successResponse } from '../../helpers/response';
 import { orderModel } from '../../models/order.models';
 import { vehicleModel } from '../../models/vehicle.models';
 import { moveDate } from '../../utils';
@@ -42,8 +42,8 @@ export async function moveTimeOn(days: number) {
     const result = days >= 0
       ? `Plus ${Math.abs(days)} day(s)`
       : `Minus ${Math.abs(days)} day(s)`
-    return successMsg(result);
+    return successResponse(result);
   } catch (err) {
-    return errorMsg(`Error while moving time (${err})`);
+    return errorResponse(`Error while moving time (${err})`);
   }
 }

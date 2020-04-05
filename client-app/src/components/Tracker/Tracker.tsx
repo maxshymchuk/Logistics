@@ -7,7 +7,7 @@ const Tracker = () => {
   return (
     <div className={styles.tracker}>
       <section className={styles.wrapper_tracker}>
-        <h1 className={styles.title}>Track your Cargos</h1>
+        <h1 className={styles.title}>Track your Cargo</h1>
         <div className={styles.content}>
           <TrackOrder />
         </div>

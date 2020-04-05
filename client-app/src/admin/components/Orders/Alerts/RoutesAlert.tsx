@@ -34,7 +34,7 @@ const RoutesAlert = ({ routes, handleModal }: RoutesAlertProps) => {
                 <TableCell align="right">To</TableCell>
                 <TableCell align="right" className={tableStyles.nowrap}>Departure Date</TableCell>
                 <TableCell align="right">Vehicle</TableCell>
-                <TableCell align="right">Cargos</TableCell>
+                <TableCell align="right">Cargo</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -45,7 +45,7 @@ const RoutesAlert = ({ routes, handleModal }: RoutesAlertProps) => {
                   <TableCell align="right">{route.endLocation.name}</TableCell>
                   <TableCell align="right">{new Date(route.departureDate).toLocaleString()}</TableCell>
                   <TableCell align="right">{route.vehicle.type}</TableCell>
-                  <TableCell align="right">{route.cargos.join(', ')}</TableCell>
+                  <TableCell align="right">{route.cargo.join(', ')}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

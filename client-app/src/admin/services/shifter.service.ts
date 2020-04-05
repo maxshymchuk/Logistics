@@ -1,8 +1,11 @@
 import axios from 'axios';
 
-async function changeTime(time: number): Promise<string> {
+import { ServerResponse } from '../../models/message.models';
+
+async function changeTime(time: number) {
   const route = `/time/${time >= 0 ? 'plus' : 'minus'}/${Math.abs(time)}`;
-  return (await axios.get(route)).data;
+  const response: ServerResponse = (await axios.get(route)).data;
+  return response;
 }
 
 export default changeTime;

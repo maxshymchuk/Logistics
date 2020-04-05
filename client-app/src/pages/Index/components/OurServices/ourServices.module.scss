@@ -1,0 +1,25 @@
+@import "../../../../styles/variables.scss";
+@import "../../../../styles/mixins.scss";
+
+.service {
+  @include section;
+  padding: 50px 0;
+  background-color: $secondary-color;
+}
+
+.wrapper_service {
+  @include wrapper;
+
+  .title {
+    @include title;
+    color: #fff;
+  }
+
+  .content {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 0 auto;
+  }
+}

@@ -1,0 +1,45 @@
+@import "../../../styles/variables.scss";
+@import "../../../styles/mixins.scss";
+
+.order_wrapper {
+  @include wrapper;
+  @media screen and (max-width: $container-tablet-width) {
+    padding: 0;
+  }
+}
+
+.form {
+  display: grid;
+  grid-gap: $item-gap;
+}
+
+.inputs {
+  display: grid;
+  grid-gap: $item-gap;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.title {
+  display: block;
+  font-size: 1.1rem;
+}
+
+.subtitle {
+  display: block;
+  font-weight: normal;
+  line-height: 1em;
+  height: 1em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.list,
+.cargo {
+  display: grid;
+  grid-gap: $item-gap;
+}
+
+.buttons {
+  margin-top: $item-gap;
+}

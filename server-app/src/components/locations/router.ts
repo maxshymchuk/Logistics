@@ -1,5 +1,6 @@
 import CONSTS from '../../const';
-import { Location, mapModel, MapType, Path } from '../../models/location.models';
+import { mapModel, MapType, Path } from '../../models/location.models';
+import { MessageType } from '../../models/message.models';
 import { Route } from '../../models/route.models';
 import { VehicleSpeed, VehicleType } from '../../models/vehicle.models';
 import { calculatePrice } from './calculator';
@@ -18,10 +19,16 @@ function getMapVehicle(mapType: MapType) {
 }
 
 export async function getDistanceBetween(from: string, to: string) {
-  const locationFromMsg = await getLocationByName(from);
-  const locationToMsg = await getLocationByName(to);
-  const point1 = (locationFromMsg.data as Location).coordinates;
-  const point2 = (locationToMsg.data as Location).coordinates;
+  const locationFromResponse = await getLocationByName(from);
+  const locationToResponse = await getLocationByName(to);
+  if (locationFromResponse.messageType === MessageType.Error) {
+    throw locationFromResponse.message;
+  }
+  if (locationToResponse.messageType === MessageType.Error) {
+    throw locationToResponse.message;
+  }
+  const point1 = locationFromResponse.data.coordinates;
+  const point2 = locationToResponse.data.coordinates;
   const EARTH_RADIUS = 6371e3;
   const PI_DEGREES = 180;
   const angle1 = (point1.lat * Math.PI) / PI_DEGREES;
@@ -30,10 +37,8 @@ export async function getDistanceBetween(from: string, to: string) {
   const deltaLon = ((point2.lon - point1.lon) * Math.PI) / PI_DEGREES;
   const a =
     Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
-    Math.cos(angle1) *
-      Math.cos(angle2) *
-      Math.sin(deltaLon / 2) *
-      Math.sin(deltaLon / 2);
+    Math.cos(angle1) * Math.cos(angle2) *
+    Math.sin(deltaLon / 2) * Math.sin(deltaLon / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   const distance = EARTH_RADIUS * c;
   return distance / CONSTS.METERS_PER_KILOMETER;
