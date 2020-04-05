@@ -94,7 +94,7 @@ export async function getOrderPaths(orderParams: string) {
       const timeInterval = paths
         .map(path => path.timeInterval)
         .reduce((acc, cur) => (acc += cur), 0);
-      userPaths.push({ cargo, message, price: +price.toFixed(2), distance, timeInterval, paths });
+      userPaths.push({ cargo, message, price: +price.toFixed(2), distance, timeInterval, paths, isPaid: true });
     }
     if (userPaths.length) {
       return successResponse<UserPath[]>('Success', userPaths);
@@ -199,10 +199,11 @@ export async function addOrder(user: User, path: UserPath) {
       username: user.username,
       price: path.price,
       status: OrderStatus.Taken,
-      routes, trackNumber
+      isPaid: path.isPaid,
+      routes, trackNumber, 
     };
     await orderModel.create(order);
-    return successResponse(trackNumber);
+    return successResponse('Successful create of order', trackNumber);
   } catch (err) {
     return errorResponse(`Error while adding order (${err})`);
   }

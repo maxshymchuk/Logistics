@@ -58,6 +58,7 @@ export type UserPath = {
   distance: number;
   message: string;
   cargo: Cargo[];
+  isPaid: boolean;
 };
 
 export type PathfinderInput = {
