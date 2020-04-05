@@ -63,14 +63,14 @@ export const VehiclesDialog = ({result, onClose}: VehiclesDialogProps) => {
 
   const handleSelect = (event: React.ChangeEvent<{ value: unknown }>) => {
     setState({...state, type: event.target.value as VehicleType});
-  }
+  };
 
   const handleDate = (date: MaterialUiPickersDate) => {
     const newDate = date?.getTime();
     if (typeof newDate === 'number') {
       setState({...state, arrivalDate: new Date(newDate) });
     }
-  }
+  };
 
   return (
     <>

@@ -28,7 +28,7 @@ const Error403 = () => {
   return (
     <div className={styles.error_wrapper}>
       <div className={styles.message}>
-        <div className={styles.robot}></div>
+        <div className={styles.robot} />
         <span className={styles.text}>You shall not pass!</span>
       </div>
       <Card className={styles.auth}>
@@ -37,7 +37,9 @@ const Error403 = () => {
         </article>
         <SignIn />
         <section className={styles.registration}>
-          New to Shuttle? <Button size='small' color="primary" component={Link} to='/login'>Sign Up</Button>
+          New to Shuttle? 
+          {' '}
+          <Button size='small' color="primary" component={Link} to='/login'>Sign Up</Button>
         </section>
       </Card>
     </div>

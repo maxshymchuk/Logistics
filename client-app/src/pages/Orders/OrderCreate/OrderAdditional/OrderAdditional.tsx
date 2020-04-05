@@ -9,19 +9,19 @@ import styles from './orderAdditional.module.scss';
 type OrderAdditionalProps = {
   message: string;
   resultMessage: (message: string) => void;
-}
+};
 
 const OrderAdditional = ({ message, resultMessage }: OrderAdditionalProps) => {
   const [messageText, setMessageText] = useState('');
 
   useEffect(() => {
     setMessageText(message);
-  }, [])
+  }, []);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMessageText(event.target.value);
     resultMessage(messageText);
-  }
+  };
 
   return (
     <div className={styles.additional}>

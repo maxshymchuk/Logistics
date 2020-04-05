@@ -12,7 +12,7 @@ export const vehicleTypes = [
   VehicleType.Plane,
   VehicleType.Ship,
   VehicleType.Train
-]
+];
 
 export type Vehicle = {
   _id?: string;

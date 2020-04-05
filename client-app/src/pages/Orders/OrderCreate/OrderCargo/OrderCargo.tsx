@@ -33,7 +33,7 @@ const OrderCargo = ({ list, resultCargo }: OrderCargoProps) => {
 
   useEffect(() => {
     setCargoList(list);
-  }, [])
+  }, []);
 
   useEffect(() => {
     resultCargo(cargoList);

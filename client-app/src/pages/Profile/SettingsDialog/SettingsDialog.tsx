@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import DateFnsUtils from '@date-io/date-fns';
 import {
-    Button, CircularProgress, FormControl, IconButton, Input, InputAdornment, InputLabel, TextField
+  Button, CircularProgress, FormControl, IconButton, Input, InputAdornment, InputLabel, TextField
 } from '@material-ui/core';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -61,7 +61,7 @@ export const SettingsDialog = ({ result, onClose }: SettingsModalProps) => {
     if (user && typeof newDate === 'number') {
       setUser({ ...user, birthday: new Date(newDate) });
     }
-  }
+  };
 
   const handleClickShowPassword = () => {
     setPasswordOpen(!isPasswordOpen);

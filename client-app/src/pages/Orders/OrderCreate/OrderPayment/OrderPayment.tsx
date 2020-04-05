@@ -9,7 +9,7 @@ import styles from './orderPayment.module.scss';
 
 type OrderPaymentProps = {
   price: number;
-}
+};
 
 type OrderPaymentState = {
   cvc: string;

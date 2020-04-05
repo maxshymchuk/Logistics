@@ -8,10 +8,13 @@ const PrivateRoute = ({ component: Component, ...rest }: any) => {
   const { isLogged } = useContext(LoginContext);
 
   return (
-    <Route {...rest} render={(props) => (
-      isLogged ? <Component {...props} /> : <Error403 /> //<Redirect to='/login' />
-    )} />
-  )
-}
+    <Route
+      {...rest}
+      render={(props) => (
+        isLogged ? <Component {...props} /> : <Error403 /> // <Redirect to='/login' />
+      )}
+    />
+  );
+};
 
 export default PrivateRoute;

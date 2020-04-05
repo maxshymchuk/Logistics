@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import {
-    Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
+  Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
 } from '@material-ui/core';
 import ReplayIcon from '@material-ui/icons/Replay';
 

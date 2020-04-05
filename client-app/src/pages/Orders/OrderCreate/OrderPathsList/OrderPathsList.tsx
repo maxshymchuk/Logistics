@@ -57,7 +57,7 @@ const OrderPathsList = ({ order, resultPath }: CreateOrderPathsProps) => {
       setChanged(!isChanged);
       resultPath(selectedPath);
     }
-  }, [selectedPath])
+  }, [selectedPath]);
 
   return (
     <PathsContext.Provider value={{ isSelectChanged: isChanged }}>

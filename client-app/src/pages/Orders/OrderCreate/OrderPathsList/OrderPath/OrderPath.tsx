@@ -32,11 +32,11 @@ const OrderPath = ({ userPath, isSelected, onSelect }: OrderPathProps) => {
 
   useEffect(() => {
     setSelectedPath(isSelected);
-  }, [isSelectChanged])
+  }, [isSelectChanged]);
 
   useEffect(() => {
     onSelect(isSelectedPath ? userPath : null);
-  }, [isSelectedPath])
+  }, [isSelectedPath]);
 
   const handleClick = () => {
     setState({
@@ -80,7 +80,7 @@ const OrderPath = ({ userPath, isSelected, onSelect }: OrderPathProps) => {
           />
         </ListItemText>
         <Button
-          variant={isSelectedPath ? "contained" : "outlined"}
+          variant={isSelectedPath ? 'contained' : 'outlined'}
           color="primary"
           onClick={handleOrder}
         >

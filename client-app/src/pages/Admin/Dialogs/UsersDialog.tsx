@@ -46,7 +46,7 @@ export const UsersDialog = ({result, onClose}: UsersModalProps) => {
     if (typeof newDate === 'number') {
       setState({...state, birthday: new Date(newDate) });
     }
-  }
+  };
 
   return (
     <>

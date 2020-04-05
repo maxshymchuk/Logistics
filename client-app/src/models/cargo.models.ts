@@ -12,7 +12,7 @@ export const cargoTypes = [
   CargoType.Dry,
   CargoType.Breakbulk,
   CargoType.RoRo
-]
+];
 
 export type Cargo = {
   description: string;

@@ -62,11 +62,11 @@ const OrderCreate = () => {
       }
       case Steps.Path: {
         const cargoTypesNumber = cargoTypes.map((type) => {
-          return order.cargo.filter(cargo => cargo.category === type).length
-        })
-        const cargoList = cargoTypesNumber.filter(number => number).map((number, index) => {
-          return `${number} ${cargoTypes[index].toLowerCase()}`;
-        })
+          return order.cargo.filter(cargo => cargo.category === type).length;
+        });
+        const cargoList = cargoTypesNumber.map((number, index) => {
+          if (number) return `${number} ${cargoTypes[index].toLowerCase()}`;
+        }).filter(cargo => cargo);
         setSubtitle(Steps.Cargo, cargoList.length ? cargoList.join(', ') : 'No cargos');
         break;
       }
@@ -74,7 +74,7 @@ const OrderCreate = () => {
         const routes = order.path?.paths.map(path => {
           const routesLength = path.routes.length;
           return `${path.routes[0]} – ${path.routes[routesLength - 1]} (${path.vehicle})`;
-        })
+        });
         setSubtitle(Steps.Path, `${routes?.join(', ')}`);
         break;
       }
