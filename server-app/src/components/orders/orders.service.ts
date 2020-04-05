@@ -94,7 +94,7 @@ export async function getOrderPaths(orderParams: string) {
       const timeInterval = paths
         .map(path => path.timeInterval)
         .reduce((acc, cur) => (acc += cur), 0);
-      userPaths.push({ cargo, message, price, distance, timeInterval, paths });
+      userPaths.push({ cargo, message, price: +price.toFixed(2), distance, timeInterval, paths });
     }
     if (userPaths.length) {
       return successResponse<UserPath[]>('Success', userPaths);
