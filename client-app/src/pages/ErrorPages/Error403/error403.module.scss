@@ -1,0 +1,73 @@
+@import "../../../styles/variables.scss";
+@import "../../../styles/mixins.scss";
+
+@font-face {
+  font-family: "Tolkien";
+  src: url("../../../assets/fonts/Tolkien.ttf");
+}
+
+.error_wrapper {
+  @include wrapper;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  
+  @media screen and (max-width: $container-tablet-width) {
+    flex-direction: column;
+    justify-content: center;
+    background-position: center 25%;
+    background-size: 220px;
+  }
+}
+
+.message {
+  display: flex;
+  flex-grow: 0.5;
+  width: 220px;
+  height: 70%;
+  min-height: 250px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  .text {
+    @include title;
+    font-family: "Tolkien";
+    font-weight: bold;
+    @media screen and (max-width: $container-tablet-width) {
+      display: none;
+    }
+  }
+  .robot {
+    width: 100%;
+    height: 80%;
+    background: url('../../../assets/robots/claptrap2.png') no-repeat;
+    background-position: bottom center;
+    background-size: contain;
+  }
+}
+
+.auth {
+  flex-shrink: 0;
+  margin: $item-gap 0;
+  padding: $item-gap;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  .title {
+    @include title;
+    text-align: left;
+  }
+  
+}
+
+.registration {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: $item-gap;
+}

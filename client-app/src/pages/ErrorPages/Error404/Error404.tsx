@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import styles from './errorPage.module.scss';
+import styles from './error404.module.scss';
 
 const quotes = [
   'Let me teach you the ways of magic!',
@@ -14,7 +14,7 @@ const quotes = [
   'Ha-HA!'
 ];
 
-const ErrorPage = () => {
+const Error404 = () => {
   const [quote, setQuote] = useState('');
   
   useEffect(() => {
@@ -38,4 +38,4 @@ const ErrorPage = () => {
   );
 };
 
-export default ErrorPage;
+export default Error404;
