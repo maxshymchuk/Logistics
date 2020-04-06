@@ -10,7 +10,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 
-import { isOfType } from '../../../helpers/typeGuard';
+import { isOfType, isSomeEnum } from '../../../helpers/typeGuard';
 import { Location } from '../../../models/location.models';
 import { MessageType, ServerResponse } from '../../../models/message.models';
 import { Vehicle, VehicleType, vehicleTypes } from '../../../models/vehicle.models';
@@ -62,7 +62,10 @@ export const VehiclesDialog = ({result, onClose}: VehiclesDialogProps) => {
   };
 
   const handleSelect = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setState({...state, type: event.target.value as VehicleType});
+    const checker = isSomeEnum(VehicleType);
+    if (checker(event.target.value)) {
+      setState({...state, type: event.target.value});
+    }
   };
 
   const handleDate = (date: MaterialUiPickersDate) => {

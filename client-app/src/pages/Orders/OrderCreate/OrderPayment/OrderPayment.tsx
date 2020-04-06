@@ -5,6 +5,7 @@ import Cards from 'react-credit-cards';
 
 import { TextField } from '@material-ui/core';
 
+import { isSomeEnum } from '../../../../helpers/typeGuard';
 import styles from './orderPayment.module.scss';
 
 type OrderPaymentProps = {
@@ -18,7 +19,12 @@ type OrderPaymentState = {
   number: string;
 };
 
-type FocusType = 'number' | 'name' | 'cvc' | 'expiry' | undefined;
+enum FocusType {
+  Number = 'number',
+  Name = 'name',
+  CVC = 'cvc',
+  Expiry = 'expiry'
+}
 
 const OrderPayment = ({ price }: OrderPaymentProps) => {
   const [cardInfo, setCardInfo] = useState<OrderPaymentState>({
@@ -27,12 +33,15 @@ const OrderPayment = ({ price }: OrderPaymentProps) => {
     name: '',
     number: '',
   });
-  const [focus, setFocus] = useState<FocusType>(undefined);
+  const [focus, setFocus] = useState<FocusType | undefined>(undefined);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFocus(name as FocusType);
-    setCardInfo({ ...cardInfo, [name]: value });
+    const checker = isSomeEnum(FocusType);
+    if (checker(name)) {
+      setFocus(name);
+      setCardInfo({ ...cardInfo, [name]: value });
+    }
   };
 
   return (
