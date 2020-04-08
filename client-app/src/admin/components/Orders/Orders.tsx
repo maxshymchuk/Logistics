@@ -7,12 +7,14 @@ import {
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 import Notification from '../../../components/Notification/Notification';
+import { Cargo } from '../../../models/cargo.models';
 import { MessageType, ServerResponse } from '../../../models/message.models';
 import { Order, OrderStatus } from '../../../models/order.models';
 import { Route } from '../../../models/route.models';
 import { Track } from '../../../models/track.models';
 import { getOrdersData, removeOrderById } from '../../../services/orders.service';
 import tableStyles from '../../styles/table.module.scss';
+import CargoAlert from './Alerts/CargoAlert';
 import RoutesAlert from './Alerts/RoutesAlert';
 import TracksAlert from './Alerts/TracksAlert';
 
@@ -23,7 +25,8 @@ type OrdersState = {
 
 type AlertState = {
   routes: Route[] | null,
-  tracks: Track[] | null
+  tracks: Track[] | null,
+  cargo: Cargo[] | null
 };
 
 type OrdersProps = {
@@ -37,7 +40,8 @@ const Orders = ({ page, checkPages }: OrdersProps) => {
   const [notifyMessage, setNotifyMessage] = useState<ServerResponse<any> | null>(null);
   const [isAlertOpen, setAlertOpen] = useState<AlertState>({
     routes: null,
-    tracks: null
+    tracks: null,
+    cargo: null
   });
   const [isChanged, setChanged] = useState(false);
   const [pagesNumber, setPagesNumber] = useState(0);
@@ -78,8 +82,9 @@ const Orders = ({ page, checkPages }: OrdersProps) => {
       ) : (
         <Fade in={state.isLoaded} timeout={200} unmountOnExit>
           <TableContainer component={Paper} className={tableStyles.table}>
-            {isAlertOpen.routes && <RoutesAlert routes={isAlertOpen.routes} handleModal={() => setAlertOpen({...isAlertOpen, routes: null})} />}
-            {isAlertOpen.tracks && <TracksAlert tracks={isAlertOpen.tracks} handleModal={() => setAlertOpen({...isAlertOpen, tracks: null})} />}
+            {isAlertOpen.routes && <RoutesAlert routes={isAlertOpen.routes} onClose={() => setAlertOpen({...isAlertOpen, routes: null})} />}
+            {isAlertOpen.tracks && <TracksAlert tracks={isAlertOpen.tracks} onClose={() => setAlertOpen({...isAlertOpen, tracks: null})} />}
+            {isAlertOpen.cargo && <CargoAlert cargo={isAlertOpen.cargo} onClose={() => setAlertOpen({...isAlertOpen, cargo: null})} />}
             <Table size="small">
               <TableHead>
                 <TableRow>
@@ -89,6 +94,7 @@ const Orders = ({ page, checkPages }: OrdersProps) => {
                   <TableCell align="right">Price</TableCell>
                   <TableCell align="center">Routes</TableCell>
                   <TableCell align="center">Tracks</TableCell>
+                  <TableCell align="center">Cargo</TableCell>
                   <TableCell align="right">Message</TableCell>
                   <TableCell align="right" />
                 </TableRow>
@@ -113,6 +119,9 @@ const Orders = ({ page, checkPages }: OrdersProps) => {
                     </TableCell>
                     <TableCell align="center">
                       <Button color="primary" onClick={() => setAlertOpen({...isAlertOpen, tracks: order.tracks})}>Tracks</Button>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Button color="primary" onClick={() => setAlertOpen({...isAlertOpen, cargo: order.routes[0].cargo})}>Cargo</Button>
                     </TableCell>
                     <TableCell align="right">
                       {order.message}
