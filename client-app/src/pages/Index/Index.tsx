@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Tracker from '../../components/Tracker/Tracker';
+import Tracker from './components/Tracker/Tracker';
 import About from './components/About/About';
 import Differencies from './components/Differencies/differencies';
 import Footer from './components/Footer/Footer';

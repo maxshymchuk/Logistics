@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Card, IconButton, LinearProgress, Paper } from '@material-ui/core';
+import { Card, IconButton, LinearProgress } from '@material-ui/core';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 import SettingsIcon from '@material-ui/icons/Settings';
 import Skeleton from '@material-ui/lab/Skeleton';
@@ -11,7 +11,7 @@ import { Order } from '../../models/order.models';
 import { User } from '../../models/user.models';
 import { getOrdersByUsername } from '../../services/orders.service';
 import { getLoggedUser } from '../../services/users.service';
-import TrackOrderInfo from '../Orders/TrackOrder/TrackOrderInfo/TrackOrderInfo';
+import OrderTrackInfo from '../Orders/OrderTrack/OrderTrackInfo/OrderTrackInfo';
 import styles from './profile.module.scss';
 import { SettingsDialog } from './SettingsDialog/SettingsDialog';
 
@@ -36,7 +36,7 @@ const Profile = () => {
   const showOrders = () => {
     return orders?.length ? (
       orders.map((order, index) => (
-        <TrackOrderInfo key={index} order={order} />
+        <OrderTrackInfo key={index} order={order} />
       ))
     ) : (
       <p className={styles.empty}>
@@ -87,7 +87,7 @@ const Profile = () => {
             <SettingsIcon />
           </IconButton>
         </div>
-        <Paper className={styles.orders}>
+        <section className={styles.orders}>
           <article className={styles.title}>Orders</article>
           {user ? (
             showOrders()
@@ -96,7 +96,7 @@ const Profile = () => {
               <LinearProgress />
             </p>
           )}
-        </Paper>
+        </section>
       </div>
     </>
   );

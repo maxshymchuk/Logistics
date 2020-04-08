@@ -35,3 +35,8 @@ export async function removeOrderById(id: string) {
   const response: ServerResponse = (await axios.delete(`/orders/${id}`)).data;
   return response;
 }
+
+export async function updateOrderById(order: Order) {
+  const response: ServerResponse = (await axios.put(`/orders/${order._id}`, order)).data;
+  return response;
+}

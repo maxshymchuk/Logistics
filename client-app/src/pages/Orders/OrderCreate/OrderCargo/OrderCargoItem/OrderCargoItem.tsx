@@ -9,7 +9,7 @@ import styles from './orderCargoItem.module.scss';
 type OrderCargoItemProps = {
   id: number;
   cargo: Cargo;
-  handleDelete: (id: number) => void;
+  handleDelete?: (id: number) => void;
 };
 
 const OrderCargoItem = ({ id, cargo, handleDelete }: OrderCargoItemProps) => {
@@ -24,9 +24,11 @@ const OrderCargoItem = ({ id, cargo, handleDelete }: OrderCargoItemProps) => {
         </div>
         <div className={styles.mass} title='Mass'>{mass}</div>
         <div className={styles.volume} title='Volume'>{volume}</div>
-        <IconButton color="secondary" size="small" onClick={() => handleDelete(id)}>
-          <CloseIcon />
-        </IconButton>
+        {handleDelete && (
+          <IconButton color="secondary" size="small" onClick={() => handleDelete(id)}>
+            <CloseIcon />
+          </IconButton>
+        )}
       </section>
     </Fade>
   );

@@ -1,0 +1,68 @@
+@import "../../../../styles/variables.scss";
+@import "../../../../styles/mixins.scss";
+
+.order {
+  margin: $item-gap auto;
+}
+
+.list_title {
+  width: 100%;
+  padding: $item-gap $item-gap $item-gap 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .title {
+    @include title;
+    font-weight: normal;
+    &:before {
+      counter-increment: order;
+      content: counter(order)". ";
+    }
+  }
+  .taken_time {
+    font-style: italic;
+    color: $disabled-color;
+  }
+}
+
+.content {
+  margin: $item-gap;
+  .track_number {
+    color: $accent-light-color;
+    font-family: $font-monospace;
+    &:before {
+      content: "#";
+      font-size: 1rem;
+    }
+  }
+  .price {
+    font-weight: bold;
+    &:after {
+      content: "$";
+      font-size: 1rem;
+    }
+  }
+  .message {
+    margin: $item-gap 0;
+    padding: $item-gap;
+    background-color: $primary-disabled-color;
+    border-radius: 4px;
+  }
+  .row {
+    margin: $item-gap 0;
+  }
+  .details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $item-gap;
+    &:not(:last-child) {
+      border-bottom: 1px solid #00000011;
+    }
+  }
+  .date {
+    text-align: right;
+  }
+}
+
+

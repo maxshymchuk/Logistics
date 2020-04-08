@@ -55,6 +55,16 @@ const OrderCreate = () => {
     });
   };
 
+  const takeOrder = async (path: UserPath) => {
+    const response = await createOrder(path);
+    if (response.messageType === MessageType.Error) {
+      setDialogResult(response);
+    } else if (typeof response.data === 'string') {
+      setTrackNumber(response.data);
+      setOrderTaken(true);
+    }
+  };
+
   useEffect(() => {
     setSubtitle(activeStep, '');
     switch (activeStep) {
@@ -71,7 +81,7 @@ const OrderCreate = () => {
           return order.cargo.filter(cargo => cargo.category === type).length;
         });
         const cargoList = cargoTypesNumber.map((number, index) => {
-          if (number) return `${number} ${cargoTypes[index].toLowerCase()}`;
+          return number ? `${number} ${cargoTypes[index].toLowerCase()}` : undefined;
         }).filter(cargo => cargo);
         setSubtitle(Steps.Cargo, cargoList.length ? cargoList.join(', ') : 'No cargos');
         break;
@@ -102,16 +112,6 @@ const OrderCreate = () => {
       default: break;
     }
   }, [activeStep]);
-
-  const takeOrder = async (path: UserPath) => {
-    const response = await createOrder(path);
-    if (response.messageType === MessageType.Error) {
-      setDialogResult(response);
-    } else if (typeof response.data === 'string') {
-      setTrackNumber(response.data);
-      setOrderTaken(true);
-    }
-  };
 
   const resetOrder = () => {
     setOrder(defaultOrderUser);

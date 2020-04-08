@@ -29,5 +29,6 @@ export const orderSchema = new mongoose.Schema({
   status: String,
   routes: [routeSchema],
   trackNumber: String,
+  takenTime: Date,
   isPaid: Boolean
 });

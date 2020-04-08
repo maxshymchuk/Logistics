@@ -21,8 +21,7 @@
   @media screen and (max-width: $profile-mobile-width) {
     position: static;
     width: 100%;
-    margin: 0;
-    margin-bottom: $item-gap;
+    margin: 0 0 $item-gap 0;
   }
   .title {
     @include title;
@@ -68,7 +67,7 @@
 
 .orders {
   flex-grow: 1;
-  padding: $item-gap;
+  counter-reset: order;
   .title {
     @include title;
     text-align: left;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import TrackOrder from '../../pages/Orders/TrackOrder/TrackOrder';
+import OrderTrack from '../../../Orders/OrderTrack/OrderTrack';
 import styles from './tracker.module.scss';
 
 const Tracker = () => {
@@ -9,7 +9,7 @@ const Tracker = () => {
       <section className={styles.wrapper_tracker}>
         <h1 className={styles.title}>Track your Cargo</h1>
         <div className={styles.content}>
-          <TrackOrder />
+          <OrderTrack />
         </div>
       </section>
     </div>

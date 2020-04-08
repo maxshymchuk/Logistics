@@ -23,6 +23,7 @@ export interface Order {
   routes: Route[];
   trackNumber: string;
   isPaid: boolean;
+  takenTime: Date;
 }
 
 export type UserOrder = {

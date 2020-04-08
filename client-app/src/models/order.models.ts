@@ -19,6 +19,8 @@ export type Order = {
   status: OrderStatus;
   routes: Route[];
   trackNumber: string;
+  takenTime: Date;
+  isPaid: boolean;
 };
 
 export type OrderPaths = {

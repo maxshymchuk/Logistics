@@ -200,7 +200,8 @@ export async function addOrder(user: User, path: UserPath) {
       price: path.price,
       status: OrderStatus.Taken,
       isPaid: path.isPaid,
-      routes, trackNumber, 
+      takenTime: new Date(),
+      routes, trackNumber,
     };
     await orderModel.create(order);
     return successResponse('Successful create of order', trackNumber);
@@ -228,11 +229,11 @@ export async function updateOrder(order: OrderMongo) {
     const foundOrder = await findOrderById(order._id);
     if (foundOrder) {
       await orderModel.updateOne({ _id: order._id }, order);
-      return successResponse<string>(`Successful update of "${order.trackNumber}" (${order._id})`);
+      return successResponse(`Successful update of "${order.trackNumber}" (${order._id})`);
     } else {
-      return errorResponse<string>(`Cannot find order to update (${order._id})`);
+      return errorResponse(`Cannot find order to update (${order._id})`);
     }
   } catch (err) {
-    return errorResponse<string>(`Error while updating order (${err})`);
+    return errorResponse(`Error while updating order (${err})`);
   }
 }
