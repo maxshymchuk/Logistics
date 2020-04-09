@@ -1,11 +1,10 @@
+import Button from '@material-ui/core/Button';
+import CloseIcon from '@material-ui/icons/Close';
 import React from 'react';
 import { HashLink as Link } from 'react-router-hash-link';
 
-import Button from '@material-ui/core/Button';
-import CloseIcon from '@material-ui/icons/Close';
-
-import { LoginContext } from '../../../contexts/LoginContext';
 import smoothScroll from '../../../helpers/smoothScroll';
+import appStore from '../../../stores/AppStore';
 import styles from './menuList.module.scss';
 
 type MenuListProps = {
@@ -23,14 +22,11 @@ const MenuList = ({ direction, callback }: MenuListProps) => {
       className={styles.menu_list}
       style={{ flexDirection: direction }}
     >
-      <LoginContext.Consumer>
-        {value =>
-          value.user?.isAdmin && (
-            <Button onClick={callback} color="inherit" component={Link} to='/admin/vehicles'>
-              Admin
-            </Button>
-          )}
-      </LoginContext.Consumer>
+      {appStore.user?.isAdmin && (
+        <Button onClick={callback} color="inherit" component={Link} to='/admin/vehicles'>
+          Admin
+        </Button>
+      )}
       <Button onClick={runCallback} color="inherit" component={Link} scroll={smoothScroll} to='/#top'>
         Home
       </Button>

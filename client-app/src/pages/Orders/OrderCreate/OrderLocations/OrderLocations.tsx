@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-
 import { TextField } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Skeleton from '@material-ui/lab/Skeleton';
+import React, { useEffect, useState } from 'react';
 
 import { Location, Segment } from '../../../../models/location.models';
+import { MessageType } from '../../../../models/message.models';
 import { getLocationsData } from '../../../../services/locations.service';
 import styles from './orderLocations.module.scss';
 
@@ -19,8 +19,12 @@ const OrderLocations = ({ resultLocations }: OrderLocationsProps) => {
 
   useEffect(() => {
     (async () => {
-      const locationsData = (await getLocationsData()).data;
-      setLocations(locationsData);
+      const locationsResponse = await getLocationsData();
+      if (locationsResponse.messageType === MessageType.Error) {
+        console.log(locationsResponse.message);
+      } else if (locationsResponse.data instanceof Array) {
+        setLocations(locationsResponse.data);
+      }
     })();
   }, []);
 
