@@ -1,26 +1,37 @@
-import React from 'react';
-
 import { Card } from '@material-ui/core';
-
+import React from 'react';
+import mrhandy from '../../../../assets/robots/handy1.png';
 import styles from './about.module.scss';
 
 const About = () => (
   <div className={styles.about} id="about">
-    <section className={styles.wrapper_about}>
+    <section className={styles.row}>
       <h1 className={styles.title}>Why are we special?</h1>
       <article className={styles.subtitle}>Listen to us, this is very important!</article>
+    </section>
+    <section className={styles.row}>
       <div className={styles.content}>
         <div className={styles.text}>
           <h2>First of all, an idea!</h2>
           <div>
             Call &gt; conversation &gt; acceptance? - sounds old-fashioned.
-            <Card className={styles.quote}>Acceptance is good, conversation is bad</Card>
+            <div className={styles.quote}>
+              QUOTE
+            </div>
             This principle is the basis of the idea, the foundation of innovation.
             <br />
             We tried to make the service unlike the rest.
-            <br />
-            To do this, we decided:
           </div>
+        </div>
+      </div>
+      <div className={styles.content}>
+        <img className={styles.photo} src={mrhandy} alt='Mr Handy robot' />
+      </div>
+    </section>
+    <section className={styles.row}>
+      <div className={styles.content}>
+        <div className={styles.text}>
+          To do this, we decided:
           <ul>
             <li>Ignore existing transportation giants</li>
             <li>Make it as convenient as possible for a person</li>
@@ -28,11 +39,6 @@ const About = () => (
             <li>Win by quality, not quantity</li>
           </ul>
           <h2>Max Shymchuk</h2>
-        </div>
-        <div className={styles.photos}>
-          <div className={styles.photo1} />
-          <div className={styles.photo2} />
-          <div className={styles.photo3} />
         </div>
       </div>
     </section>
