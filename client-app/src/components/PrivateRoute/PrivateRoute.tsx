@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Route } from 'react-router-dom';
 
 import Error403 from '../../pages/ErrorPages/Error403/Error403';
-import appStore from '../../stores/AppStore';
+import { AppContext } from '../../stores/AppStore';
 
 const PrivateRoute = ({ component: Component, ...rest }: any) => {
+
+  const appStore = useContext(AppContext);
+
   return (
     <Route
       {...rest}

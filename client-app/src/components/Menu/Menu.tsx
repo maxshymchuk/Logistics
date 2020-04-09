@@ -5,9 +5,9 @@ import MenuIcon from '@material-ui/icons/Menu';
 import PhoneInTalkIcon from '@material-ui/icons/PhoneInTalk';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import { observer } from 'mobx-react';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
-import appStore from '../../stores/AppStore';
+import { AppContext } from '../../stores/AppStore';
 import styles from './menu.module.scss';
 import MenuList from './MenuList/MenuList';
 
@@ -29,7 +29,9 @@ const useStyles = makeStyles(() => ({
 const Menu = observer(() => {
   const classes = useStyles();
 
-  const [isDrawerOpened, handleDrawer] = useState(false);
+  const [isDrawerOpened, setDrawerOpen] = useState(false);
+
+  const appStore = useContext(AppContext);
 
   const handleLogout = async () => {
     await appStore.logout();
@@ -81,7 +83,7 @@ const Menu = observer(() => {
             )}
             <IconButton
               className={styles.burger}
-              onClick={() => handleDrawer(!isDrawerOpened)}
+              onClick={() => setDrawerOpen(!isDrawerOpened)}
             >
               <MenuIcon />
             </IconButton>
@@ -90,10 +92,10 @@ const Menu = observer(() => {
             classes={classes}
             anchor="top"
             open={isDrawerOpened}
-            onClose={() => handleDrawer(!isDrawerOpened)}
+            onClose={() => setDrawerOpen(!isDrawerOpened)}
             transitionDuration={800}
           >
-            <MenuList direction="column" callback={handleDrawer} />
+            <MenuList direction="column" onClose={() => setDrawerOpen(false)} />
           </Drawer>
         </section>
       </div>

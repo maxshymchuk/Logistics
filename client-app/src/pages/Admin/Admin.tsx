@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Link, Route, Switch } from 'react-router-dom';
-
 import { Box, Card, Tab, Tabs, Typography, Zoom } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
+import React, { useContext, useEffect, useState } from 'react';
+import { Link, Route, Switch } from 'react-router-dom';
 
 import Locations from '../../admin/components/Locations/Locations';
 import Menu from '../../admin/components/Menu/Menu';
@@ -12,8 +11,8 @@ import Orders from '../../admin/components/Orders/Orders';
 import Users from '../../admin/components/Users/Users';
 import Vehicles from '../../admin/components/Vehicles/Vehicles';
 import Notification from '../../components/Notification/Notification';
-import { AdminContext } from '../../contexts/AdminContext';
 import { ServerResponse } from '../../models/message.models';
+import { AdminContext } from '../../stores/AdminStore';
 import styles from './admin.module.scss';
 import { LocationsDialog } from './Dialogs/LocationsDialog';
 import { UsersDialog } from './Dialogs/UsersDialog';
@@ -64,13 +63,11 @@ const Admin = () => {
   const [page, setPage] = useState(1);
   const [length, setLength] = useState(0);
 
-  const [isDialogOpen, setDialogOpen] = useState(false);
-  const [dialogResult, setDialogResult] = useState<ServerResponse | null>(null);
   const [tab, setTab] = useState(
     paths.indexOf(window.location.pathname)
   );
 
-  const [isChanged, setChanged] = useState(false);
+  const adminStore = useContext(AdminContext);
 
   useEffect(() => {
     setPage(1);
@@ -78,7 +75,6 @@ const Admin = () => {
 
   const setResult = (result: ServerResponse<any>) => {
     setDialogResult(result);
-    setChanged(!isChanged);
   };
 
   const getModal = () => {
@@ -91,8 +87,8 @@ const Admin = () => {
   };
 
   return (
-    <AdminContext.Provider value={{ isChanged }}>
-      {dialogResult && <Notification {...dialogResult} afterClose={() => setDialogResult(null)} />}
+    <AdminContext.Provider value={adminStore}>
+      {adminStore.dialogResult && <Notification {...adminStore.dialogResult} afterClose={adminStore.resetDialogResult} />}
       <Card className={classes.header}>
         <Menu length={length} checkPages={currPage => setPage(currPage)} />
         <Tabs

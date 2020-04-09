@@ -1,8 +1,7 @@
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 
 import axios from 'axios';
-import { Provider } from 'mobx-react';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './app.scss';
 import Menu from './components/Menu/Menu';
@@ -18,7 +17,7 @@ import OrderCreate from './pages/Orders/OrderCreate/OrderCreate';
 import OrderTrack from './pages/Orders/OrderTrack/OrderTrack';
 import Profile from './pages/Profile/Profile';
 import { getLoggedUser } from './services/users.service';
-import appStore from './stores/AppStore';
+import { AppContext } from './stores/AppStore';
 
 axios.defaults.baseURL = 'http://localhost:3000';
 axios.defaults.withCredentials = true;
@@ -39,6 +38,8 @@ const theme = createMuiTheme({
 });
 
 const App = () => {
+  const appStore = useContext(AppContext);
+
   useEffect(() => {
     (async () => {
       const response = await getLoggedUser();
@@ -52,21 +53,23 @@ const App = () => {
 
   return (
     <MuiThemeProvider theme={theme}>
-      <Router>
-        <Switch>
-          <Route path="/admin" component={undefined} />
-          <Route path="/" component={Menu} />
-        </Switch>
-        <Switch>
-          <PrivateRoute path="/admin" component={Admin} />
-          <Route exact path="/" component={Index} />
-          <Route exact path="/login" component={Auth} />
-          <PrivateRoute exact path="/profile" component={Profile} />
-          <PrivateRoute exact path="/create" component={OrderCreate} />
-          <Route exact path="/track" component={OrderTrack} />
-          <Route path="*" component={Error404} />
-        </Switch>
-      </Router>
+      <AppContext.Provider value={appStore}>
+        <Router>
+          <Switch>
+            <Route path="/admin" component={undefined} />
+            <Route path="/" component={Menu} />
+          </Switch>
+          <Switch>
+            <PrivateRoute path="/admin" component={Admin} />
+            <Route exact path="/" component={Index} />
+            <Route exact path="/login" component={Auth} />
+            <PrivateRoute exact path="/profile" component={Profile} />
+            <PrivateRoute exact path="/create" component={OrderCreate} />
+            <Route exact path="/track" component={OrderTrack} />
+            <Route path="*" component={Error404} />
+          </Switch>
+        </Router>
+      </AppContext.Provider>
     </MuiThemeProvider>
   );
 };

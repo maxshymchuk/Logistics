@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import { observer } from 'mobx-react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import DateFnsUtils from '@date-io/date-fns';
 import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@material-ui/core';
@@ -16,6 +17,7 @@ import { MessageType, ServerResponse } from '../../../models/message.models';
 import { Vehicle, VehicleType, vehicleTypes } from '../../../models/vehicle.models';
 import { getLocationsData } from '../../../services/locations.service';
 import { addVehicle } from '../../../services/vehicles.service';
+import { AdminContext } from '../../../stores/AdminStore';
 import styles from './form.module.scss';
 
 export type VehiclesDialogState = {
@@ -24,18 +26,20 @@ export type VehiclesDialogState = {
   type: VehicleType;
 };
 
-export type VehiclesDialogProps = {
-  result: (response: ServerResponse<Location[] | null>) => void;
-  onClose: () => void;
-};
+// export type VehiclesDialogProps = {
+//   result: (response: ServerResponse<Location[] | null>) => void;
+//   onClose: () => void;
+// };
 
-export const VehiclesDialog = ({result, onClose}: VehiclesDialogProps) => {
+export const VehiclesDialog = observer(() => {
   const [locations, setLocations] = useState<Location[]>([]);
   const [state, setState] = useState<VehiclesDialogState>({
     type: VehicleType.Car,
     arrivalDate: new Date(),
     destination: null
   });
+
+  const adminStore = useContext(AdminContext);
 
   const handleClose = () => {
     onClose();
@@ -45,7 +49,7 @@ export const VehiclesDialog = ({result, onClose}: VehiclesDialogProps) => {
     (async () => {
       const locationsResponse = await getLocationsData();
       if (locationsResponse.messageType === MessageType.Error) {
-        result(locationsResponse);
+        adminStore.dialogResult = locationsResponse;
         handleClose();
       } else if (locationsResponse.data instanceof Array) {
         setLocations(locationsResponse.data);
@@ -124,4 +128,4 @@ export const VehiclesDialog = ({result, onClose}: VehiclesDialogProps) => {
       </Dialog>
     </>
   );
-};
+});

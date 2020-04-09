@@ -1,4 +1,5 @@
 import { action, configure, observable, runInAction } from 'mobx';
+import { createContext } from 'react';
 import { User } from '../models/user.models';
 import { logoutUser } from '../services/users.service';
 
@@ -32,4 +33,4 @@ export class AppStore {
   }
 }
 
-export default new AppStore();
+export const AppContext = createContext(new AppStore());
