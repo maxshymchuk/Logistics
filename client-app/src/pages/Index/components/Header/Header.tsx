@@ -17,6 +17,8 @@ const Header = () => (
         <div className={styles.train} />
         <div className={styles.ship} />
         <div className={styles.truck} />
+        <div className={styles.rocket} />
+        <div className={styles.normandy} />
       </Carousel>
       <div className={styles.layer}>
         <article className={styles.title}>

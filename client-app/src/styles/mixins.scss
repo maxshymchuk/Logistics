@@ -29,28 +29,14 @@
   }
 }
 
-@mixin logo($height: 60px) {
-  $width: $height * 1.5;
+@mixin logo($width: 200px) {
   width: $width;
-  height: $height;
-  background: url('../assets/logo.svg') no-repeat center center;
+  height: $width / 4;
+  background: url('../assets/logo_full.svg') no-repeat left center;
   background-size: contain;
-  margin-right: $width;
-  @media screen and (max-width: $container-mobile-width) {
+  @media screen and (max-width: $container-tablet-width) {
     margin: 0;
-  }
-  &:after {
-    content: 'universal shipping';
-    font-size: $height / 3;
-    display: flex;
-    height: $height;
-    line-height: $height / 3;
-    align-items: center;
-    position: relative;
-    left: $width;
-    @media screen and (max-width: $container-mobile-width) {
-      display: none;
-    }
+    background-image: url('../assets/logo.svg');
   }
 }
 

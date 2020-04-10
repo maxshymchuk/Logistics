@@ -58,7 +58,9 @@
 .airplane,
 .train,
 .truck,
-.ship {
+.ship,
+.rocket,
+.normandy {
   width: 100%;
   height: 100vh;
   background-position: center center;
@@ -81,4 +83,12 @@
 
 .truck {
   background-image: url('../../../../assets/index/header/truck.jpg');
+}
+
+.rocket {
+  background-image: url('../../../../assets/index/header/rocket.jpg');
+}
+
+.normandy {
+  background-image: url('../../../../assets/index/header/normandy.jpg');
 }

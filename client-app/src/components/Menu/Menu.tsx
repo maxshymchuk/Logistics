@@ -1,12 +1,12 @@
-import React, { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
-
 import { Drawer, IconButton, makeStyles } from '@material-ui/core';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import FaceIcon from '@material-ui/icons/Face';
 import MenuIcon from '@material-ui/icons/Menu';
 import PhoneInTalkIcon from '@material-ui/icons/PhoneInTalk';
 import ScheduleIcon from '@material-ui/icons/Schedule';
+import useWindowScroll from '@react-hook/window-scroll';
+import React, { useContext, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import { LoginContext } from '../../contexts/LoginContext';
 import styles from './menu.module.scss';
@@ -34,8 +34,14 @@ const Menu = () => {
 
   const context = useContext(LoginContext);
 
+  const scroll = useWindowScroll(200);
+
   const handleLogout = async () => {
     await context.logout();
+  };
+
+  const isOnTop = () => {
+    return scroll < 50;
   };
 
   return (
@@ -61,7 +67,7 @@ const Menu = () => {
           </section>
         </section>
       </div>
-      <div className={styles.menu}>
+      <div className={`${styles.menu} ${isOnTop() ? styles.docked : ''}`}>
         <section className={styles.wrapper_menu}>
           <div className={styles.logo} />
           <div className={styles.menu_list}>
