@@ -13,16 +13,14 @@ const About = () => (
       </Typography>
     </div>
     <section className={styles.row}>
-      <div className={styles.content}>
-        <Typography variant="h5" component="article">
-          Robots, robots and more robots!
-        </Typography>
-        <Typography component="p" className={styles.paragraph}>
-          Created in agony with the dream of the impossible in symbiosis with many scientific organizations,
-          a company specializing in convenient, fast and reliable delivery from one point of the world to another.
-        </Typography>
-      </div>
-      <Card className={styles.photo} />
+      <Typography variant="h5" component="article">
+        Robots, robots and more robots!
+      </Typography>
+      <Typography component="p" className={styles.paragraph}>
+        Created in agony with the dream of the impossible in symbiosis with many scientific organizations,
+        a company specializing in convenient, fast and reliable delivery from one point of the world to another.
+      </Typography>
+      <div className={styles.handy} />
     </section>
     <section className={styles.row}>
       <Typography variant="h5" component="article">
@@ -35,6 +33,7 @@ const About = () => (
         operations. Equipped with a quantum AI chip, they are able to adequately communicate with people and
         understand their desires.
       </Typography>
+      <div className={styles.eye} />
     </section>
     <section className={styles.row}>
       <Typography variant="h5" component="article">
