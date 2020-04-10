@@ -1,77 +1,79 @@
 @import '../../../../styles/variables.scss';
 @import '../../../../styles/mixins.scss';
 
+$photo-width: 200px;
+
 .about {
   @include section;
-  margin-top: 95vh;
-  //background: red;
+  margin-top: 90vh;
 }
 
-.title {
-  @include title;
-}
-
-.subtitle {
-  @include subtitle;
+.wrapper_about {
+  @include wrapper;
   text-align: center;
-  padding-bottom: $item-gap;
-}
-
-.content {
-  //width: 70%;
-  background: #FFF;
-  position: relative;
-  //height: 450px;
-  &:first-child {
-    flex-grow: 1;
-    background: green;
+  .title {
+    @media screen and (max-width: $container-tablet-width) {
+      font-size: 2rem;
+    }
   }
-  &:last-child {
-    background: blue;
-  }
-  .text {
-    position: relative;
-    left: 0;
-    z-index: 1;
-    background: rgb(255, 255, 255);
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0.85) 70%, rgba(255, 255, 255, 0) 100%);
+  .subtitle {
+    color: $accent-dark-color;
+    @media screen and (max-width: $container-tablet-width) {
+      margin: 0 $item-gap;
+    }
   }
 }
 
 .row {
   @include wrapper;
   display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  position: relative;
 
-  .quote {
-    height: 20vh;
-    background: yellow;
-    font-size: 1.2rem;
-    text-align: center;
-    padding: $item-gap * 2;
-    //margin: $item-gap auto;
-    font-style: italic;
-    position: relative;
-    &:before {
-      content: ',,';
-      position: absolute;
-      top: -$item-gap * 1.5;
-      left: $item-gap;
-      font-size: 3rem;
-    }
-    &:after {
-      content: 'first principle';
-      position: absolute;
-      bottom: 0;
-      right: $item-gap / 2;
-      font-size: 1.5rem;
-      color: #00000015;
+  &:last-child {
+    padding-bottom: 200px;
+    background-color: #FFFFFFDD;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1 0;
+    @media screen and (max-width: $container-tablet-width) {
+      flex: 1 100%;
     }
   }
 
-  .photo {
+  .paragraph {
+    text-align: justify;
+  }
+
+  .armor {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 300px;
     height: 300px;
+    background: url("../../../../assets/robots/armor.png") no-repeat center top;
+    background-size: 100%;
+    box-shadow: inset 0 0 20px 10px #FFF;
+    z-index: -1;
+  }
+
+  .photo {
+    width: $photo-width;
+    height: $photo-width;
+    margin-left: $item-gap;
+    border-radius: 50%;
+    background: url('../../../../assets/robots/handy1.png') no-repeat center center;
+    background-size: 60%;
     @media screen and (max-width: $container-tablet-width) {
-      display: none;
+      width: $photo-width * 0.8;
+      height: $photo-width * 0.8;
+      box-shadow: none;
+      margin: 0 auto;
     }
   }
 }

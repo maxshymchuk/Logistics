@@ -43,13 +43,9 @@ const Menu = () => {
   };
 
   const isScrollDown = () => {
-    const MINIMAL_PIXELS_PER_TICK = 5;
     const comp = scroll - prev;
     prev = scroll;
-    if (Math.abs(comp) > MINIMAL_PIXELS_PER_TICK) {
-      return comp > 0;
-    }
-    return true;
+    return comp > 0;
   };
 
   const isOnTop = () => {
@@ -57,9 +53,13 @@ const Menu = () => {
     return scroll < MENU_UNDOCK_POS;
   };
 
+  const isIndexPage = () => {
+    return window.location.pathname === '/';
+  };
+
   const getMenuStyle = () => {
     const style = [styles.menu];
-    if (isOnTop()) {
+    if (isIndexPage() && isOnTop()) {
       style.push(styles.docked);
     } else if (isScrollDown()) {
       style.push(styles.hided);
