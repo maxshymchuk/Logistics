@@ -5,7 +5,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import PhoneInTalkIcon from '@material-ui/icons/PhoneInTalk';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import useWindowScroll from '@react-hook/window-scroll';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { LoginContext } from '../../contexts/LoginContext';
@@ -27,6 +27,8 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
+let prev = 0;
+
 const Menu = () => {
   const classes = useStyles();
 
@@ -34,14 +36,35 @@ const Menu = () => {
 
   const context = useContext(LoginContext);
 
-  const scroll = useWindowScroll(200);
+  const scroll = useWindowScroll(10);
 
   const handleLogout = async () => {
     await context.logout();
   };
 
+  const isScrollDown = () => {
+    const MINIMAL_PIXELS_PER_TICK = 5;
+    const comp = scroll - prev;
+    prev = scroll;
+    if (Math.abs(comp) > MINIMAL_PIXELS_PER_TICK) {
+      return comp > 0;
+    }
+    return true;
+  };
+
   const isOnTop = () => {
-    return scroll < 50;
+    const MENU_UNDOCK_POS = 50;
+    return scroll < MENU_UNDOCK_POS;
+  };
+
+  const getMenuStyle = () => {
+    const style = [styles.menu];
+    if (isOnTop()) {
+      style.push(styles.docked);
+    } else if (isScrollDown()) {
+      style.push(styles.hided);
+    }
+    return style.join(' ');
   };
 
   return (
@@ -67,9 +90,9 @@ const Menu = () => {
           </section>
         </section>
       </div>
-      <div className={`${styles.menu} ${isOnTop() ? styles.docked : ''}`}>
+      <div className={getMenuStyle()}>
         <section className={styles.wrapper_menu}>
-          <div className={styles.logo} />
+          <div className={`${styles.logo} ${!isOnTop() ? styles.colorful : ''}`} />
           <div className={styles.menu_list}>
             <MenuList direction="row" />
           </div>

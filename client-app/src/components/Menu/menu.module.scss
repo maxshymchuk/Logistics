@@ -71,8 +71,6 @@
   }
 }
 
-
-
 .menu {
   background-color: #ffffffdd;
   width: 100%;
@@ -80,7 +78,7 @@
   position: sticky;
   top: 0;
   z-index: 999;
-  transition: background-color 0.5s;
+  transition: background-color 0.5s, top 0.5s;
 
   &.docked {
     background-color: transparent;
@@ -90,12 +88,23 @@
     }
   }
 
+
+  &.hided {
+    @media screen and (max-width: $container-tablet-width) {
+      top: -100px;
+    }
+  }
+
   a {
     display: block;
   }
 
   .logo {
+    $background: #00000022;
     @include logo;
+    &.colorful {
+      color: $accent-color;
+    }
   }
 
   .wrapper_menu {

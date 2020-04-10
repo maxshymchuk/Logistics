@@ -1,4 +1,5 @@
 @import './variables.scss';
+@import url('https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@800&display=swap');
 
 @mixin section {
   margin: 50px 0;
@@ -29,14 +30,28 @@
   }
 }
 
-@mixin logo($width: 200px) {
+@mixin logo($height: 50px) {
+  $width: $height * 1.5;
   width: $width;
-  height: $width / 4;
-  background: url('../assets/logo_full.svg') no-repeat left center;
+  height: $height;
+  background: url('../assets/logo.svg') no-repeat center center;
   background-size: contain;
-  @media screen and (max-width: $container-tablet-width) {
+  margin-right: $width * 1.5;
+  @media screen and (max-width: $container-mobile-width) {
     margin: 0;
-    background-image: url('../assets/logo.svg');
+  }
+  &:after {
+    font-family: 'Baloo Da 2';
+    content: 'SHUTTLE';
+    font-size: $height / 2;
+    display: inline-flex;
+    height: $height;
+    align-items: center;
+    position: relative;
+    left: $width;
+    @media screen and (max-width: $container-tablet-width) {
+      display: none;
+    }
   }
 }
 
