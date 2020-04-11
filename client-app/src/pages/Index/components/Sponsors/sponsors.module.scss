@@ -1,0 +1,44 @@
+@import "../../../../styles/variables.scss";
+@import "../../../../styles/mixins.scss";
+
+$sponsor: 160px;
+
+.sponsors {
+  @include section;
+}
+
+.wrapper_sponsors {
+  @include wrapper;
+
+  .title {
+    text-align: center;
+    @media screen and (max-width: $container-tablet-width) {
+      font-size: 2rem;
+    }
+  }
+
+  .subtitle {
+    text-align: center;
+    //padding-bottom: 2 * $item-gap;
+    color: $accent-dark-color;
+  }
+
+  .content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+
+  .sponsor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: $sponsor;
+    height: $sponsor;
+    margin: $item-gap;
+    img {
+      max-width: $sponsor;
+      max-height: 80px;
+    }
+  }
+}
