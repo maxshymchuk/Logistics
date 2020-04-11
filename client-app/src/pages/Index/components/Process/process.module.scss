@@ -7,83 +7,52 @@
 
 .wrapper_process {
   @include wrapper;
+  counter-reset: step;
 
   .title {
-    @include title;
+    text-align: center;
+    padding-bottom: 2 * $item-gap;
+    @media screen and (max-width: $container-tablet-width) {
+      font-size: 2rem;
+    }
   }
 
   .subtitle {
-    text-align: center;
-    padding-bottom: $item-gap;
-  }
-
-  .content {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin: 0 auto;
-    counter-reset: step;
+    color: $accent-dark-color;
+    @media screen and (max-width: $container-tablet-width) {
+      font-size: 1.5rem;
+    }
   }
 
   .step {
-    counter-increment: step;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: $item-gap $item-gap / 2;
-    width: 100px;
-    position: relative;
-    &:nth-child(1) .image {
-      background-image: url("../../../../assets/index/process/taking.svg");
-      background-size: 50%;
-    }
-    &:nth-child(2) .image {
-      background-image: url("../../../../assets/index/process/manage.svg");
-      background-size: 50%;
-    }
-    &:nth-child(3) .image {
-      background-image: url("../../../../assets/index/process/shipment.svg");
-      background-size: 50%;
-    }
-    &:nth-child(4) .image {
-      background-image: url("../../../../assets/index/process/warehousing.svg");
-      background-size: 50%;
-    }
-    &:nth-child(5) .image {
-      background-image: url("../../../../assets/index/process/transportation.svg");
-      background-size: 50%;
-    }
-    &:nth-child(6) .image {
-      background-image: url("../../../../assets/index/process/home.svg");
-      background-size: 50%;
-    }
-    .image {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      margin: $item-gap / 2 0;
-      background-color: #fff;
-      background-repeat: no-repeat;
-      background-position: center center;
-      &:before {
-        content: counter(step);
-        display: block;
-        width: 20px;
-        line-height: 20px;
-        text-align: center;
-        border-radius: 50%;
-        background-color: $accent-color;
-        font-size: 0.7rem;
-        color: #fff;
-        position: absolute;
-        right: $item-gap * 1.5;
+    align-items: flex-start;
+    padding: $item-gap;
+    counter-increment: step;
+    &:before {
+      line-height: 160px;
+      content: counter(step);
+      color: $disabled-color;
+      font-size: 160px;
+      font-weight: bold;
+      padding-right: $item-gap;
+      @media screen and (max-width: $container-tablet-width) {
+        font-size: 3rem;
+        line-height: 3rem;
       }
     }
-    .title {
-      font-size: 0.8rem;
-      font-weight: normal;
-      white-space: nowrap;
+  }
+
+  .details {
+    text-align: center;
+    .mark {
+      padding: 0 $item-gap / 2;
     }
+  }
+
+  .mark {
+    font-size: 1.5rem;
+    line-height: 1rem;
+    color: $secondary-dark-color;
   }
 }

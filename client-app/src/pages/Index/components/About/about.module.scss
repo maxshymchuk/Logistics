@@ -45,10 +45,6 @@ $photo-width: 200px;
     }
   }
 
-  .paragraph {
-    text-align: justify;
-  }
-
   @mixin picture {
     position: absolute;
     right: 0;
