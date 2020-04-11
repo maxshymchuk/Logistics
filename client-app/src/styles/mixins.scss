@@ -13,9 +13,6 @@
 }
 
 @mixin title {
-  margin-top: 0;
-  font-size: 2rem;
-  text-align: center;
   font-weight: bold;
   @media screen and (max-width: $container-tablet-width) {
     font-size: 1.4rem;
@@ -24,7 +21,6 @@
 
 @mixin subtitle {
   font-size: 1.2rem;
-  line-height: 1.2em;
   @media screen and (max-width: $container-tablet-width) {
     font-size: 1rem;
   }

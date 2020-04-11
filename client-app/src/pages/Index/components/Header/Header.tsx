@@ -1,10 +1,10 @@
+import Carousel from '@brainhubeu/react-carousel';
 import '@brainhubeu/react-carousel/lib/style.css';
+import { Button, Typography } from '@material-ui/core';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 
 import React from 'react';
 import { HashLink } from 'react-router-hash-link';
-
-import Carousel from '@brainhubeu/react-carousel';
-import { Button } from '@material-ui/core';
 
 import smoothScroll from '../../../../helpers/smoothScroll';
 import styles from './header.module.scss';
@@ -21,25 +21,27 @@ const Header = () => (
         <div className={styles.normandy} />
       </Carousel>
       <div className={styles.layer}>
-        <article className={styles.title}>
+        <Typography variant="h4" component="article" className={styles.title}>
           We Provide The Best
           <br />
           Transport & Logistics Service
-        </article>
-        <article className={styles.subtitle}>
+        </Typography>
+        <Typography variant="subtitle1" component="article" className={styles.subtitle}>
           Fast. Effective. Comfortable. Simple.
           <br />
           Sounds powerful, doesn&apos;t it?
-        </article>
+        </Typography>
         <Button
           color="primary"
-          variant="contained"
           className={styles.button}
           component={HashLink}
           scroll={smoothScroll}
           to="/#about"
         >
-          Let&apos;s find out how we did it
+          <div className={styles.content}>
+            <div>So how did we do that?</div>
+            <KeyboardArrowDownIcon fontSize={'small'} />
+          </div>
         </Button>
       </div>
     </div>
