@@ -1,25 +1,33 @@
 @import "../../../../styles/variables.scss";
 @import "../../../../styles/mixins.scss";
 
+$padding: 50px;
+
 .service {
   @include section;
-  padding: 50px 0;
+  padding: $padding 0;
   background-color: $accent-light-color;
 }
 
 .wrapper_service {
   @include wrapper;
+  display: flex;
+  flex-direction: column;
 
   .title {
     @include title;
+    text-align: center;
+    padding-bottom: $padding;
     color: #fff;
   }
 
-  .content {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
+  .button {
+    text-align: center;
+    width: 60%;
+    padding: 20px 40px;
     margin: 0 auto;
+    @media screen and (max-width: $container-tablet-width) {
+      width: 100%;
+    }
   }
 }
