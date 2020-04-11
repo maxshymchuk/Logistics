@@ -1,6 +1,5 @@
+import { Typography } from '@material-ui/core';
 import React from 'react';
-
-import { Card, Typography } from '@material-ui/core';
 
 import styles from './process.module.scss';
 
@@ -9,7 +8,7 @@ const Process = () => {
     <div className={styles.process}>
       <section className={styles.wrapper_process}>
         <Typography className={styles.title} variant="h2" component="article">
-          Our Working Process
+          Our working process
         </Typography>
         <div className={styles.step}>
           <section className={styles.content}>
