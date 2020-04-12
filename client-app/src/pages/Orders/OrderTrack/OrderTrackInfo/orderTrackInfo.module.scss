@@ -2,6 +2,8 @@
 @import "../../../../styles/mixins.scss";
 
 .order {
+  width: 100%;
+  max-width: 600px;
   margin: $item-gap auto;
 }
 

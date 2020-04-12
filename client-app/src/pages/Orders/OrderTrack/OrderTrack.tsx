@@ -1,36 +1,37 @@
-import React, { useState } from 'react';
-
 import { Button, Card, LinearProgress, TextField } from '@material-ui/core';
+import React, { useState } from 'react';
+import Notification from '../../../components/Notification/Notification';
+import { isOfType } from '../../../helpers/typeGuard';
+import { MessageType, ServerResponse } from '../../../models/message.models';
+import { Order } from '../../../models/order.models';
 
 import { getOrderByTrackNumber } from '../../../services/orders.service';
 import styles from './orderTrack.module.scss';
 import OrderTrackInfo from './OrderTrackInfo/OrderTrackInfo';
-import { MessageType, ServerResponse } from '../../../models/message.models';
-import Notification from '../../../components/Notification/Notification';
-import { Order } from '../../../models/order.models';
 
 type OrderTrackState = {
   order: Order | null,
-  isLoaded: boolean;
+  isLoading: boolean;
 };
 
 const OrderTrack = () => {
   const [state, setState] = useState<OrderTrackState>({
     order: null,
-    isLoaded: true
+    isLoading: false
   });
   const [trackNumber, setTrackNumber] = useState('');
   const [dialogResult, setDialogResult] = useState<ServerResponse<any> | null>(null);
 
   const showOrder = async () => {
-    setState({ ...state, isLoaded: false });
-    const orderResponse = await getOrderByTrackNumber(trackNumber);
-    if (orderResponse.messageType === MessageType.Error) {
-      setDialogResult(orderResponse);
-    } else {
-      setState({ ...state, order: orderResponse.data });
+    if (trackNumber !== '') {
+      setState({ ...state, isLoading: true });
+      const orderResponse = await getOrderByTrackNumber(trackNumber);
+      if (orderResponse.messageType === MessageType.Error) {
+        setDialogResult(orderResponse);
+      } else if (isOfType<Order>(orderResponse.data, 'trackNumber')) {
+        setState({ ...state, order: orderResponse.data, isLoading: false });
+      }
     }
-    setState({ ...state, isLoaded: true });
   };
 
   return (
@@ -53,7 +54,7 @@ const OrderTrack = () => {
           Find order
         </Button>
       </Card>
-      {!state.isLoaded ? (
+      {state.isLoading ? (
         <LinearProgress />
       ) : (
         <>
