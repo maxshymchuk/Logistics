@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button, Card, CardActions, CardContent, CardMedia } from '@material-ui/core';
+import { Button, Card, CardActions, CardContent, CardMedia, Typography } from '@material-ui/core';
 
 import styles from './newsItem.module.scss';
 
@@ -14,18 +14,25 @@ type NewsItemProps = {
 const NewsItem = ({ date, image, title, source }: NewsItemProps) => {
   return (
     <Card className={styles.news_item}>
-      <CardMedia className={styles.image} image={image} />
-      <CardContent className={styles.description}>
-        <article className={styles.date}>{date.toDateString()}</article>
-        <article className={styles.title}>{title}</article>
-      </CardContent>
-      <CardActions className={styles.actions}>
-        <Button className={styles.button} size="small">
-          <a href={source} target="_blank" rel="noopener noreferrer">
-            Read More
-          </a>
-        </Button>
-      </CardActions>
+      <CardMedia className={styles.image} image={image}>
+        <section className={styles.content}>
+          <div className={styles.text}>
+            <Typography className={styles.date} variant="subtitle1" component="article">
+              {date.toLocaleDateString()}
+            </Typography>
+          </div>
+          <div className={styles.text}>
+            <article className={styles.title}>{title}</article>
+          </div>
+        </section>
+        <CardActions className={styles.actions}>
+          <Button className={styles.button} color='primary' variant='contained' size="small">
+            <a href={source} target="_blank" rel="noopener noreferrer">
+              Read More
+            </a>
+          </Button>
+        </CardActions>
+      </CardMedia>
     </Card>
   );
 };
