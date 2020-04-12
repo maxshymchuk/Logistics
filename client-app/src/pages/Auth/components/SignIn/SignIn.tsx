@@ -36,6 +36,7 @@ const SignIn = () => {
         label="Username"
         name="username"
         variant="outlined"
+        size="small"
         onChange={e => setUsername(e.target.value)}
         required
       />
@@ -44,6 +45,7 @@ const SignIn = () => {
         type="password"
         name="password"
         variant="outlined"
+        size="small"
         onChange={e => setPassword(e.target.value)}
         required
       />
