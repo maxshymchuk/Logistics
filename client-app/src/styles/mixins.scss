@@ -26,7 +26,7 @@
   }
 }
 
-@mixin logo($height: 50px) {
+@mixin logo($height: 50px, $text: 'SHUTTLE', $adaptive: true) {
   $width: $height * 1.5;
   width: $width;
   height: $height;
@@ -38,15 +38,17 @@
   }
   &:after {
     font-family: 'Baloo Da 2';
-    content: 'SHUTTLE';
+    content: $text;
     font-size: $height / 2;
     display: inline-flex;
     height: $height;
     align-items: center;
     position: relative;
     left: $width;
-    @media screen and (max-width: $container-tablet-width) {
-      display: none;
+    @if $adaptive {
+      @media screen and (max-width: $container-tablet-width) {
+        display: none;
+      }
     }
   }
 }

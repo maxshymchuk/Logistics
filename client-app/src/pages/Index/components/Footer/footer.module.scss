@@ -8,76 +8,77 @@
 .wrapper_footer {
   @include wrapper;
   color: #fff;
+  display: flex;
+  flex-wrap: wrap;
+  //justify-content: space-between;
+  justify-content: center;
+  padding: 2 * $item-gap 0;
+  @media screen and (max-width: $container-tablet-width) {
+    padding: $item-gap;
+  }
 
   .content {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-  }
-
-  p {
-    margin: 0;
-  }
-
-  .logo {
-    @include logo;
-  }
-
-  .title {
-    @include title;
-    text-transform: uppercase;
-    font-size: 1.2rem;
-    margin-bottom: $item-gap / 2;
-    text-align: left;
-  }
-
-  .subtitle {
-    text-transform: uppercase;
-    text-align: left;
-    margin: $item-gap 0;
-  }
-
-  .nav {
-    display: flex;
-    flex-wrap: wrap;
     justify-content: center;
+    flex-wrap: wrap;
+    flex-grow: 1;
+    padding: 0 $item-gap;
   }
+  
+  .description {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
 
-  .description,
-  .download {
-    margin: $item-gap 0;
-    width: 220px;
-  }
-
-  .links,
-  .services,
-  .company {
-    margin: $item-gap 0;
-    padding: 0 $item-gap / 2;
-    & > * {
-      display: block;
+    .logo {
+      @include logo(60px, 'Shuttle', false);
+    }
+    .logo_research {
+      @include logo(60px, 'Research', false);
+      background: url("../../../../assets/logo_research.svg") no-repeat center center;
     }
   }
 
-  .badges {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+  .nav {
+    flex-grow: 2;
+    display: grid;
+    grid-gap: $item-gap;
+    grid-template-columns: repeat(auto-fit, 120px);
+    justify-content: center;
+    margin: $item-gap 0;
+    & * {
+      color: #FFF;
+    }
+  }
+
+  .download {
+    margin: $item-gap 0;
+    padding-left: $item-gap;
+    .badges {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      @media screen and (max-width: $container-tablet-width) {
+        flex-direction: row;
+      }
+    }
   }
 
   .google,
   .apple {
     width: 100px;
     height: 40px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
   }
 
   .google {
-    background: url("../../../../assets/badges/google.svg") no-repeat center center;
-    background-size: contain;
+    background-image: url("../../../../assets/badges/google.svg");
   }
 
   .apple {
-    background: url("../../../../assets/badges/apple.svg") no-repeat center center;
-    background-size: contain;
+    background-image: url("../../../../assets/badges/apple.svg");
+    margin-left: $item-gap / 2;
   }
 }
