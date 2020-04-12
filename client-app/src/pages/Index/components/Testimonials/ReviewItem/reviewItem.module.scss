@@ -27,7 +27,7 @@
     .text {
       min-width: 100px;
       @media screen and (max-width: $container-tablet-width) {
-        display: none;
+        text-align: justify;
       }
     }
   }
@@ -48,7 +48,6 @@
       border-radius: 50%;
       box-sizing: border-box;
       padding: $item-gap;
-
     }
   }
 }
