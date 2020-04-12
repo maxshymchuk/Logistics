@@ -1,7 +1,7 @@
-import React from 'react';
-
 import { Button, Typography } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { HashLink as Link } from 'react-router-hash-link';
+import smoothScroll from '../../../../helpers/smoothScroll';
 
 import styles from './footer.module.scss';
 
@@ -15,19 +15,19 @@ const Footer = () => {
         </div>
         <div className={styles.content}>
           <section className={styles.nav}>
-            <Button variant='outlined' color='primary' component={Link} to='/#top'>
+            <Button variant='outlined' color='primary' component={Link} to='/#top' scroll={smoothScroll}>
               Home
             </Button>
-            <Button variant='outlined' color='primary' component={Link} to='/#about'>
+            <Button variant='outlined' color='primary' component={Link} to='/#about' scroll={smoothScroll}>
               About Us
             </Button>
-            <Button variant='outlined' color='primary' component={Link} to='/#service'>
+            <Button variant='outlined' color='primary' component={Link} to='/#service' scroll={smoothScroll}>
               Service
             </Button>
-            <Button variant='outlined' color='primary' component={Link} to='/#reviews'>
+            <Button variant='outlined' color='primary' component={Link} to='/#reviews' scroll={smoothScroll}>
               Reviews
             </Button>
-            <Button variant='outlined' component={Link} to='/#news'>
+            <Button variant='outlined' component={Link} to='/#news' scroll={smoothScroll}>
               News
             </Button>
           </section>
