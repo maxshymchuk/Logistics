@@ -1,46 +1,39 @@
-import '@brainhubeu/react-carousel/lib/style.css';
-
-import React from 'react';
-
 import Carousel from '@brainhubeu/react-carousel';
-import { Card } from '@material-ui/core';
+import '@brainhubeu/react-carousel/lib/style.css';
+import { Card, IconButton, Typography } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
+import React from 'react';
+
 import ReviewItem from './ReviewItem/ReviewItem';
 import styles from './testimonials.module.scss';
-import { reviewers, reviews } from './testimonialsContent';
+import { reviews } from './testimonialsContent';
 
 const Testimonials = () => {
   return (
     <div className={styles.testimonials} id="reviews">
       <section className={styles.wrapper_testimonials}>
-        <h1 className={styles.title}>Testimonials</h1>
-        <article className={styles.subtitle}>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-        </article>
-        <Card className={styles.slide}>
+        <Typography className={styles.title} variant="h2" component="article">
+          Testimonials
+        </Typography>
+        <div className={styles.slide}>
           <Carousel
             slidesPerPage={1}
-            arrowLeft={<ArrowBackIcon />}
-            arrowRight={<ArrowForwardIcon />}
-            animationSpeed={0}
+            arrowLeft={<IconButton><ArrowBackIcon /></IconButton>}
+            arrowRight={<IconButton><ArrowForwardIcon /></IconButton>}
+            animationSpeed={800}
+            autoPlay={8000}
             addArrowClickHandler
             stopAutoPlayOnHover
-            draggable={false}
             arrows
             infinite
           >
             {reviews.map((review, index) => (
-              <ReviewItem
-                key={index}
-                {...review}
-                reviewersPhotos={reviewers}
-                reviewer={index}
-              />
+              <ReviewItem key={index} review={review} />
             ))}
           </Carousel>
-        </Card>
+        </div>
       </section>
     </div>
   );

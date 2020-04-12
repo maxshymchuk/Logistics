@@ -9,7 +9,11 @@
   @include wrapper;
 
   .title {
-    @include title;
+    text-align: center;
+    margin-bottom: 2 * $item-gap;
+    @media screen and (max-width: $container-tablet-width) {
+      font-size: 2rem;
+    }
   }
 
   .subtitle {
