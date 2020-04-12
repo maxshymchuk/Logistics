@@ -1,4 +1,4 @@
-import { Button, Card, Collapse, List, ListItem, ListItemText } from '@material-ui/core';
+import { Button, Card, Collapse, List, ListItem, ListItemText, Typography } from '@material-ui/core';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import React, { useState } from 'react';
@@ -73,7 +73,9 @@ const OrderTrackInfo = ({ order: orderProps }: OrderTrackInfoProps) => {
           <List component="nav" disablePadding>
             <ListItem button onClick={() => setOrderOpen(!isOrderOpen)}>
               <section className={styles.list_title}>
-                <article className={styles.title}>{order.status}</article>
+                <Typography className={styles.title} variant="h6">
+                  {order.status}
+                </Typography>
                 <span className={styles.taken_time}>{new Date(order.takenTime).toLocaleString()}</span>
               </section>
               {isOrderOpen ? <ExpandLess /> : <ExpandMore />}

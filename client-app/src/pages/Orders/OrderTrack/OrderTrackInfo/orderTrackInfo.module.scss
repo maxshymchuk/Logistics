@@ -7,12 +7,12 @@
 
 .list_title {
   width: 100%;
-  padding: $item-gap $item-gap $item-gap 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   .title {
-    @include title;
+    flex-grow: 1;
+    flex-shrink: 0;
     font-weight: normal;
     &:before {
       counter-increment: order;
@@ -20,6 +20,9 @@
     }
   }
   .taken_time {
+    display: inline;
+    text-align: right;
+    padding-right: $item-gap;
     font-style: italic;
     color: $disabled-color;
   }
