@@ -35,6 +35,7 @@ const SignIn = () => {
       <TextField
         label="Username"
         name="username"
+        variant="outlined"
         onChange={e => setUsername(e.target.value)}
         required
       />
@@ -42,6 +43,7 @@ const SignIn = () => {
         label="Password"
         type="password"
         name="password"
+        variant="outlined"
         onChange={e => setPassword(e.target.value)}
         required
       />

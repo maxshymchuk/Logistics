@@ -1,6 +1,24 @@
 @import "../../styles/variables.scss";
+@import "../../styles/mixins.scss";
+
+.auth {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url("../../assets/auth/truck2.jpg") no-repeat center bottom;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+}
 
 .wrapper_auth {
-  max-width: 400px;
-  margin: 40px auto;
+  @include wrapper;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  @media screen and (max-width: $container-tablet-width) {
+    justify-content: center;
+  }
 }
