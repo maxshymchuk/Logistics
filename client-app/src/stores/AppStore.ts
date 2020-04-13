@@ -10,21 +10,19 @@ export class AppStore {
 
   @observable isLogged: boolean = false;
 
-  resetUser() {
+  private resetUser() {
     this.user = null;
     this.isLogged = false;
   }
 
-  @action
-  login(newUser: User) {
+  @action login(newUser: User) {
     if (newUser) {
       this.user = newUser;
       this.isLogged = true;
     }
   }
 
-  @action
-  async logout() {
+  @action async logout() {
     const response = await logoutUser();
     console.log(response.message);
     runInAction(() => {

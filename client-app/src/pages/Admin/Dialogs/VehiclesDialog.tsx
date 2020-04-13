@@ -1,6 +1,3 @@
-import { observer } from 'mobx-react';
-import React, { useContext, useEffect, useState } from 'react';
-
 import DateFnsUtils from '@date-io/date-fns';
 import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@material-ui/core';
 import Dialog from '@material-ui/core/Dialog';
@@ -10,14 +7,16 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
+import { observer } from 'mobx-react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { isOfType, isSomeEnum } from '../../../helpers/typeGuard';
 import { Location } from '../../../models/location.models';
-import { MessageType, ServerResponse } from '../../../models/message.models';
+import { MessageType } from '../../../models/message.models';
 import { Vehicle, VehicleType, vehicleTypes } from '../../../models/vehicle.models';
 import { getLocationsData } from '../../../services/locations.service';
 import { addVehicle } from '../../../services/vehicles.service';
-import { AdminContext } from '../../../stores/AdminStore';
+import { AdminContext } from '../../../stores/Admin/AdminStore';
 import styles from './form.module.scss';
 
 export type VehiclesDialogState = {
@@ -25,11 +24,6 @@ export type VehiclesDialogState = {
   arrivalDate: Date;
   type: VehicleType;
 };
-
-// export type VehiclesDialogProps = {
-//   result: (response: ServerResponse<Location[] | null>) => void;
-//   onClose: () => void;
-// };
 
 export const VehiclesDialog = observer(() => {
   const [locations, setLocations] = useState<Location[]>([]);
@@ -42,14 +36,14 @@ export const VehiclesDialog = observer(() => {
   const adminStore = useContext(AdminContext);
 
   const handleClose = () => {
-    onClose();
+    adminStore.dialog.close();
   };
 
   useEffect(() => {
     (async () => {
       const locationsResponse = await getLocationsData();
       if (locationsResponse.messageType === MessageType.Error) {
-        adminStore.dialogResult = locationsResponse;
+        adminStore.dialog.set(locationsResponse);
         handleClose();
       } else if (locationsResponse.data instanceof Array) {
         setLocations(locationsResponse.data);
@@ -60,15 +54,16 @@ export const VehiclesDialog = observer(() => {
   const handleSubmit = async () => {
     if (state.destination && isOfType<Vehicle>(state, 'type')) {
       const response = await addVehicle(state);
-      result(response);
+      adminStore.dialog.set(response);
       handleClose();
     }
   };
 
   const handleSelect = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const { value } = event.target;
     const checker = isSomeEnum(VehicleType);
-    if (checker(event.target.value)) {
-      setState({...state, type: event.target.value});
+    if (checker(value)) {
+      setState({...state, type: value});
     }
   };
 
@@ -81,7 +76,7 @@ export const VehiclesDialog = observer(() => {
 
   return (
     <>
-      <Dialog open onClose={handleClose} scroll='body' maxWidth='sm' fullWidth>
+      <Dialog open={adminStore.dialog.isOpen} onClose={handleClose} scroll='body' maxWidth='sm' fullWidth>
         <DialogTitle>Vehicles</DialogTitle>
         <DialogContent>
           <div className={styles.form}>

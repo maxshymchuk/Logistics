@@ -2,6 +2,7 @@ import { Box, Card, Tab, Tabs, Typography, Zoom } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
+import { observer } from 'mobx-react';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, Route, Switch } from 'react-router-dom';
 
@@ -12,7 +13,7 @@ import Users from '../../admin/components/Users/Users';
 import Vehicles from '../../admin/components/Vehicles/Vehicles';
 import Notification from '../../components/Notification/Notification';
 import { ServerResponse } from '../../models/message.models';
-import { AdminContext } from '../../stores/AdminStore';
+import { AdminContext } from '../../stores/Admin/AdminStore';
 import styles from './admin.module.scss';
 import { LocationsDialog } from './Dialogs/LocationsDialog';
 import { UsersDialog } from './Dialogs/UsersDialog';
@@ -55,7 +56,7 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
-const Admin = () => {
+const Admin = observer(() => {
   const classes = useStyles();
 
   const paths = ['/admin/vehicles', '/admin/users', '/admin/locations', '/admin/orders'];
@@ -73,22 +74,22 @@ const Admin = () => {
     setPage(1);
   }, [tab]);
 
-  const setResult = (result: ServerResponse<any>) => {
-    setDialogResult(result);
-  };
+  // const setResult = (result: ServerResponse<any>) => {
+  //   setDialogResult(result);
+  // };
 
   const getModal = () => {
     switch (tab) {
-      case 0: return <VehiclesDialog result={(result) => setResult(result)} onClose={() => setDialogOpen(false)} />;
-      case 1: return <UsersDialog result={(result) => setResult(result)} onClose={() => setDialogOpen(false)} />;
-      case 2: return <LocationsDialog result={(result) => setResult(result)} onClose={() => setDialogOpen(false)} />;
+      case 0: return <VehiclesDialog />;
+      // case 1: return <UsersDialog result={(result) => setResult(result)} onClose={() => setDialogOpen(false)} />;
+      // case 2: return <LocationsDialog result={(result) => setResult(result)} onClose={() => setDialogOpen(false)} />;
       default: return <></>;
     }
   };
 
   return (
-    <AdminContext.Provider value={adminStore}>
-      {adminStore.dialogResult && <Notification {...adminStore.dialogResult} afterClose={adminStore.resetDialogResult} />}
+    <>
+      {adminStore.dialog.result && <Notification {...adminStore.dialog.result} afterClose={() => adminStore.dialog.reset()} />}
       <Card className={classes.header}>
         <Menu length={length} checkPages={currPage => setPage(currPage)} />
         <Tabs
@@ -113,29 +114,29 @@ const Admin = () => {
           </Route>
           <Route exact path={paths[1]}>
             <TabPanel value={tab} index={1}>
-              <Users page={page} checkPages={value => setLength(value)} />
+              {/*<Users page={page} checkPages={value => setLength(value)} />*/}
             </TabPanel>
           </Route>
           <Route exact path={paths[2]}>
             <TabPanel value={tab} index={2}>
-              <Locations page={page} checkPages={value => setLength(value)} />
+              {/*<Locations page={page} checkPages={value => setLength(value)} />*/}
             </TabPanel>
           </Route>
           <Route exact path={paths[3]}>
             <TabPanel value={tab} index={3}>
-              <Orders page={page} checkPages={value => setLength(value)} />
+              {/*<Orders page={page} checkPages={value => setLength(value)} />*/}
             </TabPanel>
           </Route>
         </Switch>
       </section>
       <Zoom in={tab !== 3} timeout={200} unmountOnExit>
-        <Fab className={classes.fab} color="primary" onClick={() => setDialogOpen(true)}>
+        <Fab className={classes.fab} color="primary" onClick={() => adminStore.dialog.open()}>
           <AddIcon />
         </Fab>
       </Zoom>
-      {isDialogOpen && getModal()}
-    </AdminContext.Provider>
+      {adminStore.dialog.isOpen && getModal()}
+    </>
   );
-};
+});
 
 export default Admin;
