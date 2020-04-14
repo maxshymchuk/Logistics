@@ -1,33 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-
 import { Card, Fade } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import Pagination from '@material-ui/lab/Pagination';
+import { observer } from 'mobx-react';
+import React, { useContext, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { AdminContext } from '../../../stores/Admin/AdminStore';
 
 import Regenerator from '../Regenerator/Regenerator';
 import Shifter from '../Shifter/Shifter';
 import styles from './menu.module.scss';
 
-type MenuProps = {
-  length: number;
-  checkPages: (page: number) => any;
-};
-
-const Menu = ({ length, checkPages }: MenuProps) => {
-  const [page, setPage] = useState(1);
+const Menu = observer(() => {
   const [isShifter, setShifter] = useState(false);
   const [isRegenerator, setRegenerator] = useState(false);
 
-  useEffect(() => {
-    setPage(1);
-  }, [length]);
+  const adminStore = useContext(AdminContext);
 
-  const handleChange = (e: any, pageNumber: number) => {
-    setPage(pageNumber);
-    checkPages(pageNumber);
+  const handleChange = (e: any, page: number) => {
+    adminStore.content.setPage(page);
   };
 
   return (
@@ -47,15 +39,22 @@ const Menu = ({ length, checkPages }: MenuProps) => {
               Regenerator
             </Button>
           </section>
-          <Fade in={length !== 0} timeout={200} unmountOnExit>
+          <Fade in={adminStore.content.pageNumber !== 0} timeout={200} unmountOnExit>
             <Card className={styles.pagination}>
-              <Pagination color='primary' shape="rounded" count={length} page={page} onChange={handleChange} size='small' />
+              <Pagination
+                color='primary'
+                shape="rounded"
+                count={adminStore.content.pageNumber}
+                page={adminStore.content.currentPage}
+                onChange={handleChange}
+                size='small'
+              />
             </Card>
           </Fade>
         </Toolbar>
       </AppBar>
     </>
   );
-};
+});
 
 export default Menu;

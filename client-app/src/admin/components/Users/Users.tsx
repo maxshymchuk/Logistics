@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 
 import {
-  CircularProgress, Fade, IconButton, Paper, Table, TableBody, TableCell, TableContainer,
-  TableHead, TableRow
+    CircularProgress, Fade, IconButton, Paper, Table, TableBody, TableCell, TableContainer,
+    TableHead, TableRow
 } from '@material-ui/core';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 import Notification from '../../../components/Notification/Notification';
-import { AdminContext } from '../../../contexts/AdminContext';
+// import { AdminContext } from '../../../contexts/AdminContext';
 import { MessageType, ServerResponse } from '../../../models/message.models';
 import { User } from '../../../models/user.models';
 import { getUsersData, removeUserById } from '../../../services/users.service';
@@ -35,7 +35,7 @@ const Users = ({ page, checkPages }: UsersProps) => {
     isLoaded: false
   });
 
-  const { isChanged: isChangedContext } = useContext(AdminContext);
+  // const { isChanged: isChangedContext } = useContext(AdminContext);
 
   useEffect(() => {
     (async () => {
@@ -47,7 +47,7 @@ const Users = ({ page, checkPages }: UsersProps) => {
         setLength(Math.round(usersResponse.data.length / ITEMS_ON_PAGE));
       }
     })();
-  }, [isChanged, isChangedContext]);
+  }, [isChanged]);
 
   useEffect(() => {
     checkPages(length);

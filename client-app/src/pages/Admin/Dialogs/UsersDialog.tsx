@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { observer } from 'mobx-react';
+import React, { useContext, useState } from 'react';
 
 import DateFnsUtils from '@date-io/date-fns';
 import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@material-ui/core';
@@ -9,18 +10,13 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 
-import { ServerResponse } from '../../../models/message.models';
 import { User } from '../../../models/user.models';
 import { addUser } from '../../../services/users.service';
+import { AdminContext } from '../../../stores/Admin/AdminStore';
 import styles from './form.module.scss';
 
-export type UsersModalProps = {
-  result: (response: ServerResponse) => void;
-  onClose: () => void;
-};
-
-export const UsersDialog = ({result, onClose}: UsersModalProps) => {
-  const [state, setState] = useState<User>({
+export const UsersDialog = observer(() => {
+  const [user, setUser] = useState<User>({
     name: '',
     surname: '',
     birthday: new Date(),
@@ -31,38 +27,40 @@ export const UsersDialog = ({result, onClose}: UsersModalProps) => {
     isAdmin: false
   });
 
+  const adminStore = useContext(AdminContext);
+
   const handleClose = () => {
-    onClose();
+    adminStore.dialog.close();
   };
 
   const handleSubmit = async () => {
-    const response = await addUser(state);
-    result(response);
+    const response = await addUser(user);
+    adminStore.dialog.set(response);
     handleClose();
   };
 
   const handleDate = (date: MaterialUiPickersDate) => {
     const newDate = date?.getTime();
     if (typeof newDate === 'number') {
-      setState({...state, birthday: new Date(newDate) });
+      setUser({...user, birthday: new Date(newDate) });
     }
   };
 
   return (
     <>
-      <Dialog open onClose={handleClose} scroll='body' maxWidth='sm' fullWidth>
+      <Dialog open={adminStore.dialog.isOpen} onClose={handleClose} scroll='body' maxWidth='sm' fullWidth>
         <DialogTitle>Users</DialogTitle>
         <DialogContent>
           <div className={styles.form}>
             <TextField
               label="Name"
-              onChange={e => setState({...state, name: e.target.value})}
+              onChange={e => setUser({...user, name: e.target.value})}
               variant='outlined'
               fullWidth
             />
             <TextField
               label="Surname"
-              onChange={e => setState({...state, surname: e.target.value})}
+              onChange={e => setUser({...user, surname: e.target.value})}
               variant='outlined'
               fullWidth
             />
@@ -70,31 +68,31 @@ export const UsersDialog = ({result, onClose}: UsersModalProps) => {
               <DatePicker  
                 label="Birthday" 
                 inputVariant="outlined" 
-                value={state.birthday} 
+                value={user.birthday} 
                 onChange={handleDate}
               />
             </MuiPickersUtilsProvider>
             <TextField
               label="E-Mail"
-              onChange={e => setState({...state, email: e.target.value})}
+              onChange={e => setUser({...user, email: e.target.value})}
               variant='outlined'
               fullWidth
             />
             <TextField
               label="Phone"
-              onChange={e => setState({...state, phone: e.target.value})}
+              onChange={e => setUser({...user, phone: e.target.value})}
               variant='outlined'
               fullWidth
             />
             <TextField
               label="Username"
-              onChange={e => setState({...state, username: e.target.value})}
+              onChange={e => setUser({...user, username: e.target.value})}
               variant='outlined'
               fullWidth
             />
             <TextField
               label="Password"
-              onChange={e => setState({...state, password: e.target.value})}
+              onChange={e => setUser({...user, password: e.target.value})}
               variant='outlined'
               fullWidth
             />
@@ -103,8 +101,8 @@ export const UsersDialog = ({result, onClose}: UsersModalProps) => {
               <Select 
                 labelId="admin_input_label"
                 labelWidth={55} 
-                value={state.isAdmin ? 'Admin' : 'User'}
-                onChange={e => setState({...state, isAdmin: e.target.value === 'Admin'})}
+                value={user.isAdmin ? 'Admin' : 'User'}
+                onChange={e => setUser({...user, isAdmin: e.target.value === 'Admin'})}
               >
                 <MenuItem value="Admin">Admin</MenuItem>
                 <MenuItem value="User">User</MenuItem>
@@ -123,4 +121,4 @@ export const UsersDialog = ({result, onClose}: UsersModalProps) => {
       </Dialog>
     </>
   );
-};
+});

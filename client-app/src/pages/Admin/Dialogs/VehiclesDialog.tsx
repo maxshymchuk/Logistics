@@ -1,3 +1,6 @@
+import { observer } from 'mobx-react';
+import React, { useContext, useEffect, useState } from 'react';
+
 import DateFnsUtils from '@date-io/date-fns';
 import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@material-ui/core';
 import Dialog from '@material-ui/core/Dialog';
@@ -7,8 +10,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
-import { observer } from 'mobx-react';
-import React, { useContext, useEffect, useState } from 'react';
 
 import { isOfType, isSomeEnum } from '../../../helpers/typeGuard';
 import { Location } from '../../../models/location.models';
@@ -27,7 +28,7 @@ export type VehiclesDialogState = {
 
 export const VehiclesDialog = observer(() => {
   const [locations, setLocations] = useState<Location[]>([]);
-  const [state, setState] = useState<VehiclesDialogState>({
+  const [vehicle, setVehicle] = useState<VehiclesDialogState>({
     type: VehicleType.Car,
     arrivalDate: new Date(),
     destination: null
@@ -52,8 +53,8 @@ export const VehiclesDialog = observer(() => {
   }, []);
 
   const handleSubmit = async () => {
-    if (state.destination && isOfType<Vehicle>(state, 'type')) {
-      const response = await addVehicle(state);
+    if (vehicle.destination && isOfType<Vehicle>(vehicle, 'type')) {
+      const response = await addVehicle(vehicle);
       adminStore.dialog.set(response);
       handleClose();
     }
@@ -63,14 +64,14 @@ export const VehiclesDialog = observer(() => {
     const { value } = event.target;
     const checker = isSomeEnum(VehicleType);
     if (checker(value)) {
-      setState({...state, type: value});
+      setVehicle({...vehicle, type: value});
     }
   };
 
   const handleDate = (date: MaterialUiPickersDate) => {
     const newDate = date?.getTime();
     if (typeof newDate === 'number') {
-      setState({...state, arrivalDate: new Date(newDate) });
+      setVehicle({...vehicle, arrivalDate: new Date(newDate) });
     }
   };
 
@@ -85,7 +86,7 @@ export const VehiclesDialog = observer(() => {
               <Select 
                 labelId="vehicles_label" 
                 labelWidth={55} 
-                value={state.type}
+                value={vehicle.type}
                 onChange={handleSelect}
               >
                 {vehicleTypes.map((vehicle, index) => (
@@ -98,7 +99,7 @@ export const VehiclesDialog = observer(() => {
                 ampm={false} 
                 label="Arrival Date & Time" 
                 inputVariant="outlined" 
-                value={state.arrivalDate} 
+                value={vehicle.arrivalDate} 
                 onChange={handleDate}
               />
             </MuiPickersUtilsProvider>
@@ -107,7 +108,7 @@ export const VehiclesDialog = observer(() => {
               getOptionLabel={location => location.name}
               renderInput={params => <TextField {...params} label='Destination' variant="outlined" />}
               onChange={(e: any, location: Location | null) =>
-                setState({...state, destination: location})}
+                setVehicle({...vehicle, destination: location})}
               disableClearable
             />
           </div>

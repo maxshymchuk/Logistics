@@ -1,10 +1,15 @@
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import 'mobx-react-lite/batchingForReactDom';
+import './app.scss';
 
 import axios from 'axios';
+import { observer } from 'mobx-react';
 import React, { useContext, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import './app.scss';
+
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+
 import Menu from './components/Menu/Menu';
+import Notification1 from './components/Notification/Notification1';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import { isOfType } from './helpers/typeGuard';
 import { MessageType } from './models/message.models';
@@ -37,7 +42,7 @@ const theme = createMuiTheme({
   }
 });
 
-const App = () => {
+const App = observer(() => {
   const appStore = useContext(AppContext);
 
   useEffect(() => {
@@ -54,6 +59,7 @@ const App = () => {
   return (
     <MuiThemeProvider theme={theme}>
       <AppContext.Provider value={appStore}>
+        {appStore.notifier && <Notification1 {...appStore.notifier} />}
         <Router>
           <Switch>
             <Route path="/admin" component={undefined} />
@@ -72,6 +78,6 @@ const App = () => {
       </AppContext.Provider>
     </MuiThemeProvider>
   );
-};
+});
 
 export default App;
