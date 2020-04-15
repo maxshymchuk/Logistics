@@ -1,27 +1,30 @@
-import React, { useEffect, useState } from 'react';
-
 import {
-  Button, CircularProgress, Fade, IconButton, Paper, Table, TableBody, TableCell, TableContainer,
-  TableHead, TableRow
+  Button,
+  CircularProgress,
+  Fade,
+  IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow
 } from '@material-ui/core';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-
-import Notification from '../../../components/Notification/Notification';
+import { observer } from 'mobx-react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Cargo } from '../../../models/cargo.models';
-import { MessageType, ServerResponse } from '../../../models/message.models';
+import { MessageType } from '../../../models/message.models';
 import { Order, OrderStatus } from '../../../models/order.models';
 import { Route } from '../../../models/route.models';
 import { Track } from '../../../models/track.models';
-import { getOrdersData, removeOrderById } from '../../../services/orders.service';
+import { AdminContext } from '../../../stores/Admin/AdminStore';
+import { AppContext } from '../../../stores/AppStore';
 import tableStyles from '../../styles/table.module.scss';
 import CargoAlert from './Alerts/CargoAlert';
 import RoutesAlert from './Alerts/RoutesAlert';
 import TracksAlert from './Alerts/TracksAlert';
-
-type OrdersState = {
-  orders: Order[]; 
-  isLoaded: boolean;
-};
 
 type AlertState = {
   routes: Route[] | null,
@@ -29,58 +32,43 @@ type AlertState = {
   cargo: Cargo[] | null
 };
 
-type OrdersProps = {
-  page: number;
-  checkPages: (length: number) => any
-};
+const Orders = observer(() => {
 
-const Orders = ({ page, checkPages }: OrdersProps) => {
-  const ITEMS_ON_PAGE = 20;
-  
-  const [notifyMessage, setNotifyMessage] = useState<ServerResponse<any> | null>(null);
   const [isAlertOpen, setAlertOpen] = useState<AlertState>({
     routes: null,
     tracks: null,
     cargo: null
   });
-  const [isChanged, setChanged] = useState(false);
-  const [pagesNumber, setPagesNumber] = useState(0);
-  const [state, setState] = useState<OrdersState>({
-    orders: [],
-    isLoaded: false
-  });
+
+  const appStore = useContext(AppContext);
+  const adminStore = useContext(AdminContext);
 
   useEffect(() => {
     (async () => {
-      const ordersResponse = await getOrdersData();
-      if (ordersResponse.messageType === MessageType.Error) {
-        setNotifyMessage(ordersResponse);
-      } else if (ordersResponse.data instanceof Array) {
-        setState({ ...state, orders: ordersResponse.data, isLoaded: true });
-        setPagesNumber(Math.round(ordersResponse.data.length / ITEMS_ON_PAGE));
+      const response = await adminStore.orders.init();
+      if (response.messageType === MessageType.Error) {
+        appStore.setNotify(response);
       }
     })();
-  }, [isChanged]);
-
-  useEffect(() => {
-    checkPages(pagesNumber);
-  }, [pagesNumber]);
+  }, []);
 
   const removeOrder = async (order: Order) => {
     if (order._id) {
-      const response = await removeOrderById(order._id);
-      setNotifyMessage(response);
-      setChanged(!isChanged);
+      const response = await adminStore.orders.remove(order._id);
+      appStore.setNotify(response);
     }
+  };
+
+  const getOrdersByStatus = (status: OrderStatus) => {
+    return adminStore.orders.list.filter(order => order.status === status);
   };
 
   return (
     <>
-      {notifyMessage && <Notification {...notifyMessage} afterClose={() => setNotifyMessage(null)} />}
-      {!state.isLoaded ? (
+      {!adminStore.orders.isLoaded ? (
         <CircularProgress />
       ) : (
-        <Fade in={state.isLoaded} timeout={200} unmountOnExit>
+        <Fade in timeout={200} unmountOnExit>
           <TableContainer component={Paper} className={tableStyles.table}>
             {isAlertOpen.routes && <RoutesAlert routes={isAlertOpen.routes} onClose={() => setAlertOpen({...isAlertOpen, routes: null})} />}
             {isAlertOpen.tracks && <TracksAlert tracks={isAlertOpen.tracks} onClose={() => setAlertOpen({...isAlertOpen, tracks: null})} />}
@@ -100,7 +88,7 @@ const Orders = ({ page, checkPages }: OrdersProps) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {state.orders.slice((page - 1) * ITEMS_ON_PAGE, page * ITEMS_ON_PAGE).map((order, index) => (
+                {adminStore.orders.page.map((order, index) => (
                   <TableRow key={index}>
                     <TableCell component="th" scope="row">
                       {order.status}
@@ -136,16 +124,16 @@ const Orders = ({ page, checkPages }: OrdersProps) => {
               </TableBody>
             </Table>
             <section className={tableStyles.total}>
-              <span>{`${state.orders.length} orders(s)`}</span>
-              <span>{`${state.orders.filter(order => order.status === OrderStatus.Canceled).length} canceled order(s)`}</span>
-              <span>{`${state.orders.filter(order => order.status === OrderStatus.Taken).length} taken order(s)`}</span>
-              <span>{`${state.orders.filter(order => order.status === OrderStatus.Completed).length} completed order(s)`}</span>
+              <span>{`${adminStore.orders.list.length} orders(s)`}</span>
+              <span>{`${getOrdersByStatus(OrderStatus.Canceled).length} canceled order(s)`}</span>
+              <span>{`${getOrdersByStatus(OrderStatus.Taken).length} taken order(s)`}</span>
+              <span>{`${getOrdersByStatus(OrderStatus.Completed).length} completed order(s)`}</span>
             </section>
           </TableContainer>
         </Fade>
       )}
     </>
   );
-};
+});
 
 export default Orders;

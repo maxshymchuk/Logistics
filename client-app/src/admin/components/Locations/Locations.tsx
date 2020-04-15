@@ -1,72 +1,51 @@
-import React, { useContext, useEffect, useState } from 'react';
-
 import {
-  CircularProgress, Fade, IconButton, Paper, Table, TableBody, TableCell, TableContainer,
-  TableHead, TableRow
+  CircularProgress,
+  Fade,
+  IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow
 } from '@material-ui/core';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-
-import Notification from '../../../components/Notification/Notification';
-import { AdminContext } from '../../../contexts/AdminContext';
+import { observer } from 'mobx-react';
+import React, { useContext, useEffect } from 'react';
 import { Location } from '../../../models/location.models';
-import { MessageType, ServerResponse } from '../../../models/message.models';
-import { getLocationsData, removeLocationById } from '../../../services/locations.service';
+import { MessageType } from '../../../models/message.models';
+import { AdminContext } from '../../../stores/Admin/AdminStore';
+import { AppContext } from '../../../stores/AppStore';
 import tableStyles from '../../styles/table.module.scss';
 
-type LocationsState = {
-  locations: Location[]; 
-  isLoaded: boolean;
-};
+const Locations = observer(() => {
 
-type LocationsProps = {
-  page: number;
-  checkPages: (length: number) => any
-};
-
-const Locations = ({ page, checkPages }: LocationsProps) => {
-  const ITEMS_ON_PAGE = 20;
-
-  const [notifyMessage, setNotifyMessage] = useState<ServerResponse<any> | null>(null);
-  const [isChanged, setChanged] = useState(false);
-  const [pagesNumber, setPagesNumber] = useState(0);
-  const [state, setState] = useState<LocationsState>({
-    locations: [],
-    isLoaded: false
-  });
-
-  const { isChanged: isChangedContext } = useContext(AdminContext);
+  const appStore = useContext(AppContext);
+  const adminStore = useContext(AdminContext);
 
   useEffect(() => {
     (async () => {
-      const locationsResponse = await getLocationsData();
-      if (locationsResponse.messageType === MessageType.Error) {
-        setNotifyMessage(locationsResponse);
-      } else if (locationsResponse.data instanceof Array) {
-        setState({ ...state, locations: locationsResponse.data, isLoaded: true });
-        setPagesNumber(Math.round(locationsResponse.data.length / ITEMS_ON_PAGE));
+      const response = await adminStore.locations.init();
+      if (response.messageType === MessageType.Error) {
+        appStore.setNotify(response);
       }
     })();
-  }, [isChanged, isChangedContext]);
-
-  useEffect(() => {
-    checkPages(pagesNumber);
-  }, [pagesNumber]);
+  }, []);
 
   const removeLocation = async (location: Location) => {
     if (location._id) {
-      const response = await removeLocationById(location._id);
-      setNotifyMessage(response);
-      setChanged(!isChanged);
+      const response = await adminStore.locations.remove(location._id);
+      appStore.setNotify(response);
     }
   };
 
   return (
     <>
-      {notifyMessage && <Notification {...notifyMessage} afterClose={() => setNotifyMessage(null)} />}
-      {!state.isLoaded ? (
+      {!adminStore.locations.isLoaded ? (
         <CircularProgress />
       ) : (
-        <Fade in={state.isLoaded} timeout={200} unmountOnExit>
+        <Fade in timeout={200} unmountOnExit>
           <TableContainer component={Paper} className={tableStyles.table}>
             <Table size="small">
               <TableHead>
@@ -77,7 +56,7 @@ const Locations = ({ page, checkPages }: LocationsProps) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {state.locations.slice((page - 1) * ITEMS_ON_PAGE, page * ITEMS_ON_PAGE).map((location, index) => (
+                {adminStore.locations.page.map((location, index) => (
                   <TableRow key={index}>
                     <TableCell component="th" scope="row">
                       {location.name}
@@ -95,13 +74,13 @@ const Locations = ({ page, checkPages }: LocationsProps) => {
               </TableBody>
             </Table>
             <section className={tableStyles.total}>
-              <span>{`${state.locations.length} location(s)`}</span>
+              <span>{`${adminStore.locations.list.length} location(s)`}</span>
             </section>
           </TableContainer>
         </Fade>
       )}
     </>
   );
-};
+});
 
 export default Locations;

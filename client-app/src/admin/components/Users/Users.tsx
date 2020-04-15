@@ -1,73 +1,52 @@
-import React, { useContext, useEffect, useState } from 'react';
-
 import {
-  CircularProgress, Fade, IconButton, Paper, Table, TableBody, TableCell, TableContainer,
-  TableHead, TableRow
+  CircularProgress,
+  Fade,
+  IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow
 } from '@material-ui/core';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-
-import Notification from '../../../components/Notification/Notification';
-import { AdminContext } from '../../../contexts/AdminContext';
-import { MessageType, ServerResponse } from '../../../models/message.models';
+import { observer } from 'mobx-react';
+import React, { useContext, useEffect } from 'react';
+import { MessageType } from '../../../models/message.models';
 import { User } from '../../../models/user.models';
-import { getUsersData, removeUserById } from '../../../services/users.service';
+import { AdminContext } from '../../../stores/Admin/AdminStore';
+import { AppContext } from '../../../stores/AppStore';
 import tableStyles from '../../styles/table.module.scss';
 import styles from './users.module.scss';
 
-type UsersState = {
-  users: User[]; 
-  isLoaded: boolean;
-};
+const Users = observer(() => {
 
-type UsersProps = {
-  page: number;
-  checkPages: (length: number) => any
-};
-
-const Users = ({ page, checkPages }: UsersProps) => {
-  const ITEMS_ON_PAGE = 20;
-
-  const [notifyMessage, setNotifyMessage] = useState<ServerResponse<any> | null>(null);
-  const [isChanged, setChanged] = useState(false);
-  const [length, setLength] = useState(0);
-  const [state, setState] = useState<UsersState>({
-    users: [],
-    isLoaded: false
-  });
-
-  const { isChanged: isChangedContext } = useContext(AdminContext);
+  const appStore = useContext(AppContext);
+  const adminStore = useContext(AdminContext);
 
   useEffect(() => {
     (async () => {
-      const usersResponse = await getUsersData();
-      if (usersResponse.messageType === MessageType.Error) {
-        setNotifyMessage(usersResponse);
-      } else if (usersResponse.data instanceof Array) {
-        setState({ ...state, users: usersResponse.data, isLoaded: true });
-        setLength(Math.round(usersResponse.data.length / ITEMS_ON_PAGE));
+      const response = await adminStore.users.init();
+      if (response.messageType === MessageType.Error) {
+        appStore.setNotify(response);
       }
     })();
-  }, [isChanged, isChangedContext]);
-
-  useEffect(() => {
-    checkPages(length);
-  }, [length]);
+  }, []);
 
   const removeUser = async (user: User) => {
     if (user._id) {
-      const response = await removeUserById(user._id);
-      setNotifyMessage(response);
-      setChanged(!isChanged);
+      const response = await adminStore.users.remove(user._id);
+      appStore.setNotify(response);
     }
   };
 
   return (
     <>
-      {notifyMessage && <Notification {...notifyMessage} afterClose={() => setNotifyMessage(null)} />}
-      {!state.isLoaded ? (
+      {!adminStore.users.isLoaded ? (
         <CircularProgress />
       ) : (
-        <Fade in={state.isLoaded} timeout={200} unmountOnExit>
+        <Fade in timeout={200} unmountOnExit>
           <TableContainer component={Paper} className={tableStyles.table}>
             <Table size="small">
               <TableHead>
@@ -83,7 +62,7 @@ const Users = ({ page, checkPages }: UsersProps) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {state.users.slice((page - 1) * ITEMS_ON_PAGE, page * ITEMS_ON_PAGE).map((user, index) => (
+                {adminStore.users.page.map((user, index) => (
                   <TableRow className={user.isAdmin ? styles.admin : undefined} key={index}>
                     <TableCell component="th" scope="row">
                       {user.name}
@@ -116,14 +95,14 @@ const Users = ({ page, checkPages }: UsersProps) => {
               </TableBody>
             </Table>
             <section className={tableStyles.total}>
-              <span>{`${state.users.filter(user => user.isAdmin).length} admin(s)`}</span>
-              <span>{`${state.users.filter(user => !user.isAdmin).length} user(s)`}</span>
+              <span>{`${adminStore.users.list.filter(user => user.isAdmin).length} admin(s)`}</span>
+              <span>{`${adminStore.users.list.filter(user => !user.isAdmin).length} user(s)`}</span>
             </section>
           </TableContainer>
         </Fade>
       )}
     </>
   );
-};
+});
 
 export default Users;

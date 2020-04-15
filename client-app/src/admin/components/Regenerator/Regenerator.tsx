@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
-
 import {
-  Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle
 } from '@material-ui/core';
 import ReplayIcon from '@material-ui/icons/Replay';
-
-import Notification from '../../../components/Notification/Notification';
-import { ServerResponse } from '../../../models/message.models';
+import React, { useContext, useState } from 'react';
+import { AdminContext } from '../../../stores/Admin/AdminStore';
+import { AppContext } from '../../../stores/AppStore';
 import { regenLocations, regenVehicles } from '../../services/regenerator.service';
 import styles from './regenerator.module.scss';
 
@@ -15,23 +19,27 @@ type RegeneratorProps = {
 };
 
 const Regenerator = (props: RegeneratorProps) => {
-  const [dialogResult, setDialogResult] = useState<ServerResponse | null>(null);
   const [isLoading, setLoading] = useState({
     locations: false,
     vehicles: false
   });
 
+  const appStore = useContext(AppContext);
+  const adminStore = useContext(AdminContext);
+
   const regenerateLocations = async () => {
     setLoading({...isLoading, locations: true});
     const result = await regenLocations();
-    setDialogResult(result);
+    await adminStore.locations.update();
+    appStore.setNotify(result);
     setLoading({...isLoading, locations: false});
   };
 
   const regenerateVehicles = async () => {
     setLoading({...isLoading, vehicles: true});
     const result = await regenVehicles();
-    setDialogResult(result);
+    await adminStore.vehicles.update();
+    appStore.setNotify(result);
     setLoading({...isLoading, vehicles: false});
   };
 
@@ -41,7 +49,6 @@ const Regenerator = (props: RegeneratorProps) => {
 
   return (
     <Dialog open onClose={handleClose} scroll='body' maxWidth='xs' fullWidth>
-      {dialogResult && <Notification {...dialogResult} afterClose={() => setDialogResult(null)} />}
       <DialogTitle>Regenerator</DialogTitle>
       <DialogContent>
         <DialogContentText>

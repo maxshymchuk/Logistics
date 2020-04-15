@@ -1,73 +1,56 @@
-import React, { useContext, useEffect, useState } from 'react';
-
 import {
-  CircularProgress, Fade, IconButton, Paper, Table, TableBody, TableCell, TableContainer,
-  TableHead, TableRow
+  CircularProgress,
+  Fade,
+  IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow
 } from '@material-ui/core';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-
-import Notification from '../../../components/Notification/Notification';
-import { AdminContext } from '../../../contexts/AdminContext';
-import { MessageType, ServerResponse } from '../../../models/message.models';
+import { observer } from 'mobx-react';
+import React, { useContext, useEffect } from 'react';
+import { MessageType } from '../../../models/message.models';
 import { Vehicle, VehicleType } from '../../../models/vehicle.models';
-import { getVehiclesData, removeVehicleById } from '../../../services/vehicles.service';
+import { AdminContext } from '../../../stores/Admin/AdminStore';
+import { AppContext } from '../../../stores/AppStore';
 import tableStyles from '../../styles/table.module.scss';
 import styles from './vehicles.module.scss';
 
-type VehiclesState = {
-  vehicles: Vehicle[]; 
-  isLoaded: boolean;
-};
+const Vehicles = observer(() => {
 
-type VehiclesProps = {
-  page: number;
-  checkPages: (length: number) => any
-};
-
-const Vehicles = ({ page, checkPages }: VehiclesProps) => {
-  const ITEMS_ON_PAGE = 20;
-
-  const [notifyMessage, setNotifyMessage] = useState<ServerResponse<any> | null>(null);
-  const [isChanged, setChanged] = useState(false);
-  const [pagesNumber, setPagesNumber] = useState(0);
-  const [state, setState] = useState<VehiclesState>({
-    vehicles: [],
-    isLoaded: false
-  });
-
-  const { isChanged: isChangedContext } = useContext(AdminContext);
+  const appStore = useContext(AppContext);
+  const adminStore = useContext(AdminContext);
 
   useEffect(() => {
     (async () => {
-      const vehiclesResponse = await getVehiclesData();
-      if (vehiclesResponse.messageType === MessageType.Error) {
-        setNotifyMessage(vehiclesResponse);
-      } else if (vehiclesResponse.data instanceof Array) {
-        setState({ ...state, vehicles: vehiclesResponse.data, isLoaded: true });
-        setPagesNumber(Math.round(vehiclesResponse.data.length / ITEMS_ON_PAGE));
+      const response = await adminStore.vehicles.init();
+      if (response.messageType === MessageType.Error) {
+        appStore.setNotify(response);
       }
     })();
-  }, [isChanged, isChangedContext]);
-
-  useEffect(() => {
-    checkPages(pagesNumber);
-  }, [pagesNumber]);
+  }, []);
 
   const removeVehicle = async (vehicle: Vehicle) => {
     if (vehicle._id) {
-      const response = await removeVehicleById(vehicle._id);
-      setNotifyMessage(response);
-      setChanged(!isChanged);
+      const response = await adminStore.vehicles.remove(vehicle._id);
+      appStore.setNotify(response);
     }
+  };
+
+  const getVehiclesByType = (type: VehicleType) => {
+    return adminStore.vehicles.list.filter(vehicle => vehicle.type === type);
   };
 
   return (
     <>
-      {notifyMessage && <Notification {...notifyMessage} afterClose={() => setNotifyMessage(null)} />}
-      {!state.isLoaded ? (
+      {!adminStore.vehicles.isLoaded ? (
         <CircularProgress />
       ) : (
-        <Fade in={state.isLoaded} timeout={200} unmountOnExit>
+        <Fade in timeout={200} unmountOnExit>
           <TableContainer component={Paper} className={tableStyles.table}>
             <Table size="small">
               <TableHead>
@@ -79,7 +62,7 @@ const Vehicles = ({ page, checkPages }: VehiclesProps) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {state.vehicles.slice((page - 1) * ITEMS_ON_PAGE, page * ITEMS_ON_PAGE).map((vehicle, index) => (
+                {adminStore.vehicles.page.map((vehicle, index) => (
                   <TableRow key={index}>
                     <TableCell component="th" scope="row">
                       <section className={styles.vehicle}>
@@ -103,17 +86,17 @@ const Vehicles = ({ page, checkPages }: VehiclesProps) => {
               </TableBody>
             </Table>
             <section className={tableStyles.total}>
-              <span>{`${state.vehicles.length} vehicle(s)`}</span>
-              <span>{`${state.vehicles.filter(vehicle => vehicle.type === VehicleType.Plane).length} plane(s)`}</span>
-              <span>{`${state.vehicles.filter(vehicle => vehicle.type === VehicleType.Car).length} car(s)`}</span>
-              <span>{`${state.vehicles.filter(vehicle => vehicle.type === VehicleType.Ship).length} ship(s)`}</span>
-              <span>{`${state.vehicles.filter(vehicle => vehicle.type === VehicleType.Train).length} train(s)`}</span>
+              <span>{`${adminStore.vehicles.list.length} vehicle(s)`}</span>
+              <span>{`${getVehiclesByType(VehicleType.Plane)?.length} plane(s)`}</span>
+              <span>{`${getVehiclesByType(VehicleType.Car)?.length} car(s)`}</span>
+              <span>{`${getVehiclesByType(VehicleType.Ship)?.length} ship(s)`}</span>
+              <span>{`${getVehiclesByType(VehicleType.Train)?.length} train(s)`}</span>
             </section>
           </TableContainer>
         </Fade>
       )}
     </>
   );
-};
+});
 
 export default Vehicles;

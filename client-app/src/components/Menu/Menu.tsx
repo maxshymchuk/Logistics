@@ -1,14 +1,13 @@
-import React, { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
-
 import { Drawer, IconButton, makeStyles } from '@material-ui/core';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import FaceIcon from '@material-ui/icons/Face';
 import MenuIcon from '@material-ui/icons/Menu';
 import PhoneInTalkIcon from '@material-ui/icons/PhoneInTalk';
 import ScheduleIcon from '@material-ui/icons/Schedule';
-
-import { LoginContext } from '../../contexts/LoginContext';
+import { observer } from 'mobx-react';
+import React, { useContext, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { AppContext } from '../../stores/AppStore';
 import styles from './menu.module.scss';
 import MenuList from './MenuList/MenuList';
 
@@ -27,15 +26,15 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const Menu = () => {
+const Menu = observer(() => {
   const classes = useStyles();
 
-  const [isDrawerOpened, handleDrawer] = useState(false);
+  const [isDrawerOpened, setDrawerOpen] = useState(false);
 
-  const context = useContext(LoginContext);
+  const appStore = useContext(AppContext);
 
   const handleLogout = async () => {
-    await context.logout();
+    await appStore.logout();
   };
 
   return (
@@ -68,25 +67,23 @@ const Menu = () => {
             <MenuList direction="row" />
           </div>
           <div className={styles.user}>
-            <LoginContext.Consumer>
-              {(value) => (value.isLogged ? (
-                <>
-                  <IconButton component={Link} to="/profile">
-                    <FaceIcon />
-                  </IconButton>
-                  <IconButton onClick={handleLogout}>
-                    <ExitToAppIcon />
-                  </IconButton>
-                </>
-              ) : (
-                <IconButton component={Link} to="/login">
+            {appStore.isLogged ? (
+              <>
+                <IconButton component={Link} to="/profile">
                   <FaceIcon />
                 </IconButton>
-              ))}
-            </LoginContext.Consumer>
+                <IconButton onClick={handleLogout}>
+                  <ExitToAppIcon />
+                </IconButton>
+              </>
+            ) : (
+              <IconButton component={Link} to="/login">
+                <FaceIcon />
+              </IconButton>
+            )}
             <IconButton
               className={styles.burger}
-              onClick={() => handleDrawer(!isDrawerOpened)}
+              onClick={() => setDrawerOpen(!isDrawerOpened)}
             >
               <MenuIcon />
             </IconButton>
@@ -95,15 +92,15 @@ const Menu = () => {
             classes={classes}
             anchor="top"
             open={isDrawerOpened}
-            onClose={() => handleDrawer(!isDrawerOpened)}
+            onClose={() => setDrawerOpen(!isDrawerOpened)}
             transitionDuration={800}
           >
-            <MenuList direction="column" callback={handleDrawer} />
+            <MenuList direction="column" onClose={() => setDrawerOpen(false)} />
           </Drawer>
         </section>
       </div>
     </>
   );
-};
+});
 
 export default Menu;
