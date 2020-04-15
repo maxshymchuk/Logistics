@@ -1,23 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { Link, Route, Switch } from 'react-router-dom';
-
 import { Box, Card, Tab, Tabs, Typography, Zoom } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
-
+import { observer } from 'mobx-react';
+import React, { useContext, useEffect } from 'react';
+import { Link, Route, Switch } from 'react-router-dom';
 import Locations from '../../admin/components/Locations/Locations';
 import Menu from '../../admin/components/Menu/Menu';
 import Orders from '../../admin/components/Orders/Orders';
 import Users from '../../admin/components/Users/Users';
 import Vehicles from '../../admin/components/Vehicles/Vehicles';
-import Notification from '../../components/Notification/Notification';
-import { AdminContext } from '../../contexts/AdminContext';
-import { ServerResponse } from '../../models/message.models';
+import { isSomeEnum } from '../../helpers/typeGuard';
+import { AdminContext } from '../../stores/Admin/AdminStore';
 import styles from './admin.module.scss';
-import { LocationsDialog } from './Dialogs/LocationsDialog';
-import { UsersDialog } from './Dialogs/UsersDialog';
-import { VehiclesDialog } from './Dialogs/VehiclesDialog';
+import LocationsDialog from './dialogs/LocationsDialog';
+import UsersDialog from './dialogs/UsersDialog';
+import { VehiclesDialog } from './dialogs/VehiclesDialog';
 
 type TabPanelProps = {
   children?: React.ReactNode;
@@ -56,90 +54,89 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
-const Admin = () => {
+enum Path {
+  Vehicles = '/admin/vehicles',
+  Users = '/admin/users',
+  Locations = '/admin/locations',
+  Orders = '/admin/orders'
+}
+
+const tabs = [
+  Path.Vehicles,
+  Path.Users,
+  Path.Locations,
+  Path.Orders
+];
+
+const Admin = observer(() => {
   const classes = useStyles();
 
-  const paths = ['/admin/vehicles', '/admin/users', '/admin/locations', '/admin/orders'];
-
-  const [page, setPage] = useState(1);
-  const [length, setLength] = useState(0);
-
-  const [isDialogOpen, setDialogOpen] = useState(false);
-  const [dialogResult, setDialogResult] = useState<ServerResponse | null>(null);
-  const [tab, setTab] = useState(
-    paths.indexOf(window.location.pathname)
-  );
-
-  const [isChanged, setChanged] = useState(false);
+  const adminStore = useContext(AdminContext);
 
   useEffect(() => {
-    setPage(1);
-  }, [tab]);
+    if (isSomeEnum(Path)(window.location.pathname)) {
+      adminStore.setTab(tabs.indexOf(window.location.pathname));
+    }
+  }, []);
 
-  const setResult = (result: ServerResponse<any>) => {
-    setDialogResult(result);
-    setChanged(!isChanged);
-  };
-
-  const getModal = () => {
-    switch (tab) {
-      case 0: return <VehiclesDialog result={(result) => setResult(result)} onClose={() => setDialogOpen(false)} />;
-      case 1: return <UsersDialog result={(result) => setResult(result)} onClose={() => setDialogOpen(false)} />;
-      case 2: return <LocationsDialog result={(result) => setResult(result)} onClose={() => setDialogOpen(false)} />;
+  const getDialog = () => {
+    switch (adminStore.currentTab) {
+      case 0: return <VehiclesDialog />;
+      case 1: return <UsersDialog />;
+      case 2: return <LocationsDialog />;
       default: return <></>;
     }
   };
 
   return (
-    <AdminContext.Provider value={{ isChanged }}>
-      {dialogResult && <Notification {...dialogResult} afterClose={() => setDialogResult(null)} />}
+    <>
       <Card className={classes.header}>
-        <Menu length={length} checkPages={currPage => setPage(currPage)} />
+        <Menu />
         <Tabs
-          value={tab}
-          onChange={(e, v) => setTab(v)}
+          value={adminStore.currentTab}
+          onChange={(e, v) => adminStore.setTab(v)}
           indicatorColor="primary"
           textColor="primary"
           variant="fullWidth"
         >
-          <Tab label='Vehicles' component={Link} to={paths[0]} />
-          <Tab label='Users' component={Link} to={paths[1]} />
-          <Tab label='Locations' component={Link} to={paths[2]} />
-          <Tab label='Orders' component={Link} to={paths[3]} />
+          <Tab label='Vehicles' component={Link} to={Path.Vehicles} />
+          <Tab label='Users' component={Link} to={Path.Users} />
+          <Tab label='Locations' component={Link} to={Path.Locations} />
+          <Tab label='Orders' component={Link} to={Path.Orders} />
         </Tabs>
       </Card>
       <section className={styles.content}>
         <Switch>  
-          <Route exact path={paths[0]}>
-            <TabPanel value={tab} index={0}>
-              <Vehicles page={page} checkPages={value => setLength(value)} />
+          <Route exact path={Path.Vehicles}>
+            <TabPanel value={adminStore.currentTab} index={0}>
+              <Vehicles />
             </TabPanel>
           </Route>
-          <Route exact path={paths[1]}>
-            <TabPanel value={tab} index={1}>
-              <Users page={page} checkPages={value => setLength(value)} />
+          <Route exact path={Path.Users}>
+            <TabPanel value={adminStore.currentTab} index={1}>
+              <Users />
             </TabPanel>
           </Route>
-          <Route exact path={paths[2]}>
-            <TabPanel value={tab} index={2}>
-              <Locations page={page} checkPages={value => setLength(value)} />
+          <Route exact path={Path.Locations}>
+            <TabPanel value={adminStore.currentTab} index={2}>
+              <Locations />
             </TabPanel>
           </Route>
-          <Route exact path={paths[3]}>
-            <TabPanel value={tab} index={3}>
-              <Orders page={page} checkPages={value => setLength(value)} />
+          <Route exact path={Path.Orders}>
+            <TabPanel value={adminStore.currentTab} index={3}>
+              <Orders />
             </TabPanel>
           </Route>
         </Switch>
       </section>
-      <Zoom in={tab !== 3} timeout={200} unmountOnExit>
-        <Fab className={classes.fab} color="primary" onClick={() => setDialogOpen(true)}>
+      <Zoom in={adminStore.currentTab !== tabs.indexOf(Path.Orders)} timeout={200} unmountOnExit>
+        <Fab className={classes.fab} color="primary" onClick={() => adminStore.dialog.open()}>
           <AddIcon />
         </Fab>
       </Zoom>
-      {isDialogOpen && getModal()}
-    </AdminContext.Provider>
+      {adminStore.dialog.isOpen && getDialog()}
+    </>
   );
-};
+});
 
 export default Admin;

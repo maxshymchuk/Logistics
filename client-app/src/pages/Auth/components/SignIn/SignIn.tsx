@@ -1,32 +1,27 @@
+import { Button, TextField } from '@material-ui/core';
+import { observer } from 'mobx-react';
 import React, { useContext, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 
-import { Button, TextField } from '@material-ui/core';
-
-import { LoginContext } from '../../../../contexts/LoginContext';
 import { isOfType } from '../../../../helpers/typeGuard';
 import { MessageType } from '../../../../models/message.models';
 import { User } from '../../../../models/user.models';
 import { authUser } from '../../../../services/users.service';
+import { AppContext } from '../../../../stores/AppStore';
 import styles from './signin.module.scss';
 
-const SignIn = () => {
-  const [isLogged, setLogged] = useState(false);
+const SignIn = observer(() => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const context = useContext(LoginContext);
+  const appStore = useContext(AppContext);
 
   const handleClick = async () => {
-    const userResponse = await authUser({ username, password });
-    if (userResponse.messageType === MessageType.Error) {
-
-    } else if (isOfType<User>(userResponse.data, 'username')) {
-      setLogged(true);
-      context.login({
-        user: userResponse.data,
-        isLogged: true
-      });
+    const response = await authUser({ username, password });
+    if (response.messageType === MessageType.Error) {
+      appStore.setNotify(response);
+    } else if (isOfType<User>(response.data, 'username')) {
+      appStore.login(response.data);
     }
   };
 
@@ -52,9 +47,9 @@ const SignIn = () => {
       <Button color="primary" variant="contained" onClick={handleClick}>
         Sign In
       </Button>
-      {isLogged && <Redirect to="/" />}
+      {appStore.isLogged && <Redirect to="/" />}
     </form>
   );
-};
+});
 
 export default SignIn;

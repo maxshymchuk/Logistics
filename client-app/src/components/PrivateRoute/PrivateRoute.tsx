@@ -1,17 +1,18 @@
 import React, { useContext } from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
-import { LoginContext } from '../../contexts/LoginContext';
 import Error403 from '../../pages/ErrorPages/Error403/Error403';
+import { AppContext } from '../../stores/AppStore';
 
 const PrivateRoute = ({ component: Component, ...rest }: any) => {
-  const { isLogged } = useContext(LoginContext);
+
+  const appStore = useContext(AppContext);
 
   return (
     <Route
       {...rest}
       render={(props) => (
-        isLogged ? <Component {...props} /> : <Error403 /> // <Redirect to='/login' />
+        appStore.isLogged ? <Component {...props} /> : <Error403 />
       )}
     />
   );
