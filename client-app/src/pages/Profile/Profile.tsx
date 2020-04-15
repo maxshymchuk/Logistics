@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Card, IconButton, LinearProgress } from '@material-ui/core';
+import { Card, IconButton, LinearProgress, Typography } from '@material-ui/core';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 import SettingsIcon from '@material-ui/icons/Settings';
 import Skeleton from '@material-ui/lab/Skeleton';
@@ -54,7 +54,9 @@ const Profile = () => {
         <div className={styles.profile}>
           {user ? (
             <>
-              <article className={styles.title}>{`${user.name} ${user.surname}`}</article>
+              <Typography className={styles.title} variant="h4" component="article">
+                {`${user.name} ${user.surname}`}
+              </Typography>
               <article className={styles.subtitle}>
                 <IconButton size="small" className={styles.settings_title}>
                   <SettingsIcon />
@@ -88,7 +90,9 @@ const Profile = () => {
           </IconButton>
         </div>
         <section className={styles.orders}>
-          <article className={styles.title}>Orders</article>
+          <Typography className={styles.title} variant="h4" component="article">
+            Orders
+          </Typography>
           {user ? (
             showOrders()
           ) : (

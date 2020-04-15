@@ -31,26 +31,30 @@ const Auth = () => {
   const [value, setValue] = useState(0);
 
   return (
-    <Card className={styles.wrapper_auth}>
-      <Tabs
-        value={value}
-        onChange={(e, v) => setValue(v)}
-        indicatorColor="primary"
-        textColor="primary"
-        variant="fullWidth"
-      >
-        <Tab label="Sign In" />
-        <Tab label="Sign Up" />
-      </Tabs>
-      <SwipeableViews index={value} onChangeIndex={index => setValue(index)}>
-        <TabPanel value={value} index={0}>
-          <SignIn />
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <SignUp />
-        </TabPanel>
-      </SwipeableViews>
-    </Card>
+    <div className={styles.auth}>
+      <div className={styles.wrapper_auth}>
+        <Card>
+          <Tabs
+            value={value}
+            onChange={(e, v) => setValue(v)}
+            indicatorColor="primary"
+            textColor="primary"
+            variant="fullWidth"
+          >
+            <Tab label="Sign In" />
+            <Tab label="Sign Up" />
+          </Tabs>
+          <SwipeableViews index={value} onChangeIndex={index => setValue(index)}>
+            <TabPanel value={value} index={0}>
+              <SignIn />
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+              <SignUp />
+            </TabPanel>
+          </SwipeableViews>
+        </Card>
+      </div>
+    </div>
   );
 };
 

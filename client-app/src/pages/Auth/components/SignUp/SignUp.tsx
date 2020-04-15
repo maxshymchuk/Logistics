@@ -23,34 +23,62 @@ const SignUp = () => {
 
   return (
     <form className={styles.form}>
-      <TextField label="Name" name="name" onChange={handleChange} required />
-      <TextField
-        label="Surname"
-        name="surname"
-        onChange={handleChange}
-        required
-      />
-      <TextField
-        label="Birthday"
-        name="birthday"
-        onChange={handleChange}
-        required
-      />
-      <TextField label="E-mail" name="email" onChange={handleChange} required />
-      <TextField label="Phone" name="phone" onChange={handleChange} />
-      <TextField
-        label="Username"
-        name="username"
-        onChange={handleChange}
-        required
-      />
-      <TextField
-        label="Password"
-        type="password"
-        name="password"
-        onChange={handleChange}
-        required
-      />
+      <div className={styles.row}>
+        <TextField
+          label="Name"
+          name="name"
+          variant="outlined"
+          size="small"
+          onChange={handleChange}
+          required
+        />
+        <TextField
+          label="Surname"
+          name="surname"
+          variant="outlined"
+          size="small"
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className={styles.row}>
+        <TextField
+          label="Birthday"
+          name="birthday"
+          variant="outlined"
+          size="small"
+          onChange={handleChange}
+          required
+        />
+        <TextField
+          label="E-mail"
+          name="email"
+          variant="outlined"
+          size="small"
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className={styles.row}>
+        <TextField
+          label="Username"
+          name="username"
+          variant="outlined"
+          size="small"
+          onChange={handleChange}
+          required
+        />
+        <TextField
+          label="Password"
+          type="password"
+          name="password"
+          variant="outlined"
+          size="small"
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <TextField label="Phone" name="phone" variant="outlined" size="small" onChange={handleChange} />
       <Button color="primary" variant="contained" onClick={handleClick}>
         Sign Up
       </Button>

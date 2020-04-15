@@ -4,9 +4,10 @@ import FaceIcon from '@material-ui/icons/Face';
 import MenuIcon from '@material-ui/icons/Menu';
 import PhoneInTalkIcon from '@material-ui/icons/PhoneInTalk';
 import ScheduleIcon from '@material-ui/icons/Schedule';
-import { observer } from 'mobx-react';
+import useWindowScroll from '@react-hook/window-scroll';
 import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { observer } from 'mobx-react';
 import { AppContext } from '../../stores/AppStore';
 import styles from './menu.module.scss';
 import MenuList from './MenuList/MenuList';
@@ -26,15 +27,46 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
+
+let prev = 0;
+
 const Menu = observer(() => {
+  
   const classes = useStyles();
 
   const [isDrawerOpened, setDrawerOpen] = useState(false);
 
   const appStore = useContext(AppContext);
 
+  const scroll = useWindowScroll(10);
+
   const handleLogout = async () => {
     await appStore.logout();
+  };
+
+  const isScrollDown = () => {
+    const comp = scroll - prev;
+    prev = scroll;
+    return comp > 0;
+  };
+
+  const isOnTop = () => {
+    const MENU_UNDOCK_POS = 50;
+    return scroll < MENU_UNDOCK_POS;
+  };
+
+  const isIndexPage = () => {
+    return window.location.pathname === '/';
+  };
+
+  const getMenuStyle = () => {
+    const style = [styles.menu];
+    if (isIndexPage() && isOnTop()) {
+      style.push(styles.docked);
+    } else if (isScrollDown()) {
+      style.push(styles.hided);
+    }
+    return style.join(' ');
   };
 
   return (
@@ -60,9 +92,9 @@ const Menu = observer(() => {
           </section>
         </section>
       </div>
-      <div className={styles.menu}>
+      <div className={getMenuStyle()}>
         <section className={styles.wrapper_menu}>
-          <div className={styles.logo} />
+          <div className={`${styles.logo} ${!isOnTop() ? styles.colorful : ''}`} />
           <div className={styles.menu_list}>
             <MenuList direction="row" />
           </div>

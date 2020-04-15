@@ -1,0 +1,7 @@
+const CONSTS = {
+  NEWS_DOUBLE_PX: 800,
+  TABLET_WIDTH_PX: 600,
+  MOBILE_WIDTH_PX: 500
+};
+
+export default CONSTS;

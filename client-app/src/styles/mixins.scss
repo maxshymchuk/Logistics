@@ -1,4 +1,5 @@
 @import './variables.scss';
+@import url('https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@800&display=swap');
 
 @mixin section {
   margin: 50px 0;
@@ -12,9 +13,6 @@
 }
 
 @mixin title {
-  margin-top: 0;
-  font-size: 2rem;
-  text-align: center;
   font-weight: bold;
   @media screen and (max-width: $container-tablet-width) {
     font-size: 1.4rem;
@@ -22,34 +20,35 @@
 }
 
 @mixin subtitle {
-  font-size: 1.6rem;
-  line-height: 1.5em;
+  font-size: 1.2rem;
   @media screen and (max-width: $container-tablet-width) {
     font-size: 1rem;
   }
 }
 
-@mixin logo($height: 60px) {
+@mixin logo($height: 50px, $text: 'SHUTTLE', $adaptive: true) {
   $width: $height * 1.5;
   width: $width;
   height: $height;
   background: url('../assets/logo.svg') no-repeat center center;
   background-size: contain;
-  margin-right: $width;
+  margin-right: $width * 1.5;
   @media screen and (max-width: $container-mobile-width) {
     margin: 0;
   }
   &:after {
-    content: 'universal shipping';
-    font-size: $height / 3;
-    display: flex;
+    font-family: 'Baloo Da 2';
+    content: $text;
+    font-size: $height / 2;
+    display: inline-flex;
     height: $height;
-    line-height: $height / 3;
     align-items: center;
     position: relative;
     left: $width;
-    @media screen and (max-width: $container-mobile-width) {
-      display: none;
+    @if $adaptive {
+      @media screen and (max-width: $container-tablet-width) {
+        display: none;
+      }
     }
   }
 }

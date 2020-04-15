@@ -25,6 +25,7 @@
   }
   .title {
     @include title;
+    font-size: 2rem;
   }
   .subtitle {
     display: flex;
@@ -70,7 +71,8 @@
   counter-reset: order;
   .title {
     @include title;
-    text-align: left;
+    text-align: right;
+    font-size: 2rem;
   }
   .empty {
     display: flex;

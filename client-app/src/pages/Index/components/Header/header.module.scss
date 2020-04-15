@@ -23,10 +23,9 @@
 
   .title {
     @include title;
-    padding: $item-gap;
-    padding-left: 10%;
+    padding: $item-gap $item-gap $item-gap 10%;
     margin-right: auto;
-    text-align: left;
+    font-weight: bold;
     background-color: $accent-color;
     @media screen and (max-width: $container-tablet-width) {
       padding: 0 10%;
@@ -37,18 +36,26 @@
   .subtitle {
     @include subtitle;
     max-width: 600px;
-    padding: $item-gap 0;
-    padding-left: 10%;
+    padding: $item-gap 0 $item-gap 10%;
     margin-right: 10%;
   }
 
   .button {
-    width: 400px;
+    $width: 240px;
+    position: absolute;
+    bottom: $item-gap;
+    left: calc(50% - #{$width / 2});
+    width: $width;
     color: #fff;
-    margin-left: 10%;
-    font-size: 1.2rem;
+    font-size: 1rem;
+    text-align: center;
+    .content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
     @media screen and (max-width: $container-tablet-width) {
-      margin: 0 10%;
+      left: 10%;
       width: 80%;
       font-size: inherit;
     }
@@ -58,7 +65,9 @@
 .airplane,
 .train,
 .truck,
-.ship {
+.ship,
+.rocket,
+.normandy {
   width: 100%;
   height: 100vh;
   background-position: center center;
@@ -81,4 +90,12 @@
 
 .truck {
   background-image: url('../../../../assets/index/header/truck.jpg');
+}
+
+.rocket {
+  background-image: url('../../../../assets/index/header/rocket.jpg');
+}
+
+.normandy {
+  background-image: url('../../../../assets/index/header/normandy.jpg');
 }

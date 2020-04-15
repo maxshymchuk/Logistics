@@ -2,7 +2,7 @@ import React from 'react';
 
 import Tracker from './components/Tracker/Tracker';
 import About from './components/About/About';
-import Differencies from './components/Differencies/differencies';
+import Sponsors from './components/Sponsors/Sponsors';
 import Footer from './components/Footer/Footer';
 import Header from './components/Header/Header';
 import News from './components/News/News';
@@ -18,9 +18,9 @@ const Index = () => {
       <Process />
       <OurServices />
       <Tracker />
-      <Differencies />
       <Testimonials />
       <News />
+      <Sponsors />
       <Footer />
     </>
   );

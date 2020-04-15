@@ -9,33 +9,42 @@
   flex-direction: column;
   padding: 0;
 
-  .date {
-    font-size: 0.9rem;
-    padding-bottom: $item-gap / 2;
-    color: $accent-color;
+  .image {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-position-y: top;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-between;
+    padding: $item-gap $item-gap 0 $item-gap;
+    .date {
+      display: inline;
+      background-color: #FFF;
+      color: $accent-color;
+      padding: $item-gap / 2 $item-gap;
+    }
+    .title {
+      display: inline;
+      background-color: $accent-color;
+      color: #FFF;
+    }
   }
 
   .actions {
     margin-top: auto;
-  }
-
-  .description {
-    max-height: 50%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    padding-bottom: 0;
+    padding: $item-gap;
   }
 
   .button {
     display: flex;
     padding: 0;
     a {
-      padding: 3px 6px;
+      padding: 3px 10px;
     }
-  }
-
-  .image {
-    min-height: 120px;
-    background-position-y: top;
   }
 }

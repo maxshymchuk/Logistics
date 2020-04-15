@@ -24,9 +24,13 @@
   .date {
     display: flex;
     align-items: center;
+    font-size: 0.9rem;
     span {
       margin: 0 $item-gap / 2;
     }
+  }
+
+  .date {
     @media screen and (max-width: $container-tablet-width) {
       display: none;
     }
@@ -74,13 +78,33 @@
   position: sticky;
   top: 0;
   z-index: 999;
+  transition: background-color 0.5s, top 0.5s;
+
+  &.docked {
+    background-color: transparent;
+    color: #FFF;
+    a, button {
+      color: #FFF;
+    }
+  }
+
+
+  &.hided {
+    @media screen and (max-width: $container-tablet-width) {
+      top: -100px;
+    }
+  }
 
   a {
     display: block;
   }
 
   .logo {
-    @include logo(40px);
+    $background: #00000022;
+    @include logo;
+    &.colorful {
+      color: $accent-color;
+    }
   }
 
   .wrapper_menu {

@@ -1,4 +1,4 @@
-import { Button, Card } from '@material-ui/core';
+import { Button, Card, Typography } from '@material-ui/core';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -8,18 +8,14 @@ import styles from './error403.module.scss';
 const Error403 = () => {
   return (
     <div className={styles.error_wrapper}>
-      <div className={styles.message}>
-        <div className={styles.robot} />
-        <span className={styles.text}>You shall not pass!</span>
-      </div>
+      <div className={styles.robot} />
       <Card className={styles.auth}>
-        <article className={styles.title}>
+        <Typography className={styles.title} variant="h5" component="article">
           Prove yourself
-        </article>
+        </Typography>
         <SignIn />
         <section className={styles.registration}>
           New to Shuttle? 
-          {' '}
           <Button size='small' color="primary" component={Link} to='/login'>Sign Up</Button>
         </section>
       </Card>

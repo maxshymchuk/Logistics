@@ -6,3 +6,9 @@
   grid-gap: $item-gap;
   flex-direction: column;
 }
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: $item-gap;
+}
