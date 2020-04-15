@@ -12,7 +12,7 @@ const PrivateRoute = ({ component: Component, ...rest }: any) => {
     <Route
       {...rest}
       render={(props) => (
-        appStore.isLogged ? <Component {...props} /> : <Error403 /> // <Redirect to='/login' />
+        appStore.isLogged ? <Component {...props} /> : <Error403 />
       )}
     />
   );

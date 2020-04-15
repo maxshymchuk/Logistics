@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
-
 import { LinearProgress, List, Paper } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import Notification from '../../../../components/Notification/Notification';
 
 import { PathsContext } from '../../../../contexts/PathsContext';
 import { MessageType, ServerResponse } from '../../../../models/message.models';
@@ -8,7 +8,6 @@ import { OrderPaths, OrderUser } from '../../../../models/order.models';
 import { UserPath } from '../../../../models/path.models';
 import { getOrderPaths } from '../../../../services/orders.service';
 import OrderPath from './OrderPath/OrderPath';
-import Notification from '../../../../components/Notification/Notification';
 import styles from './OrderPathsList.module.scss';
 
 type OrderPathsListState = {
@@ -71,7 +70,7 @@ const OrderPathsList = ({ order, resultPath }: CreateOrderPathsProps) => {
           {state.paths.map((path, index) => (
             <Paper className={styles.path_item} key={index}>
               <List component="nav" disablePadding>
-                <OrderPath userPath={path} isSelected={selectedPath == path} onSelect={(path) => setSelectedPath(path)} />
+                <OrderPath userPath={path} isSelected={selectedPath === path} onSelect={(path) => setSelectedPath(path)} />
               </List>
             </Paper>
           ))}

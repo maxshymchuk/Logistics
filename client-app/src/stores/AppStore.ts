@@ -1,29 +1,44 @@
 import { action, configure, observable, runInAction } from 'mobx';
 import { createContext } from 'react';
+import { isOfType } from '../helpers/typeGuard';
 
 import { MessageType } from '../models/message.models';
 import { User } from '../models/user.models';
-import { logoutUser } from '../services/users.service';
-import DialogStore from './DialogStore';
+import { getLoggedUser, logoutUser } from '../services/users.service';
 
 configure({ enforceActions: 'always' });
 
 type NotifierType = {
   messageType: MessageType;
   message: string;
-}
+};
 
 export class AppStore {
   
-  @observable user: User | null = null;
+  @observable user?: User;
 
   @observable isLogged = false;
 
   @observable notifier: NotifierType | undefined;
 
+  @observable isRequestLoginStatus = true;
+
   private resetUser() {
-    this.user = null;
+    this.user = undefined;
     this.isLogged = false;
+  }
+
+  @action async requestIsLog() {
+    const response = await getLoggedUser();
+    if (response.messageType !== MessageType.Error) {
+      runInAction(() => {
+        if (isOfType<User>(response.data, 'username')) {
+          this.login(response.data);
+          this.isRequestLoginStatus = false;
+        }
+      });
+    }
+    return response;
   }
 
   @action login(newUser: User) {
@@ -34,8 +49,7 @@ export class AppStore {
   }
 
   @action async logout() {
-    const response = await logoutUser();
-    console.log(response.message);
+    await logoutUser();
     runInAction(() => {
       this.resetUser();
     });

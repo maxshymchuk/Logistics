@@ -1,29 +1,31 @@
 import { TextField } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Skeleton from '@material-ui/lab/Skeleton';
-import React, { useEffect, useState } from 'react';
+import { observer } from 'mobx-react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { Location, Segment } from '../../../../models/location.models';
 import { MessageType } from '../../../../models/message.models';
-import { getLocationsData } from '../../../../services/locations.service';
+import { AdminContext } from '../../../../stores/Admin/AdminStore';
+import { AppContext } from '../../../../stores/AppStore';
 import styles from './orderLocations.module.scss';
 
 type OrderLocationsProps = {
   resultLocations: (segment: Segment) => void;
 };
 
-const OrderLocations = ({ resultLocations }: OrderLocationsProps) => {
-  const [locations, setLocations] = useState<Location[] | null>(null);
+const OrderLocations = observer(({ resultLocations }: OrderLocationsProps) => {
   const [fromLocation, setFromLocation] = useState<Location | null>(null);
   const [toLocation, setToLocation] = useState<Location | null>(null);
 
+  const appStore = useContext(AppContext);
+  const adminStore = useContext(AdminContext);
+
   useEffect(() => {
     (async () => {
-      const locationsResponse = await getLocationsData();
-      if (locationsResponse.messageType === MessageType.Error) {
-        console.log(locationsResponse.message);
-      } else if (locationsResponse.data instanceof Array) {
-        setLocations(locationsResponse.data);
+      const response = await adminStore.locations.init();
+      if (response.messageType === MessageType.Error) {
+        appStore.setNotify(response);
       }
     })();
   }, []);
@@ -40,12 +42,12 @@ const OrderLocations = ({ resultLocations }: OrderLocationsProps) => {
 
   return (
     <form className={styles.locations} noValidate autoComplete="off">
-      {!locations ? (
+      {!adminStore.locations.isLoaded ? (
         <Skeleton variant="rect" height={40} />
       ) : (
         <Autocomplete
           id="location_from"
-          options={locations}
+          options={adminStore.locations.list}
           getOptionLabel={(option: Location) => option.name}
           renderOption={(option: Location) => option.name}
           renderInput={(params: any) => (
@@ -65,12 +67,12 @@ const OrderLocations = ({ resultLocations }: OrderLocationsProps) => {
           disableClearable
         />
       )}
-      {!locations ? (
+      {!adminStore.locations.isLoaded ? (
         <Skeleton variant="rect" height={40} />
       ) : (
         <Autocomplete
           id="location_to"
-          options={locations}
+          options={adminStore.locations.list}
           getOptionLabel={(option: Location) => option.name}
           renderOption={(option: Location) => option.name}
           renderInput={(params: any) => (
@@ -92,6 +94,6 @@ const OrderLocations = ({ resultLocations }: OrderLocationsProps) => {
       )}
     </form>
   );
-};
+});
 
 export default OrderLocations;

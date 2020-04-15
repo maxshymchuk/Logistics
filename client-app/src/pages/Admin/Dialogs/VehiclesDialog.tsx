@@ -1,6 +1,3 @@
-import { observer } from 'mobx-react';
-import React, { useContext, useEffect, useState } from 'react';
-
 import DateFnsUtils from '@date-io/date-fns';
 import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@material-ui/core';
 import Dialog from '@material-ui/core/Dialog';
@@ -10,14 +7,14 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
+import { observer } from 'mobx-react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { isOfType, isSomeEnum } from '../../../helpers/typeGuard';
 import { Location } from '../../../models/location.models';
-import { MessageType } from '../../../models/message.models';
 import { Vehicle, VehicleType, vehicleTypes } from '../../../models/vehicle.models';
-import { getLocationsData } from '../../../services/locations.service';
-import { addVehicle } from '../../../services/vehicles.service';
 import { AdminContext } from '../../../stores/Admin/AdminStore';
+import { AppContext } from '../../../stores/AppStore';
 import styles from './form.module.scss';
 
 export type VehiclesDialogState = {
@@ -27,13 +24,13 @@ export type VehiclesDialogState = {
 };
 
 export const VehiclesDialog = observer(() => {
-  const [locations, setLocations] = useState<Location[]>([]);
   const [vehicle, setVehicle] = useState<VehiclesDialogState>({
     type: VehicleType.Car,
     arrivalDate: new Date(),
     destination: null
   });
 
+  const appStore = useContext(AppContext);
   const adminStore = useContext(AdminContext);
 
   const handleClose = () => {
@@ -42,20 +39,14 @@ export const VehiclesDialog = observer(() => {
 
   useEffect(() => {
     (async () => {
-      const locationsResponse = await getLocationsData();
-      if (locationsResponse.messageType === MessageType.Error) {
-        adminStore.dialog.set(locationsResponse);
-        handleClose();
-      } else if (locationsResponse.data instanceof Array) {
-        setLocations(locationsResponse.data);
-      }
+      await adminStore.locations.init();
     })();
   }, []);
 
   const handleSubmit = async () => {
     if (vehicle.destination && isOfType<Vehicle>(vehicle, 'type')) {
-      const response = await addVehicle(vehicle);
-      adminStore.dialog.set(response);
+      const response = await adminStore.vehicles.add(vehicle);
+      appStore.setNotify(response);
       handleClose();
     }
   };
@@ -104,7 +95,7 @@ export const VehiclesDialog = observer(() => {
               />
             </MuiPickersUtilsProvider>
             <Autocomplete
-              options={locations}
+              options={adminStore.locations.list}
               getOptionLabel={location => location.name}
               renderInput={params => <TextField {...params} label='Destination' variant="outlined" />}
               onChange={(e: any, location: Location | null) =>

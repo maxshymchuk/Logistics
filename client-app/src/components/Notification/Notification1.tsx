@@ -16,7 +16,7 @@ function Alert(props: AlertProps) {
 }
 
 const Notification1 = ({ messageType, message }: NotificationProps) => {
-  const [open, setOpen] = useState(true);
+  const [isOpen, setOpen] = useState(true);
 
   const appStore = useContext(AppContext);
 
@@ -34,9 +34,9 @@ const Notification1 = ({ messageType, message }: NotificationProps) => {
   };
 
   return (
-    <Snackbar open={open} autoHideDuration={2000} onClose={handleClose} onExited={() => appStore.resetNotify()}>
+    <Snackbar open={isOpen} autoHideDuration={2000} onClose={handleClose} onExited={() => appStore.resetNotify()}>
       <Alert onClose={handleClose} severity={getSeverity()}>
-        {message.toString()}
+        {message}
       </Alert>
     </Snackbar>
   );

@@ -17,11 +17,11 @@ const SignIn = observer(() => {
   const appStore = useContext(AppContext);
 
   const handleClick = async () => {
-    const userResponse = await authUser({ username, password });
-    if (userResponse.messageType === MessageType.Error) {
-      console.log(userResponse.message);
-    } else if (isOfType<User>(userResponse.data, 'username')) {
-      appStore.login(userResponse.data);
+    const response = await authUser({ username, password });
+    if (response.messageType === MessageType.Error) {
+      appStore.setNotify(response);
+    } else if (isOfType<User>(response.data, 'username')) {
+      appStore.login(response.data);
     }
   };
 

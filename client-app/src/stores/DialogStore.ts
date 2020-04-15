@@ -9,33 +9,18 @@ type DialogType = {
 
 class DialogStore {
 
-  @observable dialog: DialogType = {
-    data: null,
-    isOpen: false
-  };
-
-  @computed get result() {
-    return this.dialog.data;
-  }
+  @observable isDialogOpen = false;
 
   @computed get isOpen() {
-    return this.dialog.isOpen;
-  }
-
-  @action reset() {
-    this.dialog.data = null;
-  }
-
-  @action set(result: ServerResponse<any>) {
-    this.dialog.data = result;
+    return this.isDialogOpen;
   }
 
   @action close() {
-    this.dialog.isOpen = false;
+    this.isDialogOpen = false;
   }
 
   @action open() {
-    this.dialog.isOpen = true;
+    this.isDialogOpen = true;
   }
 }
 

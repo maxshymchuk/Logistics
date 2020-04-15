@@ -1,15 +1,15 @@
 import { action, computed, observable, reaction, runInAction } from 'mobx';
 import { MessageType } from '../../../models/message.models';
-import { Vehicle } from '../../../models/vehicle.models';
-import { addVehicle, getVehiclesData, removeVehicleById } from '../../../services/vehicles.service';
+import { User } from '../../../models/user.models';
+import { addUser, getUsersData, removeUserById } from '../../../services/users.service';
 
 const ITEMS_ON_PAGE = 20;
 
-class VehicleStore {
+class UserStore {
 
   @observable isLoaded = false;
 
-  @observable list: Vehicle[] = [];
+  @observable list: User[] = [];
 
   @observable pageNumber = 0;
 
@@ -29,7 +29,7 @@ class VehicleStore {
   }
 
   @action async init() {
-    const response = await getVehiclesData();
+    const response = await getUsersData();
     if (!this.isLoaded && response.messageType !== MessageType.Error) {
       runInAction(() => {
         if (response.data instanceof Array) {
@@ -41,12 +41,6 @@ class VehicleStore {
     return response;
   }
 
-  @action async update() {
-    this.isLoaded = false;
-    const response = await this.init();
-    return response;
-  }
-
   @action setPageNumber(pages: number) {
     this.pageNumber = pages;
   }
@@ -55,17 +49,17 @@ class VehicleStore {
     this.currentPage = page;
   }
 
-  @action async add(vehicle: Vehicle) {
-    this.list.push(vehicle);
-    const response = await addVehicle(vehicle);
+  @action async add(user: User) {
+    this.list.push(user);
+    const response = await addUser(user);
     return response;
   }
 
   @action async remove(id: string) {
-    this.list = this.list.filter(vehicle => vehicle._id !== id);
-    const response = await removeVehicleById(id);
+    this.list = this.list.filter(user => user._id !== id);
+    const response = await removeUserById(id);
     return response;
   }
 }
 
-export default VehicleStore;
+export default UserStore;

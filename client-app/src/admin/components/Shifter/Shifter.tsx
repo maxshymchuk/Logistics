@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
-
 import {
-  Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   TextField
 } from '@material-ui/core';
-
-import Notification from '../../../components/Notification/Notification';
-import { ServerResponse } from '../../../models/message.models';
+import React, { useContext, useState } from 'react';
+import { AdminContext } from '../../../stores/Admin/AdminStore';
+import { AppContext } from '../../../stores/AppStore';
 import changeTime from '../../services/shifter.service';
 import styles from './shifter.module.scss';
 
@@ -17,12 +21,16 @@ type ShifterProps = {
 const Shifter = (props: ShifterProps) => {
   const [isLoading, setLoading] = useState(false);
   const [value, setValue] = useState(1);
-  const [dialogResult, setDialogResult] = useState<ServerResponse | null>(null);
-  
+
+  const appStore = useContext(AppContext);
+  const adminStore = useContext(AdminContext);
+
   const handleChange = async () => {
     setLoading(true);
     const result = await changeTime(value);
-    setDialogResult(result);
+    await adminStore.vehicles.update();
+    await adminStore.orders.update();
+    appStore.setNotify(result);
     setLoading(false);
   };
 
@@ -32,7 +40,6 @@ const Shifter = (props: ShifterProps) => {
 
   return (
     <Dialog open onClose={handleClose} scroll='body' maxWidth='xs' fullWidth>
-      {dialogResult && <Notification {...dialogResult} afterClose={() => setDialogResult(null)} />}
       <DialogTitle>Time Shifter</DialogTitle>
       <DialogContent>
         <DialogContentText>

@@ -39,7 +39,7 @@ const Menu = observer(() => {
               Regenerator
             </Button>
           </section>
-          <Fade in={adminStore.content.pageNumber !== 0} timeout={200} unmountOnExit>
+          <Fade in timeout={200} unmountOnExit>
             <Card className={styles.pagination}>
               <Pagination
                 color='primary'

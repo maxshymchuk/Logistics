@@ -1,15 +1,15 @@
 import { action, computed, observable, reaction, runInAction } from 'mobx';
+import { Location } from '../../../models/location.models';
 import { MessageType } from '../../../models/message.models';
-import { Vehicle } from '../../../models/vehicle.models';
-import { addVehicle, getVehiclesData, removeVehicleById } from '../../../services/vehicles.service';
+import { addLocation, getLocationsData, removeLocationById } from '../../../services/locations.service';
 
 const ITEMS_ON_PAGE = 20;
 
-class VehicleStore {
+class LocationStore {
 
   @observable isLoaded = false;
 
-  @observable list: Vehicle[] = [];
+  @observable list: Location[] = [];
 
   @observable pageNumber = 0;
 
@@ -29,7 +29,7 @@ class VehicleStore {
   }
 
   @action async init() {
-    const response = await getVehiclesData();
+    const response = await getLocationsData();
     if (!this.isLoaded && response.messageType !== MessageType.Error) {
       runInAction(() => {
         if (response.data instanceof Array) {
@@ -55,17 +55,17 @@ class VehicleStore {
     this.currentPage = page;
   }
 
-  @action async add(vehicle: Vehicle) {
-    this.list.push(vehicle);
-    const response = await addVehicle(vehicle);
+  @action async add(location: Location) {
+    this.list.push(location);
+    const response = await addLocation(location);
     return response;
   }
 
   @action async remove(id: string) {
-    this.list = this.list.filter(vehicle => vehicle._id !== id);
-    const response = await removeVehicleById(id);
+    this.list = this.list.filter(location => location._id !== id);
+    const response = await removeLocationById(id);
     return response;
   }
 }
 
-export default VehicleStore;
+export default LocationStore;

@@ -1,24 +1,17 @@
-import { observer } from 'mobx-react';
-import React, { useContext, useState } from 'react';
-
 import { Button, TextField } from '@material-ui/core';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { observer } from 'mobx-react';
+import React, { useContext, useState } from 'react';
 
 import { Location } from '../../../models/location.models';
-import { ServerResponse } from '../../../models/message.models';
-import { addLocation } from '../../../services/locations.service';
 import { AdminContext } from '../../../stores/Admin/AdminStore';
+import { AppContext } from '../../../stores/AppStore';
 import styles from './form.module.scss';
 
-export type LocationsDialogProps = {
-  result: (response: ServerResponse) => void;
-  onClose: () => void;
-};
-
-export const LocationsDialog = observer(() => {
+const LocationsDialog = observer(() => {
   const [location, setLocation] = useState<Location>({
     name: 'Location',
     coordinates: {
@@ -27,6 +20,7 @@ export const LocationsDialog = observer(() => {
     }
   });
 
+  const appStore = useContext(AppContext);
   const adminStore = useContext(AdminContext);
 
   const handleClose = () => {
@@ -34,8 +28,8 @@ export const LocationsDialog = observer(() => {
   };
 
   const handleSubmit = async () => {
-    const response = await addLocation(location);
-    adminStore.dialog.set(response);
+    const response = await adminStore.locations.add(location);
+    appStore.setNotify(response);
     handleClose();
   };
 
@@ -79,3 +73,5 @@ export const LocationsDialog = observer(() => {
     </>
   );
 });
+
+export default LocationsDialog;

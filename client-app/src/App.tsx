@@ -1,19 +1,15 @@
-import 'mobx-react-lite/batchingForReactDom';
-import './app.scss';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 
 import axios from 'axios';
 import { observer } from 'mobx-react';
+import 'mobx-react-lite/batchingForReactDom';
 import React, { useContext, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import './app.scss';
 
 import Menu from './components/Menu/Menu';
 import Notification1 from './components/Notification/Notification1';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
-import { isOfType } from './helpers/typeGuard';
-import { MessageType } from './models/message.models';
-import { User } from './models/user.models';
 import Admin from './pages/Admin/Admin';
 import Auth from './pages/Auth/Auth';
 import Error404 from './pages/ErrorPages/Error404/Error404';
@@ -21,7 +17,6 @@ import Index from './pages/Index/Index';
 import OrderCreate from './pages/Orders/OrderCreate/OrderCreate';
 import OrderTrack from './pages/Orders/OrderTrack/OrderTrack';
 import Profile from './pages/Profile/Profile';
-import { getLoggedUser } from './services/users.service';
 import { AppContext } from './stores/AppStore';
 
 axios.defaults.baseURL = 'http://localhost:3000';
@@ -47,12 +42,7 @@ const App = observer(() => {
 
   useEffect(() => {
     (async () => {
-      const response = await getLoggedUser();
-      if (response.messageType === MessageType.Error) {
-        console.log(response.message);
-      } else if (isOfType<User>(response.data, 'username')) {
-        appStore.login(response.data);
-      }
+      await appStore.requestIsLog();
     })();
   }, []);
 
@@ -60,21 +50,25 @@ const App = observer(() => {
     <MuiThemeProvider theme={theme}>
       <AppContext.Provider value={appStore}>
         {appStore.notifier && <Notification1 {...appStore.notifier} />}
-        <Router>
-          <Switch>
-            <Route path="/admin" component={undefined} />
-            <Route path="/" component={Menu} />
-          </Switch>
-          <Switch>
-            <PrivateRoute path="/admin" component={Admin} />
-            <Route exact path="/" component={Index} />
-            <Route exact path="/login" component={Auth} />
-            <PrivateRoute exact path="/profile" component={Profile} />
-            <PrivateRoute exact path="/create" component={OrderCreate} />
-            <Route exact path="/track" component={OrderTrack} />
-            <Route path="*" component={Error404} />
-          </Switch>
-        </Router>
+        {appStore.isRequestLoginStatus ? (
+          null
+        ) : (
+          <Router>
+            <Switch>
+              <Route path="/admin" component={undefined} />
+              <Route path="/" component={Menu} />
+            </Switch>
+            <Switch>
+              <PrivateRoute path="/admin" component={Admin} />
+              <Route exact path="/" component={Index} />
+              <Route exact path="/login" component={Auth} />
+              <PrivateRoute exact path="/profile" component={Profile} />
+              <PrivateRoute exact path="/create" component={OrderCreate} />
+              <Route exact path="/track" component={OrderTrack} />
+              <Route path="*" component={Error404} />
+            </Switch>
+          </Router>
+        )}
       </AppContext.Provider>
     </MuiThemeProvider>
   );

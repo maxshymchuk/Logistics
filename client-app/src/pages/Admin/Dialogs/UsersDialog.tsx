@@ -11,11 +11,11 @@ import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 
 import { User } from '../../../models/user.models';
-import { addUser } from '../../../services/users.service';
 import { AdminContext } from '../../../stores/Admin/AdminStore';
+import { AppContext } from '../../../stores/AppStore';
 import styles from './form.module.scss';
 
-export const UsersDialog = observer(() => {
+const UsersDialog = observer(() => {
   const [user, setUser] = useState<User>({
     name: '',
     surname: '',
@@ -27,6 +27,7 @@ export const UsersDialog = observer(() => {
     isAdmin: false
   });
 
+  const appStore = useContext(AppContext);
   const adminStore = useContext(AdminContext);
 
   const handleClose = () => {
@@ -34,8 +35,8 @@ export const UsersDialog = observer(() => {
   };
 
   const handleSubmit = async () => {
-    const response = await addUser(user);
-    adminStore.dialog.set(response);
+    const response = await adminStore.users.add(user);
+    appStore.setNotify(response);
     handleClose();
   };
 
@@ -122,3 +123,5 @@ export const UsersDialog = observer(() => {
     </>
   );
 });
+
+export default UsersDialog;
