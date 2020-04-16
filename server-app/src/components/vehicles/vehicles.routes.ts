@@ -10,7 +10,7 @@ router.get("/", requiresAdmin(), async (req: Request, res: Response) => {
   res.send(result);
 });
 
-router.get("/regen", requiresAdmin(), async (req: Request, res: Response) => {
+router.get("/regen", async (req: Request, res: Response) => {
   const result = await vehicleService.regenerateVehicles();
   res.send(result);
 });
