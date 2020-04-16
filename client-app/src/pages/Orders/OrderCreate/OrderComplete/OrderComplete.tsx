@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { Button } from '@material-ui/core';
+import { Button, Fade, Typography } from '@material-ui/core';
 
 import styles from './orderComplete.module.scss';
 
@@ -12,24 +12,42 @@ type OrderCompleteProps = {
 
 const OrderComplete = ({ trackNumber, createNewOrder }: OrderCompleteProps) => {
   return (
-    <div className={styles.content}>
-      <div className={styles.congratulation}>
-        <span className={styles.title}>Order has been created</span>
-        <section className={styles.track}>
-          <article className={styles.subtitle}>Your track number</article>
-          <span className={styles.track_number}>
-            {trackNumber}
-          </span>
-          <span className={styles.help}>
-            Use this code to track your parcels
-          </span>
-        </section>
-        <section className={styles.buttons}>
-          <Button size='small' onClick={createNewOrder} color='primary' variant='contained'>Make another order</Button>
-          <Button size='small' component={Link} to='/profile' color='primary' variant='outlined'>Go to profile</Button>
-        </section>
+    <Fade in timeout={2000} unmountOnExit>
+      <div className={styles.content}>
+        <ul className={styles.circles}>
+          <li />
+          <li />
+          <li />
+          <li />
+          <li />
+          <li />
+          <li />
+          <li />
+          <li />
+          <li />
+        </ul>
+        <div className={styles.congratulation}>
+          <Typography variant="h4">
+            Order has been created
+          </Typography>
+          <section className={styles.track}>
+            <Typography variant="subtitle1">
+              Your track number
+            </Typography>
+            <span className={styles.track_number}>
+              {trackNumber}
+            </span>
+            <span className={styles.help}>
+              Use this code to track your parcels
+            </span>
+          </section>
+          <section className={styles.buttons}>
+            <Button className={styles.button_order} size='small' onClick={createNewOrder} color='primary' variant='contained'>Make another order</Button>
+            <Button className={styles.button_profile} size='small' component={Link} to='/profile' color='primary' variant='outlined'>Go to profile</Button>
+          </section>
+        </div>
       </div>
-    </div>
+    </Fade>
   );
 };
 

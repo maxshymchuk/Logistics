@@ -1,0 +1,13 @@
+@import "../../styles/variables.scss";
+@import "../../styles/mixins.scss";
+
+.container {
+  .create_order {
+    position: fixed;
+    bottom: $item-gap;
+    right: $item-gap;
+    & * {
+      color: #FFF;
+    }
+  }
+}

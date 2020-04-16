@@ -33,7 +33,7 @@
   background: url('../assets/logo.svg') no-repeat center center;
   background-size: contain;
   margin-right: $width * 1.5;
-  @media screen and (max-width: $container-mobile-width) {
+  @media screen and (max-width: $container-tablet-width) {
     margin: 0;
   }
   &:after {

@@ -1,11 +1,11 @@
 import { Button, Card, LinearProgress, TextField } from '@material-ui/core';
-import React, { useState } from 'react';
-import Notification from '../../../components/Notification/Notification';
+import React, { useContext, useState } from 'react';
 import { isOfType } from '../../../helpers/typeGuard';
-import { MessageType, ServerResponse } from '../../../models/message.models';
+import { MessageType } from '../../../models/message.models';
 import { Order } from '../../../models/order.models';
 
 import { getOrderByTrackNumber } from '../../../services/orders.service';
+import { AppContext } from '../../../stores/AppStore';
 import styles from './orderTrack.module.scss';
 import OrderTrackInfo from './OrderTrackInfo/OrderTrackInfo';
 
@@ -20,14 +20,15 @@ const OrderTrack = () => {
     isLoading: false
   });
   const [trackNumber, setTrackNumber] = useState('');
-  const [dialogResult, setDialogResult] = useState<ServerResponse<any> | null>(null);
+
+  const appStore = useContext(AppContext);
 
   const showOrder = async () => {
     if (trackNumber !== '') {
       setState({ ...state, isLoading: true });
       const orderResponse = await getOrderByTrackNumber(trackNumber);
       if (orderResponse.messageType === MessageType.Error) {
-        setDialogResult(orderResponse);
+        appStore.setNotify(orderResponse);
       } else if (isOfType<Order>(orderResponse.data, 'trackNumber')) {
         setState({ ...state, order: orderResponse.data, isLoading: false });
       }
@@ -36,7 +37,6 @@ const OrderTrack = () => {
 
   return (
     <>
-      {dialogResult && <Notification {...dialogResult} afterClose={() => setDialogResult(null)} />}
       <Card className={styles.track}>
         <TextField
           name="trackNumber"

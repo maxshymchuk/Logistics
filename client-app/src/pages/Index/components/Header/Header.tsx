@@ -40,7 +40,7 @@ const Header = () => (
         >
           <div className={styles.content}>
             <div>So how did we do that?</div>
-            <KeyboardArrowDownIcon fontSize={'small'} />
+            <KeyboardArrowDownIcon fontSize="small" />
           </div>
         </Button>
       </div>

@@ -42,10 +42,10 @@ const Process = () => {
             <Typography component="p" className={styles.paragraph}>
               We provide a free service for loading and moving goods from the place of departure to the forwarding
               center. Depending on the weight and dimensions of the parcel, the corresponding robot loader will be
-              sent to you - it can be either "Mr. Handy" or "Securitron". A converted securitron is capable of moving
-              loads of up to 2 tons! Thanks to RobCo Industries for their contribution to the development of this
-              wonderful machine. If our technologies cannot help you on this issue, then we provide you with free
-              government facilities.
+              sent to you - it can be either &quot;Mr. Handy&quot; or &quot;Securitron&quot;. A converted securitron
+              is capable of moving loads of up to 2 tons! Thanks to RobCo Industries for their contribution to the
+              development of this wonderful machine. If our technologies cannot help you on this issue, then we provide
+              you with free government facilities.
               <span className={styles.mark}>*</span>
             </Typography>
           </section>
@@ -57,8 +57,9 @@ const Process = () => {
             </Typography>
             <Typography component="p" className={styles.paragraph}>
               This stage with a perfectly calibrated delivery system takes an extremely small time.
-              Despite this, the warehouse is fully automated and is under the control of the international "GlaDOS"
-              system with assistants in the form of robots of the "Protectron" model. We guarantee cargo safety.
+              Despite this, the warehouse is fully automated and is under the control of the international
+              &quot;GlaDOS&quot; system with assistants in the form of robots of the &quot;Protectron&quot;
+              model. We guarantee cargo safety.
             </Typography>
           </section>
         </div>

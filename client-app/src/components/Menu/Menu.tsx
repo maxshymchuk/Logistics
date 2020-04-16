@@ -5,9 +5,9 @@ import MenuIcon from '@material-ui/icons/Menu';
 import PhoneInTalkIcon from '@material-ui/icons/PhoneInTalk';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import useWindowScroll from '@react-hook/window-scroll';
-import React, { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { observer } from 'mobx-react';
+import React, { useContext, useState } from 'react';
+import { Link, Redirect } from 'react-router-dom';
 import { AppContext } from '../../stores/AppStore';
 import styles from './menu.module.scss';
 import MenuList from './MenuList/MenuList';
@@ -35,12 +35,14 @@ const Menu = observer(() => {
   const classes = useStyles();
 
   const [isDrawerOpened, setDrawerOpen] = useState(false);
+  const [isLogout, setLogout] = useState(false);
 
   const appStore = useContext(AppContext);
 
   const scroll = useWindowScroll(10);
 
   const handleLogout = async () => {
+    setLogout(true);
     await appStore.logout();
   };
 
@@ -131,6 +133,7 @@ const Menu = observer(() => {
           </Drawer>
         </section>
       </div>
+      {isLogout && <Redirect to="/" /> }
     </>
   );
 });

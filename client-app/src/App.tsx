@@ -4,11 +4,12 @@ import axios from 'axios';
 import { observer } from 'mobx-react';
 import 'mobx-react-lite/batchingForReactDom';
 import React, { useContext, useEffect } from 'react';
+import { Backdrop, CircularProgress } from '@material-ui/core';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './app.scss';
 
 import Menu from './components/Menu/Menu';
-import Notification1 from './components/Notification/Notification1';
+import Notification from './components/Notification/Notification';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import Admin from './pages/Admin/Admin';
 import Auth from './pages/Auth/Auth';
@@ -49,9 +50,11 @@ const App = observer(() => {
   return (
     <MuiThemeProvider theme={theme}>
       <AppContext.Provider value={appStore}>
-        {appStore.notifier && <Notification1 {...appStore.notifier} />}
+        {appStore.notifier && <Notification {...appStore.notifier} />}
         {appStore.isRequestLoginStatus ? (
-          null
+          <Backdrop open style={{backgroundColor: '#FFF'}}>
+            <CircularProgress color="inherit" />
+          </Backdrop>
         ) : (
           <Router>
             <Switch>

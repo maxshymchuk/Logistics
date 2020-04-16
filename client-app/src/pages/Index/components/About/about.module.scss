@@ -69,7 +69,7 @@ $photo-width: 200px;
 
   .handy {
     @include picture;
-    background: url("../../../../assets/robots/handy3.png") no-repeat center top;
+    background: url("../../../../assets/robots/handy.png") no-repeat center top;
     height: 240px;
     background-size: 65%;
   }
@@ -80,20 +80,5 @@ $photo-width: 200px;
     height: 260px;
     background: url("../../../../assets/robots/eyebot.png") no-repeat center top;
     background-size: 100%;
-  }
-
-  .photo {
-    width: $photo-width;
-    height: $photo-width;
-    margin-left: $item-gap;
-    border-radius: 50%;
-    background: url('../../../../assets/robots/handy1.png') no-repeat center center;
-    background-size: 60%;
-    @media screen and (max-width: $container-tablet-width) {
-      width: $photo-width * 0.8;
-      height: $photo-width * 0.8;
-      box-shadow: none;
-      margin: 0 auto;
-    }
   }
 }

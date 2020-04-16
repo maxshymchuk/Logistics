@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { ServerResponse } from '../models/message.models';
-import { User, UserSignUp } from '../models/user.models';
+import { User } from '../models/user.models';
 
 export async function getUsersData() {
   const response: ServerResponse<User[]> = (await axios.get('/users')).data;
@@ -16,7 +16,7 @@ export async function authUser(data: {
   return response;
 }
 
-export async function regUser(user: UserSignUp) {
+export async function regUser(user: User) {
   const response: ServerResponse<null> = (await axios.post('/users/reg', user)).data;
   return response;
 }

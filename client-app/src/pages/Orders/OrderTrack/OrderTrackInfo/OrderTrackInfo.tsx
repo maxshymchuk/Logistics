@@ -1,14 +1,13 @@
 import { Button, Card, Collapse, List, ListItem, ListItemText, Typography } from '@material-ui/core';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import React, { useState } from 'react';
-import Notification from '../../../../components/Notification/Notification';
+import React, { useContext, useState } from 'react';
 import { Cargo } from '../../../../models/cargo.models';
-import { ServerResponse } from '../../../../models/message.models';
 import { Order, OrderStatus } from '../../../../models/order.models';
 import { Route } from '../../../../models/route.models';
 import { Track } from '../../../../models/track.models';
 import { updateOrderById } from '../../../../services/orders.service';
+import { AppContext } from '../../../../stores/AppStore';
 import OrderCargoItem from '../../OrderCreate/OrderCargo/OrderCargoItem/OrderCargoItem';
 import styles from './orderTrackInfo.module.scss';
 
@@ -24,7 +23,11 @@ const OrderTrackInfo = ({ order: orderProps }: OrderTrackInfoProps) => {
   const [isCargoOpen, setCargoOpen] = useState(false);
   const [isOrderOpen, setOrderOpen] = useState(false);
 
-  const [dialogResult, setDialogResult] = useState<ServerResponse<any> | null>(null);
+  const appStore = useContext(AppContext);
+
+  const isCargoExist = () => {
+    return !!order.routes[0].cargo.length;
+  };
 
   const getCargoItem = (cargo: Cargo, index: number) => {
     return <OrderCargoItem key={index} cargo={cargo} id={index} />;
@@ -60,14 +63,13 @@ const OrderTrackInfo = ({ order: orderProps }: OrderTrackInfoProps) => {
   const cancelOrder = async () => {
     const canceledOrder = {...order, status: OrderStatus.Canceled};
     const response = await updateOrderById(canceledOrder);
-    setDialogResult(response);
+    appStore.setNotify(response);
     setOrderOpen(false);
     setOrder({ ...order, status: OrderStatus.Canceled });
   };
 
   return (
     <>
-      {dialogResult && <Notification {...dialogResult} afterClose={() => setDialogResult(null)} />}
       <Card className={styles.order}>
         <List component="nav" disablePadding>
           <ListItem button onClick={() => setOrderOpen(!isOrderOpen)}>
@@ -89,19 +91,21 @@ const OrderTrackInfo = ({ order: orderProps }: OrderTrackInfoProps) => {
                 Price: &nbsp;
                 <span className={styles.price}>{order.price}</span>
               </div>
-              <Card className={styles.row}>
-                <List component="nav" disablePadding>
-                  <ListItem button onClick={() => setCargoOpen(!isCargoOpen)}>
-                    <ListItemText primary="Cargo" />
-                    {isCargoOpen ? <ExpandLess /> : <ExpandMore />}
-                  </ListItem>
-                  <Collapse in={isCargoOpen} unmountOnExit>
-                    <List disablePadding>
-                      {order.routes[0].cargo.map((cargo, index) => getCargoItem(cargo, index))}
-                    </List>
-                  </Collapse>
-                </List>
-              </Card>
+              {isCargoExist() && (
+                <Card className={styles.row}>
+                  <List component="nav" disablePadding>
+                    <ListItem button onClick={() => setCargoOpen(!isCargoOpen)}>
+                      <ListItemText primary="Cargo" />
+                      {isCargoOpen ? <ExpandLess /> : <ExpandMore />}
+                    </ListItem>
+                    <Collapse in={isCargoOpen} unmountOnExit>
+                      <List disablePadding>
+                        {order.routes[0].cargo.map((cargo, index) => getCargoItem(cargo, index))}
+                      </List>
+                    </Collapse>
+                  </List>
+                </Card>
+              )}
               <Card className={styles.row}>
                 <List component="nav" disablePadding>
                   <ListItem button onClick={() => setRoutesOpen(!isRoutesOpen)}>

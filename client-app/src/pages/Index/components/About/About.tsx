@@ -1,4 +1,4 @@
-import { Card, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import React from 'react';
 import styles from './about.module.scss';
 
@@ -28,7 +28,14 @@ const About = () => (
       </Typography>
       <Typography component="p">
         The advantage of our company is that almost everything is automated and robotic.
-        In collaboration with <em>General Atomics International</em> and <em>RobCo Industries</em>,
+        In collaboration with 
+        {' '}
+        <em>General Atomics International</em>
+        {' '}
+        and 
+        {' '}
+        <em>RobCo Industries</em>
+        ,
         robots have been developed for loading or unloading &quot;Mr. Handy&quot; and &quot;Securitron&quot;.
         The &quot;Securitron&quot; model has been retrofitted for warehouse operations. Equipped with a quantum AI
         chip, they are able to adequately communicate with people and understand their desires.

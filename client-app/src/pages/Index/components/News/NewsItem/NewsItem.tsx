@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button, Card, CardActions, CardContent, CardMedia, Typography } from '@material-ui/core';
+import { Button, Card, CardActions, CardMedia, Typography } from '@material-ui/core';
 
 import styles from './newsItem.module.scss';
 

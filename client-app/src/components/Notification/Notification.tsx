@@ -1,27 +1,27 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { Snackbar } from '@material-ui/core';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 
 import { MessageType } from '../../models/message.models';
+import { AppContext } from '../../stores/AppStore';
 
 type NotificationProps = {
   messageType: MessageType;
   message: string;
-  afterClose?: () => void;
 };
 
 function Alert(props: AlertProps) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-const Notification = ({ messageType, message, afterClose }: NotificationProps) => {
-  const [open, setOpen] = useState(true);
+const Notification = ({ messageType, message }: NotificationProps) => {
+  const [isOpen, setOpen] = useState(true);
+
+  const appStore = useContext(AppContext);
 
   const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
+    if (reason === 'clickaway') return;
     setOpen(false);
   };
 
@@ -34,9 +34,9 @@ const Notification = ({ messageType, message, afterClose }: NotificationProps) =
   };
 
   return (
-    <Snackbar open={open} autoHideDuration={2000} onClose={handleClose} onExited={() => afterClose && afterClose()}>
+    <Snackbar open={isOpen} autoHideDuration={2000} onClose={handleClose} onExited={() => appStore.resetNotify()}>
       <Alert onClose={handleClose} severity={getSeverity()}>
-        {message.toString()}
+        {message}
       </Alert>
     </Snackbar>
   );

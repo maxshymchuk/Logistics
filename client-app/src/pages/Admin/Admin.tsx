@@ -84,7 +84,7 @@ const Admin = observer(() => {
       case 0: return <VehiclesDialog />;
       case 1: return <UsersDialog />;
       case 2: return <LocationsDialog />;
-      default: return <></>;
+      default: return null;
     }
   };
 

@@ -1,12 +1,12 @@
 import { LinearProgress, List, Paper } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
-import Notification from '../../../../components/Notification/Notification';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { PathsContext } from '../../../../contexts/PathsContext';
-import { MessageType, ServerResponse } from '../../../../models/message.models';
+import { MessageType } from '../../../../models/message.models';
 import { OrderPaths, OrderUser } from '../../../../models/order.models';
 import { UserPath } from '../../../../models/path.models';
 import { getOrderPaths } from '../../../../services/orders.service';
+import { AppContext } from '../../../../stores/AppStore';
 import OrderPath from './OrderPath/OrderPath';
 import styles from './OrderPathsList.module.scss';
 
@@ -28,7 +28,7 @@ const OrderPathsList = ({ order, resultPath }: CreateOrderPathsProps) => {
     isLoaded: false
   });
 
-  const [dialogResult, setDialogResult] = useState<ServerResponse<any> | null>(null);
+  const appStore = useContext(AppContext);
 
   useEffect(() => {
     resultPath(null);
@@ -42,7 +42,7 @@ const OrderPathsList = ({ order, resultPath }: CreateOrderPathsProps) => {
         };
         const pathsResponse = await getOrderPaths(orderUser);
         if (pathsResponse.messageType === MessageType.Error) {
-          setDialogResult(pathsResponse);
+          appStore.setNotify(pathsResponse);
         } else if (pathsResponse.data instanceof Array) {
           setState({
             paths: pathsResponse.data,
@@ -62,7 +62,6 @@ const OrderPathsList = ({ order, resultPath }: CreateOrderPathsProps) => {
 
   return (
     <PathsContext.Provider value={{ isSelectChanged: isChanged }}>
-      {dialogResult && <Notification {...dialogResult} afterClose={() => setDialogResult(null)} />}
       {!state.isLoaded ? (
         <LinearProgress />
       ) : (

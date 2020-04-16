@@ -4,7 +4,7 @@ import { isOfType } from '../helpers/typeGuard';
 
 import { MessageType } from '../models/message.models';
 import { User } from '../models/user.models';
-import { getLoggedUser, logoutUser } from '../services/users.service';
+import { authUser, getLoggedUser, logoutUser, regUser } from '../services/users.service';
 
 configure({ enforceActions: 'always' });
 
@@ -28,24 +28,38 @@ export class AppStore {
     this.isLogged = false;
   }
 
+  private setUser(user: User) {
+    this.user = user;
+    this.isLogged = true;
+  }
+
   @action async requestIsLog() {
     const response = await getLoggedUser();
-    if (response.messageType !== MessageType.Error) {
-      runInAction(() => {
-        if (isOfType<User>(response.data, 'username')) {
-          this.login(response.data);
-          this.isRequestLoginStatus = false;
-        }
-      });
-    }
+    runInAction(() => {
+      this.isRequestLoginStatus = false;
+      if (isOfType<User>(response.data, 'username')) {
+        this.setUser(response.data);
+      }
+    });
     return response;
   }
 
-  @action login(newUser: User) {
-    if (newUser) {
-      this.user = newUser;
-      this.isLogged = true;
-    }
+  @action async login(username: string, password: string) {
+    const response = await authUser({ username, password });
+    runInAction(() => {
+      if (isOfType<User>(response.data, 'username')) {
+        this.setUser(response.data);
+      }
+    });
+    return response;
+  }
+
+  @action async register(newUser: User) {
+    const response = await regUser(newUser);
+    runInAction(() => {
+      this.login(newUser.username, newUser.password);
+    });
+    return response;
   }
 
   @action async logout() {

@@ -75,10 +75,18 @@
     font-size: 2rem;
   }
   .empty {
-    display: flex;
-    align-items: center;
-    .smile {
-      margin-left: $item-gap / 2;
+    text-align: right;
+  }
+}
+
+.container {
+  padding-bottom: 50px;
+  .create_order {
+    position: fixed;
+    bottom: $item-gap;
+    right: $item-gap;
+    & * {
+      color: #FFF;
     }
   }
 }
