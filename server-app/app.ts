@@ -12,6 +12,7 @@ import * as time from './src/components/time/time.routes';
 import * as user from './src/components/users/users.routes';
 import * as vehicle from './src/components/vehicles/vehicles.routes';
 import { userModel, UserMongo } from './src/models/user.models';
+import initMongo from './initMongo';
 
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
@@ -42,9 +43,15 @@ app.use((req, res, next) => {
   next();
 });
 
-mongoose.connect("mongodb://127.0.0.1:27017/Logistics", {
+mongoose.connect("mongodb://mongo:27017/Logistics", {
   useNewUrlParser: true,
   useUnifiedTopology: true
+}, (err) => {
+  if (err) {
+    console.log('Error while connecting to mongo');
+  } else {
+    console.log('Successful connection to mongo');
+  }
 });
 
 passport.use(
@@ -71,6 +78,8 @@ passport.deserializeUser((_id, done) => {
     done(null, user);
   });
 });
+
+initMongo();
 
 app.use("/", auth.router);
 app.use("/orders", order.router);
