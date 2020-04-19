@@ -56,7 +56,6 @@ async function initMongo() {
     } catch (err) {
         console.log('Error while initializing entities');
     }
-    console.log('Successful initialization');
 };
 
 export default initMongo;

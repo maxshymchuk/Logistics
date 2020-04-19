@@ -4,6 +4,7 @@ import * as http from 'http';
 import * as mongoose from 'mongoose';
 import * as passport from 'passport';
 import { Strategy } from 'passport-local';
+import initMongo from './initMongo';
 
 import * as auth from './src/components/auth/auth.routes';
 import * as location from './src/components/locations/locations.routes';
@@ -12,7 +13,6 @@ import * as time from './src/components/time/time.routes';
 import * as user from './src/components/users/users.routes';
 import * as vehicle from './src/components/vehicles/vehicles.routes';
 import { userModel, UserMongo } from './src/models/user.models';
-import initMongo from './initMongo';
 
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
@@ -43,7 +43,7 @@ app.use((req, res, next) => {
   next();
 });
 
-mongoose.connect("mongodb://mongo:27017/Logistics", {
+mongoose.connect(`mongodb://${process.env.MONGO || '127.0.0.1'}:27017/Logistics`, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 }, (err) => {
