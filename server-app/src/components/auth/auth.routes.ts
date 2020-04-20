@@ -27,10 +27,17 @@ router.get("/logout", async (req: Request, res: Response) => {
 
 router.post(
   "/login",
-  passport.authenticate("local"),
   (req: Request, res: Response) => {
-    if (isOfType<User>(req.user, 'username')) {
-      res.send(successResponse('Successful login', req.user));
-    }
+    passport.authenticate("local", function(err, user, info) {
+      if (!user) {
+        res.send(errorResponse(info.message));
+      } else {
+        req.login(user, () => {
+          if (isOfType<User>(req.user, 'username')) {
+            res.send(successResponse('Successful login', req.user));
+          }
+        });
+      }
+    })(req, res);
   }
 );

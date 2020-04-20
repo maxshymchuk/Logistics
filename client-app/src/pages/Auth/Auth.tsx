@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import SwipeableViews from 'react-swipeable-views';
 
-import { Box, Card, Tab, Tabs, Typography } from '@material-ui/core';
+import { Box, Card, Fade, Tab, Tabs, Typography } from '@material-ui/core';
 
 import styles from './auth.module.scss';
 import SignIn from './components/SignIn/SignIn';
@@ -31,30 +31,32 @@ const Auth = () => {
   const [value, setValue] = useState(0);
 
   return (
-    <div className={styles.auth}>
-      <div className={styles.wrapper_auth}>
-        <Card>
-          <Tabs
-            value={value}
-            onChange={(e, v) => setValue(v)}
-            indicatorColor="primary"
-            textColor="primary"
-            variant="fullWidth"
-          >
-            <Tab label="Sign In" />
-            <Tab label="Sign Up" />
-          </Tabs>
-          <SwipeableViews index={value} onChangeIndex={index => setValue(index)}>
-            <TabPanel value={value} index={0}>
-              <SignIn />
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-              <SignUp />
-            </TabPanel>
-          </SwipeableViews>
-        </Card>
+    <Fade in timeout={2000} unmountOnExit>
+      <div className={styles.auth}>
+        <div className={styles.wrapper_auth}>
+          <Card>
+            <Tabs
+              value={value}
+              onChange={(e, v) => setValue(v)}
+              indicatorColor="primary"
+              textColor="primary"
+              variant="fullWidth"
+            >
+              <Tab label="Sign In" />
+              <Tab label="Sign Up" />
+            </Tabs>
+            <SwipeableViews index={value} onChangeIndex={index => setValue(index)}>
+              <TabPanel value={value} index={0}>
+                <SignIn />
+              </TabPanel>
+              <TabPanel value={value} index={1}>
+                <SignUp />
+              </TabPanel>
+            </SwipeableViews>
+          </Card>
+        </div>
       </div>
-    </div>
+    </Fade>
   );
 };
 
