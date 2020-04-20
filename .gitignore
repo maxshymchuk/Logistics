@@ -1,1 +1,4 @@
 .idea/
+client-app/
+server-app/
+node_modules/
