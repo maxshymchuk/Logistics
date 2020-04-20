@@ -1,0 +1,50 @@
+@import "../../../../../styles/variables.scss";
+@import "../../../../../styles/mixins.scss";
+
+.news_item {
+  margin: $item-gap / 2;
+  width: 100%;
+  height: 280px;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+
+  .image {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-position-y: top;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-between;
+    padding: $item-gap $item-gap 0 $item-gap;
+    .date {
+      display: inline;
+      background-color: #FFF;
+      color: $accent-color;
+      padding: $item-gap / 2 $item-gap;
+    }
+    .title {
+      display: inline;
+      background-color: $accent-color;
+      color: #FFF;
+    }
+  }
+
+  .actions {
+    margin-top: auto;
+    padding: $item-gap;
+  }
+
+  .button {
+    display: flex;
+    padding: 0;
+    a {
+      padding: 3px 10px;
+    }
+  }
+}

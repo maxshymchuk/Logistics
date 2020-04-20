@@ -1,0 +1,84 @@
+@import "../../../../styles/variables.scss";
+@import "../../../../styles/mixins.scss";
+
+.footer {
+  background-color: $accent-light-color;
+}
+
+.wrapper_footer {
+  @include wrapper;
+  color: #fff;
+  display: flex;
+  flex-wrap: wrap;
+  //justify-content: space-between;
+  justify-content: center;
+  padding: 2 * $item-gap 0;
+  @media screen and (max-width: $container-tablet-width) {
+    padding: $item-gap;
+  }
+
+  .content {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    flex-grow: 1;
+    padding: 0 $item-gap;
+  }
+  
+  .description {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+
+    .logo {
+      @include logo(60px, 'Shuttle', false);
+    }
+    .logo_research {
+      @include logo(60px, 'Research', false);
+      background: url("../../../../assets/logo_research.svg") no-repeat center center;
+    }
+  }
+
+  .nav {
+    flex-grow: 2;
+    display: grid;
+    grid-gap: $item-gap;
+    grid-template-columns: repeat(auto-fit, 120px);
+    justify-content: center;
+    margin: $item-gap 0;
+    & * {
+      color: #FFF;
+    }
+  }
+
+  .download {
+    margin: $item-gap 0;
+    padding-left: $item-gap;
+    .badges {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      @media screen and (max-width: $container-tablet-width) {
+        flex-direction: row;
+      }
+    }
+  }
+
+  .google,
+  .apple {
+    width: 100px;
+    height: 40px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
+
+  .google {
+    background-image: url("../../../../assets/badges/google.svg");
+  }
+
+  .apple {
+    background-image: url("../../../../assets/badges/apple.svg");
+    margin-left: $item-gap / 2;
+  }
+}

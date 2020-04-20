@@ -1,0 +1,28 @@
+@import "../../../styles/variables.scss";
+
+.menu_list {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: flex-end;
+
+  a {
+    display: flex;
+    color: inherit;
+    text-decoration: inherit;
+  }
+}
+
+.drawer_close {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  bottom: $item-gap;
+}

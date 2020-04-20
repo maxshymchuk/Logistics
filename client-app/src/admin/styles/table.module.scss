@@ -1,0 +1,20 @@
+@import "../../styles/variables.scss";
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.total {
+  position: sticky;
+  left: 0;
+  padding: $item-gap / 2 $item-gap;
+  color: $disabled-color;
+  font-style: italic;
+  span {
+    display: block;
+  }
+}
+
+.code {
+  font-family: 'Consolas', 'Courier New';
+}

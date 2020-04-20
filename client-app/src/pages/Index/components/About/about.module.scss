@@ -1,0 +1,84 @@
+@import '../../../../styles/variables.scss';
+@import '../../../../styles/mixins.scss';
+
+$photo-width: 200px;
+
+.about {
+  @include section;
+  margin-top: 95vh;
+}
+
+.wrapper_about {
+  @include wrapper;
+  text-align: center;
+  .title {
+    @media screen and (max-width: $container-tablet-width) {
+      font-size: 2rem;
+    }
+  }
+  .subtitle {
+    color: $accent-dark-color;
+    @media screen and (max-width: $container-tablet-width) {
+      margin: 0 $item-gap;
+    }
+  }
+}
+
+.row {
+  @include wrapper;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  position: relative;
+  padding: 50px $item-gap;
+  &:not(:last-child) {
+    border-bottom: 2px dashed #00000011;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1 0;
+    @media screen and (max-width: $container-tablet-width) {
+      flex: 1 100%;
+    }
+  }
+
+  @mixin picture {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 300px;
+    height: 360px;
+    box-shadow: inset 0 0 20px 15px #FFF;
+    z-index: -1;
+    &:after {
+      display: block;
+      content: "";
+      width: 100%;
+      height: 100%;
+      background-color: #FFFFFFDD;
+    }
+  }
+
+  .armor {
+    @include picture;
+    background: url("../../../../assets/robots/armor.png") no-repeat center top;
+  }
+
+  .handy {
+    @include picture;
+    background: url("../../../../assets/robots/handy.png") no-repeat center top;
+    height: 240px;
+    background-size: 65%;
+  }
+
+  .eye {
+    @include picture;
+    left: 0;
+    height: 260px;
+    background: url("../../../../assets/robots/eyebot.png") no-repeat center top;
+    background-size: 100%;
+  }
+}

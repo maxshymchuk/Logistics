@@ -1,0 +1,58 @@
+@import "../../../../styles/variables.scss";
+@import "../../../../styles/mixins.scss";
+
+.process {
+  @include section;
+}
+
+.wrapper_process {
+  @include wrapper;
+  counter-reset: step;
+
+  .title {
+    text-align: center;
+    padding-bottom: 2 * $item-gap;
+    @media screen and (max-width: $container-tablet-width) {
+      font-size: 2rem;
+    }
+  }
+
+  .subtitle {
+    color: $accent-dark-color;
+    @media screen and (max-width: $container-tablet-width) {
+      font-size: 1.5rem;
+    }
+  }
+
+  .step {
+    display: flex;
+    align-items: flex-start;
+    padding: $item-gap;
+    counter-increment: step;
+    &:before {
+      line-height: 160px;
+      content: counter(step);
+      color: $disabled-color;
+      font-size: 160px;
+      font-weight: bold;
+      padding-right: $item-gap;
+      @media screen and (max-width: $container-tablet-width) {
+        font-size: 3rem;
+        line-height: 3rem;
+      }
+    }
+  }
+
+  .details {
+    text-align: center;
+    .mark {
+      padding: 0 $item-gap / 2;
+    }
+  }
+
+  .mark {
+    font-size: 1.5rem;
+    line-height: 1rem;
+    color: $secondary-dark-color;
+  }
+}

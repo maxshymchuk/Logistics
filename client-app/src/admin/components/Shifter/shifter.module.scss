@@ -1,0 +1,5 @@
+@import "../../../styles/mixins.scss";
+
+.progress {
+  @include progress_button;
+}

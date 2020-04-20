@@ -1,0 +1,58 @@
+@import './variables.scss';
+@import url('https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@800&display=swap');
+
+@mixin section {
+  margin: 50px 0;
+  box-sizing: border-box;
+}
+
+@mixin wrapper {
+  max-width: $container-width;
+  margin: 0 auto;
+  padding: $item-gap / 2 $item-gap;
+}
+
+@mixin title {
+  font-weight: bold;
+  @media screen and (max-width: $container-tablet-width) {
+    font-size: 1.4rem;
+  }
+}
+
+@mixin subtitle {
+  font-size: 1.2rem;
+  @media screen and (max-width: $container-tablet-width) {
+    font-size: 1rem;
+  }
+}
+
+@mixin logo($height: 50px, $text: 'SHUTTLE', $adaptive: true) {
+  $width: $height * 1.5;
+  width: $width;
+  height: $height;
+  background: url('../assets/logo.svg') no-repeat center center;
+  background-size: contain;
+  margin-right: $width * 1.5;
+  @media screen and (max-width: $container-tablet-width) {
+    margin: 0;
+  }
+  &:after {
+    font-family: 'Baloo Da 2';
+    content: $text;
+    font-size: $height / 2;
+    display: inline-flex;
+    height: $height;
+    align-items: center;
+    position: relative;
+    left: $width;
+    @if $adaptive {
+      @media screen and (max-width: $container-tablet-width) {
+        display: none;
+      }
+    }
+  }
+}
+
+@mixin progress_button {
+  margin-right: $item-gap;
+}

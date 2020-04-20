@@ -1,0 +1,10 @@
+@import "../../../styles/variables.scss";
+
+.track {
+  display: grid;
+  grid-gap: $item-gap;
+  width: 600px;
+  margin: 0 auto;
+  padding: $item-gap;
+  box-sizing: border-box;
+}

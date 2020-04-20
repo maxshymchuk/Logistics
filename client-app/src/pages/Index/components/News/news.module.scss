@@ -1,0 +1,28 @@
+@import "../../../../styles/variables.scss";
+@import "../../../../styles/mixins.scss";
+
+.news {
+  @include section;
+}
+
+.wrapper_news {
+  @include wrapper;
+
+  .title {
+    text-align: center;
+    padding-bottom: 2 * $item-gap;
+    @media screen and (max-width: $container-tablet-width) {
+      font-size: 2rem;
+    }
+  }
+
+  .arrow {
+    margin: 0 $item-gap / 2;
+    cursor: pointer;
+  }
+
+  .subtitle {
+    text-align: left;
+    padding-bottom: $item-gap;
+  }
+}

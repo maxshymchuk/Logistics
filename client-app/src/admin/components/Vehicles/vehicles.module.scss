@@ -1,0 +1,35 @@
+@import "../../../styles/variables.scss";
+
+.vehicle {
+  display: flex;
+  align-items: center;
+}
+
+@mixin avatar {
+  width: 40px;
+  height: 40px;
+  margin-right: $item-gap;
+  background-size: 90%;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+ 
+.Car {
+  @include avatar;
+  background-image: url('../../../assets/vehicles/car.svg');
+}
+
+.Plane {
+  @include avatar;
+  background-image: url('../../../assets/vehicles/plane.svg');
+}
+
+.Train {
+  @include avatar;
+  background-image: url('../../../assets/vehicles/train.svg');
+}
+
+.Ship {
+  @include avatar;
+  background-image: url('../../../assets/vehicles/ship.svg');
+}

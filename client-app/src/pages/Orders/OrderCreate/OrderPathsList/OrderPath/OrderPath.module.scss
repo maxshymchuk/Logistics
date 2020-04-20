@@ -1,0 +1,20 @@
+@import "../../../../../styles/variables.scss";
+
+.list {
+  text-align: right;
+}
+
+.routes {
+  margin-left: $item-gap / 2;
+}
+
+.time,
+.price {
+  margin-right: $item-gap / 2;
+}
+
+.vehicleTime {
+  padding: 0 $item-gap / 2;
+  font-style: italic;
+  color: $disabled-color;
+}

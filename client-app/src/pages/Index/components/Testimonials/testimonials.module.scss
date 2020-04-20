@@ -1,0 +1,27 @@
+@import "../../../../styles/variables.scss";
+@import "../../../../styles/mixins.scss";
+
+.testimonials {
+  @include section;
+}
+
+.wrapper_testimonials {
+  @include wrapper;
+
+  .title {
+    text-align: center;
+    margin-bottom: 2 * $item-gap;
+    @media screen and (max-width: $container-tablet-width) {
+      font-size: 2rem;
+    }
+  }
+
+  .subtitle {
+    text-align: center;
+    padding-bottom: $item-gap;
+  }
+
+  .slide {
+    padding: 0 $item-gap;
+  }
+}

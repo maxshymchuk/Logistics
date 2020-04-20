@@ -1,0 +1,136 @@
+@import "../../styles/variables.scss";
+@import "../../styles/mixins.scss";
+
+.social {
+  width: 100%;
+  background-color: #00000099;
+  color: #fff;
+  position: relative;
+  z-index: 999;
+
+  .wrapper_social {
+    @include wrapper;
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .info {
+    display: flex;
+  }
+
+  .phone,
+  .date {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    span {
+      margin: 0 $item-gap / 2;
+    }
+  }
+
+  .date {
+    @media screen and (max-width: $container-tablet-width) {
+      display: none;
+    }
+  }
+
+  .social_networks {
+    display: flex;
+    align-items: center;
+    .social_behance,
+    .social_vk,
+    .social_facebook,
+    .social_twitter,
+    .social_instagram {
+      width: 20px;
+      height: 20px;
+      margin-left: $item-gap / 2;
+      background-color: #00000055;
+      border-radius: 50%;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+    .social_behance {
+      background-image: url("../../assets/menu/behance.svg");
+    }
+    .social_vk {
+      background-image: url("../../assets/menu/vk.svg");
+    }
+    .social_facebook {
+      background-image: url("../../assets/menu/facebook.svg");
+    }
+    .social_twitter {
+      background-image: url("../../assets/menu/twitter.svg");
+    }
+    .social_instagram {
+      background-image: url("../../assets/menu/instagram.svg");
+    }
+  }
+}
+
+.menu {
+  background-color: #ffffffdd;
+  width: 100%;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  transition: background-color 0.5s, top 0.5s;
+
+  &.docked {
+    background-color: transparent;
+    color: #FFF;
+    a, button {
+      color: #FFF;
+    }
+  }
+
+
+  &.hided {
+    @media screen and (max-width: $container-tablet-width) {
+      top: -100px;
+    }
+  }
+
+  a {
+    display: block;
+  }
+
+  .logo {
+    $background: #00000022;
+    @include logo;
+    &.colorful {
+      color: $accent-color;
+    }
+  }
+
+  .wrapper_menu {
+    @include wrapper;
+    padding: 0 $item-gap;
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .menu_list {
+    width: 100%;
+    @media screen and (max-width: $container-tablet-width) {
+      display: none;
+    }
+  }
+
+  .user {
+    display: flex;
+  }
+
+  .burger {
+    display: none;
+    @media screen and (max-width: $container-tablet-width) {
+      display: block;
+    }
+  }
+}

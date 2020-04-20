@@ -1,0 +1,42 @@
+@import "../../../styles/variables.scss";
+@import "../../../styles/mixins.scss";
+
+.error_wrapper {
+  @include wrapper;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: url('../../../assets/robots/claptrap2.png') no-repeat left center;
+  background-size: auto 70%;
+  
+  @media screen and (max-width: $container-tablet-width) {
+    flex-direction: column;
+    justify-content: center;
+    background: none;
+  }
+}
+
+.auth {
+  flex-shrink: 0;
+  margin: $item-gap 0;
+  padding: $item-gap;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  .title {
+    @include title;
+    padding-bottom: $item-gap;
+  }
+}
+
+.registration {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: $item-gap;
+}
