@@ -4,7 +4,7 @@ import { MessageType } from '../../models/message.models';
 import {
     Vehicle, vehicleModel, VehicleMongo, VehicleSpeed, VehicleType, VehicleTypes
 } from '../../models/vehicle.models';
-import { moveDate, rand } from '../../utils';
+import { moveDate, rand } from '../../helpers/utils';
 import { getLocations } from '../locations/locations.service';
 import { getDistanceBetween } from '../locations/router';
 

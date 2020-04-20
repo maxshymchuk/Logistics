@@ -1,8 +1,8 @@
-import CONSTS from '../../const';
+import CONSTS from '../../helpers/const';
 import { errorResponse, successResponse } from '../../helpers/response';
 import { orderModel } from '../../models/order.models';
 import { vehicleModel } from '../../models/vehicle.models';
-import { moveDate } from '../../utils';
+import { moveDate } from '../../helpers/utils';
 import { updateOrders } from '../orders/orders.service';
 
 async function moveVehiclesTimeOn(interval: number) {

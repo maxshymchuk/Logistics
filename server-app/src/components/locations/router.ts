@@ -1,4 +1,4 @@
-import CONSTS from '../../const';
+import CONSTS from '../../helpers/const';
 import { mapModel, MapType, Path } from '../../models/location.models';
 import { MessageType } from '../../models/message.models';
 import { Route } from '../../models/route.models';

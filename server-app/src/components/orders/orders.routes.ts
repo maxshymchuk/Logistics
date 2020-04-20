@@ -2,7 +2,7 @@ import { Request, Response, Router } from 'express';
 
 import isOfType from '../../helpers/typeGuard';
 import { User } from '../../models/user.models';
-import { requiresAdmin, requiresLogin } from '../../utils';
+import { requiresAdmin, requiresLogin } from '../../helpers/utils';
 import * as orderService from './orders.service';
 
 export const router = Router();

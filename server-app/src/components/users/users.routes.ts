@@ -1,7 +1,7 @@
 import { Request, Response, Router } from 'express';
 
 import { UserMongo } from '../../models/user.models';
-import { requiresAdmin, requiresLogin } from '../../utils';
+import { requiresAdmin, requiresLogin } from '../../helpers/utils';
 import * as userService from './users.service';
 
 export const router = Router();

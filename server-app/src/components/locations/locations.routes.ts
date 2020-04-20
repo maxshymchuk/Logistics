@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
 
-import { requiresAdmin, requiresLogin } from '../../utils';
+import { requiresAdmin, requiresLogin } from '../../helpers/utils';
 import * as locationService from './locations.service';
 
 export const router = Router();
