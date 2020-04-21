@@ -106,7 +106,7 @@ const Menu = observer(() => {
                 <IconButton component={Link} to="/profile">
                   <FaceIcon />
                 </IconButton>
-                <IconButton onClick={handleLogout}>
+                <IconButton component={Link} to="/" onClick={handleLogout}>
                   <ExitToAppIcon />
                 </IconButton>
               </>

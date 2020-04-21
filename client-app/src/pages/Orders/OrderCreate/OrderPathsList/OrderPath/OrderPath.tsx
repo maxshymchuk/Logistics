@@ -56,7 +56,7 @@ const OrderPath = ({ userPath, isSelected, onSelect }: OrderPathProps) => {
 
   return (
     <>
-      <ListItem button onClick={handleClick}>
+      <ListItem className={styles.list_title} button onClick={handleClick}>
         {state.isPathOpen ? <ExpandLess /> : <ExpandMore />}
         <ListItemText
           className={styles.routes}
@@ -64,28 +64,33 @@ const OrderPath = ({ userPath, isSelected, onSelect }: OrderPathProps) => {
             .map(path => path.vehicle)
             .join(' – ')}
         />
-        <ListItemText style={{ flexGrow: 0 }} className={styles.time}>
-          <Chip
-            style={{ cursor: 'pointer' }}
-            icon={<ScheduleIcon />}
-            label={getHoursStr(userPath.timeInterval)}
-          />
-        </ListItemText>
-        <ListItemText style={{ flexGrow: 0 }} className={styles.price}>
-          <Chip
-            style={{ cursor: 'pointer' }}
-            avatar={<Avatar>$</Avatar>}
+        <div className={styles.group}>
+          <div className={styles.group}>
+            <ListItemText className={styles.time}>
+              <Chip
+                style={{ cursor: 'pointer' }}
+                icon={<ScheduleIcon className={styles.icon} />}
+                label={getHoursStr(userPath.timeInterval)}
+              />
+            </ListItemText>
+            <ListItemText className={styles.price}>
+              <Chip
+                style={{ cursor: 'pointer' }}
+                avatar={<Avatar className={styles.icon}>$</Avatar>}
+                color="primary"
+                label={userPath.price}
+              />
+            </ListItemText>
+          </div>
+          <Button
+            className={styles.button}
+            variant={isSelectedPath ? 'contained' : 'outlined'}
             color="primary"
-            label={userPath.price}
-          />
-        </ListItemText>
-        <Button
-          variant={isSelectedPath ? 'contained' : 'outlined'}
-          color="primary"
-          onClick={handleOrder}
-        >
-          Take
-        </Button>
+            onClick={handleOrder}
+          >
+            Take
+          </Button>
+        </div>
       </ListItem>
       <Collapse in={state.isPathOpen} unmountOnExit>
         <List disablePadding>

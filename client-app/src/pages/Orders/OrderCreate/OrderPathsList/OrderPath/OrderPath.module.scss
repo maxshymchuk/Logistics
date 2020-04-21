@@ -4,13 +4,33 @@
   text-align: right;
 }
 
-.routes {
-  margin-left: $item-gap / 2;
-}
-
-.time,
-.price {
-  margin-right: $item-gap / 2;
+.list_title {
+  background-color: green;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  .group {
+    display: flex;
+    flex-wrap: wrap;
+    .icon {
+      @media screen and (max-width: $container-tablet-width) {
+        display: none;
+      }
+    }
+  }
+  .routes {
+    margin-left: $item-gap / 2;
+    flex-grow: 1;
+  }
+  .time,
+  .price {
+    margin-left: $item-gap / 2;
+    flex-grow: 0;
+  }
+  .button {
+    margin: 0 $item-gap / 2;
+    flex-grow: 1;
+  }
 }
 
 .vehicleTime {

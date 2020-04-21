@@ -11,7 +11,7 @@ import { AppContext } from '../../../../stores/AppStore';
 import styles from './orderLocations.module.scss';
 
 type OrderLocationsProps = {
-  resultLocations: (segment: Segment) => void;
+  resultLocations: (segment: Segment | null) => void;
 };
 
 const OrderLocations = observer(({ resultLocations }: OrderLocationsProps) => {
@@ -36,7 +36,11 @@ const OrderLocations = observer(({ resultLocations }: OrderLocationsProps) => {
         from: fromLocation,
         to: toLocation
       };
-      resultLocations(segment);
+      if (fromLocation === toLocation) {
+        resultLocations(null);
+      } else {
+        resultLocations(segment);
+      }
     }
   }, [fromLocation, toLocation]);
 

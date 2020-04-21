@@ -19,6 +19,7 @@
   text-align: center;
   margin: auto;
   color: #FFF;
+  z-index: 1;
 
   .title {
     @include title;
